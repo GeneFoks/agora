@@ -582,6 +582,7 @@ function translateAuthError(msg) {
   const m = (msg || '').toLowerCase();
   if (m.includes('invalid login credentials')) return 'Неверный email или пароль';
   if (m.includes('email not confirmed')) return 'Email не подтверждён — проверь почту';
+  if (m.includes('signups are disabled') || m.includes('signup is disabled') || m.includes('signups not allowed')) return 'Регистрация временно отключена';
   if (m.includes('user already registered')) return 'Email уже используется';
   if (m.includes('password should be at least')) return 'Пароль должен быть минимум 6 символов';
   if (m.includes('unable to validate email') || m.includes('invalid format')) return 'Неверный формат email';
