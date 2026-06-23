@@ -119,6 +119,41 @@ nav {
 }
 
 /* ════════════════════════════════════
+   LOGIN / CABINET BUTTON (into the app)
+════════════════════════════════════ */
+.nav-login {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px 8px 10px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  color: #090806;
+  background: linear-gradient(135deg, #e0aa66, var(--earth));
+  border: 1px solid rgba(196,137,74,.6);
+  box-shadow: 0 4px 16px rgba(196,137,74,.28);
+  transition: transform .2s, box-shadow .25s, filter .25s;
+  white-space: nowrap;
+}
+.nav-login:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 8px 24px rgba(196,137,74,.42);
+}
+.nav-login-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(9,8,6,.16);
+  flex-shrink: 0;
+}
+
+/* ════════════════════════════════════
    BESTIE BUTTON
 ════════════════════════════════════ */
 .nav-bestie {
@@ -811,4 +846,7 @@ footer {
   .lang-switcher { display: none; }
   .nav-bestie span:last-child { display: none; }
   .nav-bestie { padding: 8px; }
+  .nav-login span:last-child { display: none; }
+  .nav-login { padding: 8px; }
+  .nav-login-icon { width: 18px; height: 18px; }
 }

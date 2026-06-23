@@ -23,6 +23,9 @@
           '<a href="https://bestiehere.com/signup?ref=D46EB3DC" target="_blank" class="nav-bestie"><span class="nav-bestie-icon">' +
             '<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7.5-4.5-10-9.5C0.5 7.5 2.5 4 6 4c2.2 0 3.8 1.3 6 3.5C14.2 5.3 15.8 4 18 4c3.5 0 5.5 3.5 4 7.5C19.5 16.5 12 21 12 21z" fill="currentColor"/></svg>' +
           '</span><span data-i18n="nav.app">' + t('nav.app') + '</span></a>' +
+          '<a href="app.html" class="nav-login"><span class="nav-login-icon">' +
+            '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>' +
+          '</span><span>' + (lang === 'ru' ? 'Войти' : 'Sign in') + '</span></a>' +
           '<a href="join.html" class="nav-cta" data-i18n="nav.cta">' + t('nav.cta') + '</a>' +
           '<div class="lang-switcher">' +
             '<button class="lang-btn' + (lang === 'ru' ? ' active' : '') + '" data-lang="ru" onclick="window.AgoraI18n.setLang(\'ru\')">RU</button>' +
