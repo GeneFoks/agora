@@ -575,22 +575,18 @@ td:first-child{color:var(--text)}
 
 <!-- FIREBASE SDK -->
 <script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, getDocs, addDoc, query, orderBy, serverTimestamp, increment } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { supabase } from './supabaseClient.js';
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAC8S1MyBYr-JvDTWGSs5_tF7klfMiu2dc",
-  authDomain: "agora-community-1eab9.firebaseapp.com",
-  projectId: "agora-community-1eab9",
-  storageBucket: "agora-community-1eab9.firebasestorage.app",
-  messagingSenderId: "873562989116",
-  appId: "1:873562989116:web:aa6a46792e473c2d65d939"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+// Map Supabase auth error messages → friendly Russian text.
+function translateAuthError(msg) {
+  const m = (msg || '').toLowerCase();
+  if (m.includes('invalid login credentials')) return 'Неверный email или пароль';
+  if (m.includes('email not confirmed')) return 'Email не подтверждён — проверь почту';
+  if (m.includes('user already registered')) return 'Email уже используется';
+  if (m.includes('password should be at least')) return 'Пароль должен быть минимум 6 символов';
+  if (m.includes('unable to validate email') || m.includes('invalid format')) return 'Неверный формат email';
+  return msg;
+}
 
 // LEVEL SYSTEM
 const LEVELS = [
@@ -629,7 +625,8 @@ let currentUser = null;
 let currentUserData = null;
 
 // AUTH STATE
-onAuthStateChanged(auth, async (user) => {
+async function onSession(session) {
+  const user = session && session.user ? session.user : null;
   if (user) {
     currentUser = user;
     await loadUserData(user);
@@ -644,16 +641,19 @@ onAuthStateChanged(auth, async (user) => {
     document.getElementById('authWrap').style.display = 'flex';
     document.getElementById('appWrap').style.display = 'none';
   }
-});
+}
+supabase.auth.onAuthStateChange((_event, session) => { onSession(session); });
+supabase.auth.getSession().then(({ data }) => onSession(data.session));
 
 async function loadUserData(user) {
-  const ref = doc(db, 'users', user.uid);
-  const snap = await getDoc(ref);
-  if (snap.exists()) {
-    currentUserData = snap.data();
+  const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+  if (data) {
+    currentUserData = data;
   } else {
-    currentUserData = {name: user.displayName || user.email.split('@')[0], email: user.email, xp: 0, points: 0, contributions: 0, referrals: 0, createdAt: new Date().toISOString()};
-    await setDoc(ref, currentUserData);
+    // Profile is normally created by the DB trigger on signup; this is a fallback.
+    const fallback = { id: user.id, name: (user.user_metadata && user.user_metadata.name) || user.email.split('@')[0], email: user.email, xp: 0, points: 0, contributions: 0, referrals: 0 };
+    await supabase.from('profiles').upsert(fallback);
+    currentUserData = Object.assign({ created_at: new Date().toISOString() }, fallback);
   }
 }
 
@@ -680,7 +680,7 @@ function updateUI() {
   document.getElementById('statPoints').textContent = d.points || 0;
   document.getElementById('statContribs').textContent = d.contributions || 0;
   document.getElementById('statReferrals').textContent = d.referrals || 0;
-  document.getElementById('refLink').textContent = `${window.location.origin}${window.location.pathname}?ref=${currentUser.uid}`;
+  document.getElementById('refLink').textContent = `${window.location.origin}${window.location.pathname}?ref=${currentUser.id}`;
 
   // Profile
   document.getElementById('profileAvatar').textContent = initials;
@@ -693,7 +693,7 @@ function updateUI() {
   document.getElementById('profileXP').textContent = d.xp || 0;
   document.getElementById('profilePoints').textContent = d.points || 0;
   document.getElementById('profileXPText').textContent = `${d.xp||0} / ${li.next ? li.next.xpNeeded : '∞'}`;
-  document.getElementById('profileJoined').textContent = d.createdAt ? new Date(d.createdAt).toLocaleDateString('ru') : '—';
+  document.getElementById('profileJoined').textContent = d.created_at ? new Date(d.created_at).toLocaleDateString('ru') : '—';
   setTimeout(()=>{ document.getElementById('profileXPBar').style.width = li.progress + '%'; }, 300);
 
   // Rewards balance
@@ -729,16 +729,16 @@ function updateRewardButtons(points) {
 async function loadLeaderboard() {
   const list = document.getElementById('leaderboardList');
   try {
-    const q = query(collection(db,'users'), orderBy('xp','desc'));
-    const snap = await getDocs(q);
-    const users = snap.docs.map((d,i)=>({id:d.id, rank:i+1, ...d.data()}));
+    const { data, error } = await supabase.from('profiles').select('id,name,email,xp,points,contributions').order('xp', { ascending: false });
+    if (error) throw error;
+    const users = (data || []).map((d,i)=>({ ...d, rank:i+1 }));
 
     const colors = ['linear-gradient(135deg,#fbbf24,#f59e0b)','linear-gradient(135deg,#94a3b8,#64748b)','linear-gradient(135deg,#cd7f32,#a0522d)'];
     const rankColors = ['#fbbf24','#94a3b8','#cd7f32'];
 
     list.innerHTML = users.length === 0 ? '<div class="loading">Пока нет участников</div>' :
       users.map((u,i) => {
-        const isMe = currentUser && u.id === currentUser.uid;
+        const isMe = currentUser && u.id === currentUser.id;
         const li_info = getLevelInfo(u.xp||0);
         const initial = (u.name||u.email||'U').charAt(0).toUpperCase();
         const avatarBg = i < 3 ? colors[i] : 'linear-gradient(135deg,var(--purple),var(--blue))';
@@ -755,7 +755,7 @@ async function loadLeaderboard() {
       }).join('');
 
     // My rank
-    const myRank = users.findIndex(u => currentUser && u.id === currentUser.uid) + 1;
+    const myRank = users.findIndex(u => currentUser && u.id === currentUser.id) + 1;
     document.getElementById('myRank').textContent = myRank ? `#${myRank}` : '#—';
     document.getElementById('myRankOf').textContent = `из ${users.length} участников`;
     document.getElementById('myRankXP').textContent = `${currentUserData?.xp||0} XP`;
@@ -769,12 +769,12 @@ async function loadLeaderboard() {
 async function loadMyContribs() {
   const list = document.getElementById('myContribsList');
   try {
-    const q = query(collection(db,'users',currentUser.uid,'contributions'), orderBy('createdAt','desc'));
-    const snap = await getDocs(q);
-    if (snap.empty) { list.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:16px 0;text-align:center">Пока нет вкладов.<br>Отправь первый!</div>'; return; }
+    const { data, error } = await supabase.from('contributions').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+    if (error) throw error;
+    if (!data || data.length === 0) { list.innerHTML = '<div style="font-size:13px;color:var(--muted);padding:16px 0;text-align:center">Пока нет вкладов.<br>Отправь первый!</div>'; return; }
     const statusMap = {pending:'<span class="badge badge-amber">⏳ На проверке</span>',approved:'<span class="badge badge-green">✓ Принят</span>',rejected:'<span class="badge badge-red">✗ Отклонён</span>'};
     list.innerHTML = `<table><thead><tr><th>Название</th><th>XP</th><th>Статус</th></tr></thead><tbody>${
-      snap.docs.map(d=>{const c=d.data();return `<tr><td>${c.title}</td><td style="color:var(--purple-l)">+${c.xp}</td><td>${statusMap[c.status]||statusMap.pending}</td></tr>`;}).join('')
+      data.map(c=>`<tr><td>${c.title}</td><td style="color:var(--purple-l)">+${c.xp}</td><td>${statusMap[c.status]||statusMap.pending}</td></tr>`).join('')
     }</tbody></table>`;
   } catch(e) {
     list.innerHTML = '<div class="loading">Ошибка загрузки</div>';
@@ -787,11 +787,9 @@ window.doLogin = async () => {
   const pass = document.getElementById('loginPassword').value;
   const btn = document.getElementById('loginBtn');
   setError(''); btn.disabled = true; btn.textContent = 'Входим...';
-  try {
-    await signInWithEmailAndPassword(auth, email, pass);
-  } catch(e) {
-    const msgs = {'auth/user-not-found':'Пользователь не найден','auth/wrong-password':'Неверный пароль','auth/invalid-credential':'Неверный email или пароль','auth/invalid-email':'Неверный формат email'};
-    setError(msgs[e.code] || e.message);
+  const { error } = await supabase.auth.signInWithPassword({ email, password: pass });
+  if (error) {
+    setError(translateAuthError(error.message));
     btn.disabled = false; btn.textContent = 'Войти →';
   }
 };
@@ -803,23 +801,28 @@ window.doSignup = async () => {
   const btn = document.getElementById('signupBtn');
   if (!name) { setError('Введи имя'); return; }
   setError(''); btn.disabled = true; btn.textContent = 'Создаём...';
-  try {
-    const cred = await createUserWithEmailAndPassword(auth, email, pass);
-    const urlParams = new URLSearchParams(window.location.search);
-    const refBy = urlParams.get('ref') || null;
-    const userData = {name, email, xp:0, points:0, contributions:0, referrals:0, referredBy:refBy, createdAt: new Date().toISOString()};
-    await setDoc(doc(db,'users',cred.user.uid), userData);
-    if (refBy) {
-      await updateDoc(doc(db,'users',refBy), {referrals: increment(1), points: increment(100), xp: increment(50)});
-    }
-  } catch(e) {
-    const msgs = {'auth/email-already-in-use':'Email уже используется','auth/weak-password':'Пароль должен быть минимум 6 символов','auth/invalid-email':'Неверный формат email'};
-    setError(msgs[e.code] || e.message);
+  const urlParams = new URLSearchParams(window.location.search);
+  const refBy = urlParams.get('ref') || null;
+  // Profile row + referral bonus are handled by the DB trigger (see schema.sql),
+  // which reads name/referred_by from the user metadata below.
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password: pass,
+    options: { data: { name, referred_by: refBy } }
+  });
+  if (error) {
+    setError(translateAuthError(error.message));
+    btn.disabled = false; btn.textContent = 'Создать аккаунт →';
+    return;
+  }
+  if (!data.session) {
+    // Email confirmation is enabled — user must confirm before logging in.
+    notify('Аккаунт создан! Проверь почту, подтверди адрес и войди.');
     btn.disabled = false; btn.textContent = 'Создать аккаунт →';
   }
 };
 
-window.doLogout = async () => { await signOut(auth); };
+window.doLogout = async () => { await supabase.auth.signOut(); };
 
 window.switchTab = (tab, el) => {
   document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));
@@ -849,27 +852,27 @@ window.submitContrib = async () => {
   const type = document.getElementById('contribType').value;
   if (!title || !desc) { notify('Заполни название и описание'); return; }
   const xp = XP_VALUES[type] || 50;
-  try {
-    await addDoc(collection(db,'users',currentUser.uid,'contributions'), {title, desc, type, xp, status:'pending', createdAt: serverTimestamp()});
-    document.getElementById('contribTitle').value = '';
-    document.getElementById('contribDesc').value = '';
-    document.getElementById('contribLink').value = '';
-    notify(`Вклад отправлен на проверку! +${xp} XP будет начислено ⚡`);
-    loadMyContribs();
-  } catch(e) { notify('Ошибка отправки. Попробуй ещё раз.'); }
+  const link = document.getElementById('contribLink').value.trim();
+  const { error } = await supabase.from('contributions').insert({ user_id: currentUser.id, title, description: desc, type, link, xp, status: 'pending' });
+  if (error) { notify('Ошибка отправки. Попробуй ещё раз.'); return; }
+  document.getElementById('contribTitle').value = '';
+  document.getElementById('contribDesc').value = '';
+  document.getElementById('contribLink').value = '';
+  notify(`Вклад отправлен на проверку! +${xp} XP будет начислено ⚡`);
+  loadMyContribs();
 };
 
 window.redeemReward = async (name, cost, btnId) => {
   if (!currentUserData || (currentUserData.points||0) < cost) { notify('Недостаточно points!'); return; }
-  try {
-    await updateDoc(doc(db,'users',currentUser.uid), {points: increment(-cost)});
-    currentUserData.points = (currentUserData.points||0) - cost;
-    await addDoc(collection(db,'users',currentUser.uid,'rewardClaims'), {rewardTitle:name, cost, status:'pending', createdAt: serverTimestamp()});
-    document.getElementById('rewardsBalance').textContent = `${currentUserData.points} pts`;
-    updateRewardButtons(currentUserData.points);
-    notify(`Награда "${name}" активирована! Свяжемся с тобой 🎁`);
-    updateUI();
-  } catch(e) { notify('Ошибка. Попробуй ещё раз.'); }
+  const newPoints = (currentUserData.points||0) - cost;
+  const { error: updErr } = await supabase.from('profiles').update({ points: newPoints }).eq('id', currentUser.id);
+  if (updErr) { notify('Ошибка. Попробуй ещё раз.'); return; }
+  await supabase.from('reward_claims').insert({ user_id: currentUser.id, reward_title: name, cost, status: 'pending' });
+  currentUserData.points = newPoints;
+  document.getElementById('rewardsBalance').textContent = `${newPoints} pts`;
+  updateRewardButtons(newPoints);
+  notify(`Награда "${name}" активирована! Свяжемся с тобой 🎁`);
+  updateUI();
 };
 
 window.setDonate = (btn) => { document.querySelectorAll('.donate-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); };
