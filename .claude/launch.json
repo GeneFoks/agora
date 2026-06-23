@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "agora-bilingual",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-l", "3333", "C:\\Users\\17549\\Downloads\\agora-bilingual"],
+      "port": 3333
+    }
+  ]
+}

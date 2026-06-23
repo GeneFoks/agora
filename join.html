@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вступить — AGORA Foundation</title>
+  <meta name="description" content="Подай заявку на участие в AGORA Foundation. Участки 0,25 акра за $10,000 для первых 10 резидентов. Техас, США.">
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <script src="i18n.js"></script>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<div class="page-hero">
+  <div class="container-narrow">
+    <div class="breadcrumb"><a href="index.html" data-i18n="join.breadcrumb">Главная</a> · <span data-i18n="join.breadcrumb2">Вступить</span></div>
+    <h1 style="font-size:clamp(40px,6vw,72px);font-weight:300;margin-bottom:20px;" data-i18n-html="join.hero.title">Стать частью<br><em style="color:var(--earth);">Агоры</em></h1>
+    <p style="font-size:18px;color:var(--muted);line-height:1.8;font-weight:300;max-width:560px;" data-i18n="join.hero.sub">Есть несколько способов участвовать — от покупки участка до поддержки проекта или предложения своего таланта.</p>
+  </div>
+</div>
+
+<!-- ВАРИАНТЫ -->
+<section class="section">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:60px;">
+      <div class="section-label" data-i18n="join.paths.label">Как участвовать</div>
+      <h2 class="section-title" data-i18n="join.paths.title">Выбери свой путь</h2>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:60px;">
+
+      <div class="card" style="border-top:3px solid var(--earth);text-align:center;">
+        <div class="ico" style="width:32px;height:32px;margin:0 auto 16px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7"/><path d="M6 10v10h12V10"/><path d="M10 20v-6h4v6"/></svg></div>
+        <div class="card-title" data-i18n="join.res.title">Резидент</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:32px;color:var(--earth);font-weight:300;margin:12px 0;">$10,000</div>
+        <p class="card-text" style="margin-bottom:20px;" data-i18n="join.res.desc">Участок 0,25 акра в собственность. Доступ ко всей инфраструктуре. Голос в управлении. Для первых 10 — фиксированная цена.</p>
+        <ul style="list-style:none;text-align:left;margin-bottom:24px;">
+          <li style="font-size:13px;color:var(--muted);padding:5px 0;display:flex;gap:8px;font-weight:300;"><span style="color:var(--earth);">✓</span><span data-i18n="join.res.li1">0,25 акра в собственность</span></li>
+          <li style="font-size:13px;color:var(--muted);padding:5px 0;display:flex;gap:8px;font-weight:300;"><span style="color:var(--earth);">✓</span><span data-i18n="join.res.li2">Велнес, еда, коучинг</span></li>
+          <li style="font-size:13px;color:var(--muted);padding:5px 0;display:flex;gap:8px;font-weight:300;"><span style="color:var(--earth);">✓</span><span data-i18n="join.res.li3">1 голос в кооперативе</span></li>
+          <li style="font-size:13px;color:var(--muted);padding:5px 0;display:flex;gap:8px;font-weight:300;"><span style="color:var(--earth);">✓</span><span data-i18n="join.res.li4">Полная инфраструктура</span></li>
+        </ul>
+        <a href="#form" class="btn btn-earth" style="width:100%;justify-content:center;" data-i18n="join.res.btn">Подать заявку</a>
+      </div>
+
+      <div class="card" style="text-align:center;">
+        <div class="ico" style="width:32px;height:32px;margin:0 auto 16px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.5-9.5-9C1 7.5 3 4 6.5 4c2 0 3.5 1.2 5.5 3.3C14 5.2 15.5 4 17.5 4 21 4 23 7.5 21.5 11 19 15.5 12 20 12 20z"/></svg></div>
+        <div class="card-title" data-i18n="join.sup.title">Поддержать</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:32px;color:var(--text);font-weight:300;margin:12px 0;" data-i18n="join.sup.price">Любая сумма</div>
+        <p class="card-text" style="margin-bottom:24px;" data-i18n="join.sup.desc">Помоги купить землю. Даже если не готов переехать — ты помогаешь проекту состояться.</p>
+        <a href="https://gofund.me/41a2c4cc1" target="_blank" class="btn btn-outline" style="width:100%;justify-content:center;" data-i18n="join.sup.btn">GoFundMe →</a>
+      </div>
+
+      <div class="card" style="text-align:center;">
+        <div class="ico" style="width:32px;height:32px;margin:0 auto 16px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3 11c.6.5 1 1.2 1 2h4c0-.8.4-1.5 1-2a6 6 0 0 0-3-11z"/></svg></div>
+        <div class="card-title" data-i18n="join.prop.title">Предложить проект</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:32px;color:var(--text);font-weight:300;margin:12px 0;" data-i18n="join.prop.price">Переговорим</div>
+        <p class="card-text" style="margin-bottom:24px;" data-i18n="join.prop.desc">Есть идея, навык или проект для сообщества? Напиши нам — рассмотрим каждое предложение.</p>
+        <a href="#form" class="btn btn-outline" style="width:100%;justify-content:center;" data-i18n="join.prop.btn">Написать →</a>
+      </div>
+
+    </div>
+
+    <!-- BESTIE BANNER -->
+    <div style="background:rgba(196,137,74,.08);border:1px solid rgba(196,137,74,.3);border-radius:12px;padding:32px 40px;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;">
+      <div>
+        <div style="font-size:13px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--earth);margin-bottom:8px;" data-i18n="join.bestie.sub">Bestie создан Агорой для объединения людей</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--text);margin-bottom:10px;" data-i18n="join.bestie.title">Войти в Bestie</div>
+        <p style="font-size:14px;color:var(--muted);font-weight:300;max-width:520px;" data-i18n="join.bestie.desc">Агора создала Bestie — приложение для настоящих связей. Найди людей, близких по духу, уже сейчас, не дожидаясь переезда.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;flex-shrink:0;">
+        <a href="https://bestiehere.com/signup?ref=D46EB3DC" target="_blank" class="btn btn-earth" data-i18n="join.bestie.btn">Открыть Bestie →</a>
+        <a href="https://bestiehere.com/crews/agora?invite=C3B6887A19&ref=e166b6ad-09e0-450f-8a7e-38a7e1eae085" target="_blank" class="btn btn-outline" data-i18n="join.bestie.crew">Вступить в сообщество Agora →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ФОРМА -->
+<section class="section" style="background:var(--surface);" id="form">
+  <div class="container" style="max-width:680px;">
+    <div style="text-align:center;margin-bottom:48px;">
+      <div class="section-label" data-i18n="join.form.label">Заявка</div>
+      <h2 class="section-title" data-i18n="join.form.title">Расскажи о себе</h2>
+      <p style="font-size:16px;color:var(--muted);font-weight:300;" data-i18n="join.form.note">Мы читаем каждую заявку лично и отвечаем в течение 48 часов.</p>
+    </div>
+
+    <form id="joinForm" onsubmit="handleSubmit(event)" style="display:flex;flex-direction:column;gap:20px;">
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div>
+          <label style="display:block;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;" data-i18n="join.form.name">Имя *</label>
+          <input type="text" required data-i18n-ph="join.form.name.ph" placeholder="Александр" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;font-size:15px;color:var(--text);font-family:'Jost',sans-serif;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='#c4894a'" onblur="this.style.borderColor='rgba(240,235,224,0.08)'">
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;" data-i18n="join.form.tg">Telegram *</label>
+          <input type="text" required placeholder="@username" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;font-size:15px;color:var(--text);font-family:'Jost',sans-serif;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='#c4894a'" onblur="this.style.borderColor='rgba(240,235,224,0.08)'">
+        </div>
+      </div>
+
+      <div>
+        <label style="display:block;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;" data-i18n="join.form.email">Email</label>
+        <input type="email" placeholder="alex@example.com" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;font-size:15px;color:var(--text);font-family:'Jost',sans-serif;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='#c4894a'" onblur="this.style.borderColor='rgba(240,235,224,0.08)'">
+      </div>
+
+      <div>
+        <label style="display:block;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;" data-i18n="join.form.format">Формат участия *</label>
+        <select id="formatSelect" required style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;font-size:15px;color:var(--text);font-family:'Jost',sans-serif;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='#c4894a'" onblur="this.style.borderColor='rgba(240,235,224,0.08)'">
+          <option value="" style="background:#181612;" data-i18n-opt="join.form.opt0">Выбери вариант...</option>
+          <option value="resident" style="background:#181612;" data-i18n-opt="join.form.opt1">Хочу стать резидентом ($10,000)</option>
+          <option value="support" style="background:#181612;" data-i18n-opt="join.form.opt2">Хочу поддержать проект</option>
+          <option value="project" style="background:#181612;" data-i18n-opt="join.form.opt3">Хочу предложить проект</option>
+          <option value="visit" style="background:#181612;" data-i18n-opt="join.form.opt4">Хочу посетить землю</option>
+          <option value="other" style="background:#181612;" data-i18n-opt="join.form.opt5">Другое</option>
+        </select>
+      </div>
+
+      <div>
+        <label style="display:block;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;" data-i18n="join.form.who">Кто ты и чем занимаешься? *</label>
+        <textarea required rows="4" data-i18n-ph="join.form.who.ph" placeholder="Расскажи о себе — чем занимаешься, что создаёшь, почему тебя привлекает Агора..." style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;font-size:15px;color:var(--text);font-family:'Jost',sans-serif;outline:none;resize:vertical;transition:border-color .2s;line-height:1.6;" onfocus="this.style.borderColor='#c4894a'" onblur="this.style.borderColor='rgba(240,235,224,0.08)'"></textarea>
+      </div>
+
+      <div>
+        <label style="display:block;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;" data-i18n="join.form.contribute">Что ты можешь привнести в сообщество?</label>
+        <textarea rows="3" data-i18n-ph="join.form.contribute.ph" placeholder="Навыки, проекты, идеи — что ты можешь дать Агоре?" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;font-size:15px;color:var(--text);font-family:'Jost',sans-serif;outline:none;resize:vertical;transition:border-color .2s;line-height:1.6;" onfocus="this.style.borderColor='#c4894a'" onblur="this.style.borderColor='rgba(240,235,224,0.08)'"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-earth" style="width:100%;justify-content:center;font-size:16px;padding:15px;" data-i18n="join.form.submit">
+        Отправить заявку →
+      </button>
+      <p style="font-size:12px;color:var(--muted);text-align:center;font-weight:300;"><span data-i18n="join.form.footer">Мы отвечаем в течение 48 часов. Или напиши напрямую:</span> <a href="https://t.me/agorausa" target="_blank" style="color:var(--earth);">t.me/agorausa</a></p>
+    </form>
+
+    <div id="successMsg" style="display:none;text-align:center;padding:40px;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:48px;color:var(--earth);margin-bottom:16px;">✓</div>
+      <h3 style="font-size:28px;font-weight:300;margin-bottom:12px;" data-i18n="join.success.title">Заявка отправлена</h3>
+      <p style="font-size:15px;color:var(--muted);font-weight:300;" data-i18n="join.success.text">Мы свяжемся с тобой в течение 48 часов. Пока — присоединяйся к нам в Telegram.</p>
+      <a href="https://t.me/agorausa" target="_blank" class="btn btn-outline" style="margin-top:24px;" data-i18n="join.success.btn">t.me/agorausa →</a>
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="shared.js"></script>
+<script>
+function handleSubmit(e) {
+  e.preventDefault();
+  document.getElementById('joinForm').style.display = 'none';
+  document.getElementById('successMsg').style.display = 'block';
+}
+
+// Translate select options when language changes
+(function() {
+  var origApply = null;
+  var iv = setInterval(function() {
+    if (window.AgoraI18n && !origApply) {
+      origApply = window.AgoraI18n.applyLang;
+      window.AgoraI18n.applyLang = function(lang) {
+        origApply(lang);
+        var dict = { ru: window.AgoraI18n, en: window.AgoraI18n };
+        document.querySelectorAll('[data-i18n-opt]').forEach(function(el) {
+          var key = el.getAttribute('data-i18n-opt');
+          var val = window.AgoraI18n.t(key);
+          if (val) el.textContent = val;
+        });
+      };
+      clearInterval(iv);
+    }
+  }, 50);
+})();
+</script>
+<style>
+@media(max-width:700px){
+  div[style*="grid-template-columns:repeat(3,1fr)"]{grid-template-columns:1fr !important;}
+  div[style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr !important;}
+}
+</style>
+</body>
+</html>

@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGORA — Platform Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0b0f1a;
+  --s1:#111827;
+  --s2:#1a2235;
+  --s3:#1e2a40;
+  --purple:#7c3aed;
+  --purple-l:#9f6ef5;
+  --blue:#3b82f6;
+  --green:#10b981;
+  --amber:#f59e0b;
+  --red:#ef4444;
+  --text:#f1f5f9;
+  --muted:#64748b;
+  --muted2:#94a3b8;
+  --border:rgba(255,255,255,0.07);
+  --border2:rgba(255,255,255,0.12);
+}
+body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+a{color:inherit;text-decoration:none}
+button{font-family:'Jost',sans-serif;cursor:pointer;border:none;outline:none}
+
+/* LAYOUT */
+.app{display:flex;min-height:100vh}
+.sidebar{width:220px;background:var(--s1);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:50}
+.main{margin-left:220px;flex:1;padding:32px;max-width:1200px}
+
+/* SIDEBAR */
+.sidebar-logo{padding:24px 20px 20px;border-bottom:1px solid var(--border)}
+.logo-text{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;letter-spacing:.1em}
+.logo-text span{color:var(--purple-l)}
+.logo-sub{font-size:10px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-top:2px}
+.nav-section{padding:16px 12px 8px;font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 16px;border-radius:8px;font-size:14px;color:var(--muted2);cursor:pointer;transition:all .2s;margin:2px 8px}
+.nav-item:hover{background:var(--s2);color:var(--text)}
+.nav-item.active{background:rgba(124,58,237,.15);color:var(--purple-l);font-weight:500}
+.nav-item .icon{font-size:16px;width:18px;text-align:center}
+.sidebar-bottom{margin-top:auto;padding:16px;border-top:1px solid var(--border)}
+.user-mini{display:flex;align-items:center;gap:10px}
+.avatar-sm{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--blue));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0}
+.user-mini-info{font-size:12px}
+.user-mini-name{color:var(--text);font-weight:500}
+.user-mini-level{color:var(--muted);font-size:11px}
+
+/* CARDS */
+.card{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:24px}
+.card-sm{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:16px}
+
+/* STAT CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:20px;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.stat-card.purple::before{background:var(--purple)}
+.stat-card.blue::before{background:var(--blue)}
+.stat-card.green::before{background:var(--green)}
+.stat-card.amber::before{background:var(--amber)}
+.stat-val{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;margin:8px 0 4px}
+.stat-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.stat-icon{font-size:20px;margin-bottom:4px}
+
+/* XP BAR */
+.xp-bar-wrap{background:rgba(255,255,255,.08);border-radius:100px;height:8px;overflow:hidden}
+.xp-bar-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--purple),var(--blue));transition:width .5s}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:.03em}
+.badge-purple{background:rgba(124,58,237,.2);color:var(--purple-l)}
+.badge-green{background:rgba(16,185,129,.15);color:#34d399}
+.badge-amber{background:rgba(245,158,11,.15);color:#fbbf24}
+.badge-blue{background:rgba(59,130,246,.15);color:#60a5fa}
+.badge-red{background:rgba(239,68,68,.15);color:#f87171}
+.badge-muted{background:rgba(255,255,255,.08);color:var(--muted2)}
+
+/* ACHIEVEMENT CARDS */
+.achievements-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.achievement{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;transition:all .2s;cursor:default}
+.achievement.unlocked{border-color:rgba(124,58,237,.4);background:rgba(124,58,237,.08)}
+.achievement.unlocked:hover{transform:translateY(-2px);border-color:rgba(124,58,237,.7)}
+.achievement-icon{font-size:32px;margin-bottom:8px;filter:grayscale(0)}
+.achievement.locked .achievement-icon{filter:grayscale(1);opacity:.4}
+.achievement-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px}
+.achievement.locked .achievement-name{color:var(--muted)}
+.achievement-desc{font-size:11px;color:var(--muted)}
+
+/* LEADERBOARD */
+.lb-row{display:flex;align-items:center;gap:16px;padding:12px 16px;border-radius:10px;transition:background .2s}
+.lb-row:hover{background:var(--s2)}
+.lb-row.me{background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25)}
+.lb-rank{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;width:32px;text-align:center}
+.lb-rank.gold{color:#fbbf24}
+.lb-rank.silver{color:#94a3b8}
+.lb-rank.bronze{color:#cd7f32}
+.lb-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;flex-shrink:0}
+.lb-info{flex:1}
+.lb-name{font-size:14px;font-weight:500}
+.lb-meta{font-size:11px;color:var(--muted)}
+.lb-points{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--purple-l)}
+
+/* REWARDS */
+.rewards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.reward-card{background:var(--s2);border:1px solid var(--border);border-radius:14px;padding:20px;transition:all .2s}
+.reward-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.reward-card.featured{border-color:rgba(124,58,237,.5);background:rgba(124,58,237,.06)}
+.reward-icon{font-size:36px;margin-bottom:12px}
+.reward-name{font-size:15px;font-weight:600;margin-bottom:6px}
+.reward-desc{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:16px}
+.reward-price{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--purple-l);font-weight:600;margin-bottom:14px}
+.btn-redeem{width:100%;padding:10px;border-radius:8px;font-size:13px;font-weight:600;font-family:'Jost',sans-serif;transition:all .2s}
+.btn-redeem.active{background:var(--purple);color:#fff}
+.btn-redeem.active:hover{background:#6d28d9}
+.btn-redeem.disabled{background:rgba(255,255,255,.06);color:var(--muted);cursor:not-allowed}
+
+/* DONATE */
+.donate-amounts{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.donate-btn{padding:10px 20px;border-radius:8px;border:1px solid var(--border2);background:transparent;color:var(--text);font-size:14px;font-weight:500;cursor:pointer;transition:all .2s}
+.donate-btn:hover,.donate-btn.active{background:var(--purple);border-color:var(--purple);color:#fff}
+
+/* PROFILE */
+.profile-header{display:flex;align-items:flex-start;gap:24px;margin-bottom:24px}
+.avatar-lg{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--blue));display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:600;flex-shrink:0;border:3px solid rgba(124,58,237,.4)}
+.level-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(124,58,237,.2);border:1px solid rgba(124,58,237,.4);border-radius:20px;padding:4px 14px;font-size:13px;font-weight:600;color:var(--purple-l);margin-bottom:8px}
+
+/* BUTTONS */
+.btn-primary{background:var(--purple);color:#fff;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:600;transition:all .2s}
+.btn-primary:hover{background:#6d28d9;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--text);padding:10px 20px;border-radius:8px;font-size:14px;font-weight:500;border:1px solid var(--border2);transition:all .2s}
+.btn-outline:hover{border-color:var(--purple-l);color:var(--purple-l)}
+
+/* PAGE HEADER */
+.page-header{margin-bottom:28px}
+.page-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;margin-bottom:6px}
+.page-sub{font-size:14px;color:var(--muted)}
+
+/* SCREENS */
+.screen{display:none}
+.screen.active{display:block}
+
+/* PROGRESS RING */
+.ring-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center}
+
+/* NOTIFICATION */
+.notif{position:fixed;top:20px;right:20px;background:var(--green);color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:500;z-index:1000;transform:translateY(-60px);opacity:0;transition:all .3s}
+.notif.show{transform:translateY(0);opacity:1}
+
+/* TABLE */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;padding:10px 14px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);border-bottom:1px solid var(--border)}
+td{padding:12px 14px;border-bottom:1px solid var(--border);color:var(--muted2)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.02);color:var(--text)}
+td:first-child{color:var(--text)}
+
+/* CONTRIBUTION FORM */
+.form-group{margin-bottom:16px}
+.form-label{font-size:12px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block}
+.form-input{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:14px;color:var(--text);font-family:'Jost',sans-serif;outline:none;transition:border-color .2s}
+.form-input:focus{border-color:var(--purple)}
+textarea.form-input{resize:vertical;min-height:100px}
+select.form-input option{background:var(--s2)}
+
+/* GRID 2 */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+
+@media(max-width:900px){
+  .sidebar{width:60px}
+  .main{margin-left:60px;padding:20px}
+  .nav-item span:not(.icon){display:none}
+  .sidebar-logo .logo-text,.sidebar-logo .logo-sub,.user-mini-info{display:none}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .achievements-grid{grid-template-columns:repeat(2,1fr)}
+  .rewards-grid{grid-template-columns:1fr}
+  .grid2{grid-template-columns:1fr}
+}
+</style>
+<script src="i18n.js"></script>
+</head>
+<body>
+
+<div class="notif" id="notif"></div>
+
+<div class="app">
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-text">AGORA <span>·</span></div>
+    <div class="logo-sub">Community</div>
+  </div>
+  <div style="overflow-y:auto;flex:1">
+    <div class="nav-section">Главное</div>
+    <div class="nav-item active" onclick="showScreen('dashboard',this)"><span class="icon">🏠</span><span>Дашборд</span></div>
+    <div class="nav-item" onclick="showScreen('profile',this)"><span class="icon">👤</span><span>Профиль</span></div>
+    <div class="nav-item" onclick="showScreen('leaderboard',this)"><span class="icon">🏆</span><span>Лидерборд</span></div>
+    <div class="nav-section">Участие</div>
+    <div class="nav-item" onclick="showScreen('submit',this)"><span class="icon">📝</span><span>Вклад</span></div>
+    <div class="nav-item" onclick="showScreen('rewards',this)"><span class="icon">🎁</span><span>Награды</span></div>
+    <div class="nav-section">Сообщество</div>
+    <div class="nav-item" onclick="showScreen('donate',this)"><span class="icon">💛</span><span>Поддержать</span></div>
+    <div class="nav-item" onclick="showScreen('market',this)"><span class="icon">🛍️</span><span>Маркет</span></div>
+  </div>
+  <div class="sidebar-bottom">
+    <div class="user-mini">
+      <div class="avatar-sm">G</div>
+      <div class="user-mini-info">
+        <div class="user-mini-name">Gennadii</div>
+        <div class="user-mini-level">Level 4 · Builder</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- ══ DASHBOARD ══ -->
+<div class="screen active" id="screen-dashboard">
+  <div class="page-header">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div>
+        <div class="page-title">Добро пожаловать, Gennadii 👋</div>
+        <div class="page-sub">Ты на уровне Builder · 320 / 500 XP до Level 5</div>
+      </div>
+      <div style="text-align:right">
+        <div class="badge badge-purple">🏆 Top Pro 2025</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- XP PROGRESS -->
+  <div class="card" style="margin-bottom:20px;background:linear-gradient(135deg,rgba(124,58,237,.15),rgba(59,130,246,.08));border-color:rgba(124,58,237,.3)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:4px">Прогресс уровня</div>
+        <div style="display:flex;align-items:baseline;gap:8px">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--purple-l)">Level 4</span>
+          <span style="font-size:14px;color:var(--muted)">Builder</span>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:13px;color:var(--muted)">320 / 500 XP</div>
+        <div style="font-size:12px;color:var(--purple-l);margin-top:2px">ещё 180 XP до Level 5</div>
+      </div>
+    </div>
+    <div class="xp-bar-wrap">
+      <div class="xp-bar-fill" style="width:64%"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:11px;color:var(--muted)">
+      <span>Level 4</span><span>Level 5 — Creator</span>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-grid">
+    <div class="stat-card purple">
+      <div class="stat-icon">⚡</div>
+      <div class="stat-val" style="color:var(--purple-l)">320</div>
+      <div class="stat-label">Очки XP</div>
+    </div>
+    <div class="stat-card blue">
+      <div class="stat-icon">💎</div>
+      <div class="stat-val" style="color:#60a5fa">1,250</div>
+      <div class="stat-label">Points баланс</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-icon">📋</div>
+      <div class="stat-val" style="color:#34d399">12</div>
+      <div class="stat-label">Вкладов сделано</div>
+    </div>
+    <div class="stat-card amber">
+      <div class="stat-icon">👥</div>
+      <div class="stat-val" style="color:#fbbf24">3</div>
+      <div class="stat-label">Приглашено людей</div>
+    </div>
+  </div>
+
+  <!-- BOTTOM GRID -->
+  <div class="grid2">
+    <!-- RECENT ACTIVITY -->
+    <div class="card">
+      <div style="font-size:15px;font-weight:600;margin-bottom:16px">Последняя активность</div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <div style="width:32px;height:32px;border-radius:8px;background:rgba(124,58,237,.2);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">📝</div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:500">Вклад одобрен</div>
+            <div style="font-size:12px;color:var(--muted)">Статья о сообществе · +50 XP</div>
+          </div>
+          <div class="badge badge-green">+50</div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <div style="width:32px;height:32px;border-radius:8px;background:rgba(245,158,11,.15);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">👥</div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:500">Реферал зарегистрировался</div>
+            <div style="font-size:12px;color:var(--muted)">Alex присоединился · +100 points</div>
+          </div>
+          <div class="badge badge-amber">+100</div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <div style="width:32px;height:32px;border-radius:8px;background:rgba(16,185,129,.15);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">🏅</div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:500">Получен бейдж</div>
+            <div style="font-size:12px;color:var(--muted)">Early Builder — первые 10 участников</div>
+          </div>
+          <div class="badge badge-purple">🎖️</div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <div style="width:32px;height:32px;border-radius:8px;background:rgba(59,130,246,.15);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">🗳️</div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:500">Проголосовал за проект</div>
+            <div style="font-size:12px;color:var(--muted)">Теплицы · +15 XP</div>
+          </div>
+          <div class="badge badge-blue">+15</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS + REFERRAL -->
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="card">
+        <div style="font-size:15px;font-weight:600;margin-bottom:14px">Реферальная ссылка</div>
+        <div style="background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--muted2);margin-bottom:10px;word-break:break-all">
+          agora.com/#/signup?ref=GENE4721
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn-primary" style="flex:1;padding:9px" onclick="notify('Ссылка скопирована! 📋')">Скопировать</button>
+          <button class="btn-outline" style="padding:9px 14px" onclick="notify('Поделились! 🚀')">Поделиться</button>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--muted)">+100 points за каждого приглашённого, кто стал резидентом</div>
+      </div>
+      <div class="card">
+        <div style="font-size:15px;font-weight:600;margin-bottom:14px">Позиция в рейтинге</div>
+        <div style="display:flex;align-items:center;gap:16px">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:600;color:var(--amber)">#7</div>
+          <div>
+            <div style="font-size:14px;color:var(--text)">из 142 участников</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px">▲ поднялся на 3 позиции</div>
+            <button class="btn-outline" style="margin-top:10px;padding:7px 14px;font-size:12px" onclick="showScreen('leaderboard',null)">Лидерборд →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PROFILE ══ -->
+<div class="screen" id="screen-profile">
+  <div class="page-header">
+    <div class="page-title">Мой профиль</div>
+    <div class="page-sub">Уровень, достижения и история</div>
+  </div>
+
+  <div class="grid2" style="margin-bottom:20px">
+    <div class="card">
+      <div class="profile-header">
+        <div class="avatar-lg">G</div>
+        <div>
+          <div class="level-badge">⚡ Level 4 — Builder</div>
+          <div style="font-size:22px;font-weight:600;margin-bottom:4px">Gennadii Fokins</div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:10px">gennadii@agora.com</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <span class="badge badge-purple">🏆 Early Builder</span>
+            <span class="badge badge-green">✅ Resident</span>
+            <span class="badge badge-amber">⭐ Top Contributor</span>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:16px">
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
+          <span style="color:var(--muted)">XP прогресс</span>
+          <span>320 / 500</span>
+        </div>
+        <div class="xp-bar-wrap">
+          <div class="xp-bar-fill" style="width:64%"></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px">
+        <div style="text-align:center;background:var(--s2);border-radius:8px;padding:12px">
+          <div style="font-size:20px;font-weight:600;color:var(--purple-l)">320</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">XP</div>
+        </div>
+        <div style="text-align:center;background:var(--s2);border-radius:8px;padding:12px">
+          <div style="font-size:20px;font-weight:600;color:var(--blue)">1,250</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">Points</div>
+        </div>
+        <div style="text-align:center;background:var(--s2);border-radius:8px;padding:12px">
+          <div style="font-size:20px;font-weight:600;color:var(--amber)">#7</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">Рейтинг</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="font-size:15px;font-weight:600;margin-bottom:16px">Инфо</div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;justify-content:space-between;font-size:13px;padding-bottom:10px;border-bottom:1px solid var(--border)">
+          <span style="color:var(--muted)">Роль</span><span class="badge badge-purple">Builder</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;padding-bottom:10px;border-bottom:1px solid var(--border)">
+          <span style="color:var(--muted)">Статус</span><span class="badge badge-green">Резидент</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;padding-bottom:10px;border-bottom:1px solid var(--border)">
+          <span style="color:var(--muted)">Путь</span><span style="font-size:13px">Строитель</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;padding-bottom:10px;border-bottom:1px solid var(--border)">
+          <span style="color:var(--muted)">В сообществе</span><span style="font-size:13px">4 месяца</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px">
+          <span style="color:var(--muted)">Приглашено</span><span style="font-size:13px">3 человека</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACHIEVEMENTS -->
+  <div class="card">
+    <div style="font-size:15px;font-weight:600;margin-bottom:16px">Достижения</div>
+    <div class="achievements-grid">
+      <div class="achievement unlocked">
+        <div class="achievement-icon">🌱</div>
+        <div class="achievement-name">Первый шаг</div>
+        <div class="achievement-desc">Зарегистрировался в Агоре</div>
+      </div>
+      <div class="achievement unlocked">
+        <div class="achievement-icon">🏗️</div>
+        <div class="achievement-name">Early Builder</div>
+        <div class="achievement-desc">Один из первых 10</div>
+      </div>
+      <div class="achievement unlocked">
+        <div class="achievement-icon">✍️</div>
+        <div class="achievement-name">Голос сообщества</div>
+        <div class="achievement-desc">5+ одобренных вкладов</div>
+      </div>
+      <div class="achievement unlocked">
+        <div class="achievement-icon">👥</div>
+        <div class="achievement-name">Коннектор</div>
+        <div class="achievement-desc">Привёл 3 резидентов</div>
+      </div>
+      <div class="achievement locked">
+        <div class="achievement-icon">🔥</div>
+        <div class="achievement-name">10 в огне</div>
+        <div class="achievement-desc">10 вкладов подряд</div>
+      </div>
+      <div class="achievement locked">
+        <div class="achievement-icon">🌿</div>
+        <div class="achievement-name">Фермер</div>
+        <div class="achievement-desc">Работа на земле 30 дней</div>
+      </div>
+      <div class="achievement locked">
+        <div class="achievement-icon">⚖️</div>
+        <div class="achievement-name">Законодатель</div>
+        <div class="achievement-desc">Участие в 10 голосованиях</div>
+      </div>
+      <div class="achievement locked">
+        <div class="achievement-icon">👑</div>
+        <div class="achievement-name">Лидер</div>
+        <div class="achievement-desc">Top 3 в рейтинге</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ LEADERBOARD ══ -->
+<div class="screen" id="screen-leaderboard">
+  <div class="page-header">
+    <div class="page-title">Лидерборд 🏆</div>
+    <div class="page-sub">Топ участников по вкладу в сообщество</div>
+  </div>
+
+  <div class="grid2" style="margin-bottom:20px;align-items:start">
+    <div class="card">
+      <div style="display:flex;gap:10px;margin-bottom:16px">
+        <button class="btn-primary" style="font-size:12px;padding:7px 16px">Этот месяц</button>
+        <button class="btn-outline" style="font-size:12px;padding:7px 16px">Всё время</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <div class="lb-row">
+          <div class="lb-rank gold">1</div>
+          <div class="lb-avatar" style="background:linear-gradient(135deg,#fbbf24,#f59e0b)">A</div>
+          <div class="lb-info"><div class="lb-name">Alexandra K.</div><div class="lb-meta">Creator · 28 вкладов</div></div>
+          <div class="lb-points">2,840</div>
+        </div>
+        <div class="lb-row">
+          <div class="lb-rank silver">2</div>
+          <div class="lb-avatar" style="background:linear-gradient(135deg,#94a3b8,#64748b)">M</div>
+          <div class="lb-info"><div class="lb-name">Mikhail S.</div><div class="lb-meta">Builder · 21 вклад</div></div>
+          <div class="lb-points">2,100</div>
+        </div>
+        <div class="lb-row">
+          <div class="lb-rank bronze">3</div>
+          <div class="lb-avatar" style="background:linear-gradient(135deg,#cd7f32,#a0522d)">N</div>
+          <div class="lb-info"><div class="lb-name">Natalia P.</div><div class="lb-meta">Thinker · 18 вкладов</div></div>
+          <div class="lb-points">1,800</div>
+        </div>
+        <div class="lb-row"><div class="lb-rank" style="color:var(--muted)">4</div><div class="lb-avatar" style="background:linear-gradient(135deg,#7c3aed,#3b82f6)">D</div><div class="lb-info"><div class="lb-name">Dmitri V.</div><div class="lb-meta">Builder · 16 вкладов</div></div><div class="lb-points">1,620</div></div>
+        <div class="lb-row"><div class="lb-rank" style="color:var(--muted)">5</div><div class="lb-avatar" style="background:linear-gradient(135deg,#10b981,#059669)">E</div><div class="lb-info"><div class="lb-name">Elena R.</div><div class="lb-meta">Creator · 15 вкладов</div></div><div class="lb-points">1,500</div></div>
+        <div class="lb-row"><div class="lb-rank" style="color:var(--muted)">6</div><div class="lb-avatar" style="background:linear-gradient(135deg,#f59e0b,#d97706)">P</div><div class="lb-info"><div class="lb-name">Pavel T.</div><div class="lb-meta">Builder · 13 вкладов</div></div><div class="lb-points">1,320</div></div>
+        <div class="lb-row me"><div class="lb-rank" style="color:var(--purple-l)">7</div><div class="lb-avatar" style="background:linear-gradient(135deg,var(--purple),var(--blue))">G</div><div class="lb-info"><div class="lb-name">Gennadii F. <span class="badge badge-purple" style="font-size:9px">Вы</span></div><div class="lb-meta">Builder · 12 вкладов</div></div><div class="lb-points" style="color:var(--purple-l)">1,250</div></div>
+        <div class="lb-row"><div class="lb-rank" style="color:var(--muted)">8</div><div class="lb-avatar" style="background:linear-gradient(135deg,#ec4899,#be185d)">I</div><div class="lb-info"><div class="lb-name">Irina K.</div><div class="lb-meta">Thinker · 10 вкладов</div></div><div class="lb-points">1,050</div></div>
+        <div class="lb-row"><div class="lb-rank" style="color:var(--muted)">9</div><div class="lb-avatar" style="background:linear-gradient(135deg,#6366f1,#4338ca)">S</div><div class="lb-info"><div class="lb-name">Sergei B.</div><div class="lb-meta">Builder · 9 вкладов</div></div><div class="lb-points">920</div></div>
+        <div class="lb-row"><div class="lb-rank" style="color:var(--muted)">10</div><div class="lb-avatar" style="background:linear-gradient(135deg,#14b8a6,#0d9488)">O</div><div class="lb-info"><div class="lb-name">Olga M.</div><div class="lb-meta">Creator · 8 вкладов</div></div><div class="lb-points">800</div></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="card">
+        <div style="font-size:13px;color:var(--muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em;font-size:11px">Твоя позиция</div>
+        <div style="display:flex;align-items:center;gap:16px">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:600;color:var(--amber)">#7</div>
+          <div>
+            <div style="font-size:14px">из 142 участников</div>
+            <div style="font-size:12px;color:var(--green);margin-top:4px">▲ +3 за месяц</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px">До #6: нужно +70 XP</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-size:13px;font-weight:600;margin-bottom:12px">Как заработать XP</div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Статья/пост</span><span class="badge badge-green">+50 XP</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Реферал-резидент</span><span class="badge badge-amber">+100 XP</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Голосование</span><span class="badge badge-blue">+15 XP</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Ивент/воркшоп</span><span class="badge badge-purple">+80 XP</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Работа на земле</span><span class="badge badge-green">+30 XP/день</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SUBMIT CONTRIBUTION ══ -->
+<div class="screen" id="screen-submit">
+  <div class="page-header">
+    <div class="page-title">Внести вклад</div>
+    <div class="page-sub">Каждый вклад проверяется и начисляет XP</div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="form-group">
+        <label class="form-label">Тип вклада</label>
+        <select class="form-input">
+          <option>Статья / пост (+50 XP)</option>
+          <option>Видео / рилс (+70 XP)</option>
+          <option>Воркшоп / событие (+80 XP)</option>
+          <option>Физический труд (+30 XP/день)</option>
+          <option>Предложение проекта (+40 XP)</option>
+          <option>Менторинг (+60 XP)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Название</label>
+        <input class="form-input" type="text" placeholder="Опиши свой вклад кратко">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Описание</label>
+        <textarea class="form-input" placeholder="Подробно расскажи о своём вкладе в сообщество..."></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Ссылка / доказательство (необязательно)</label>
+        <input class="form-input" type="text" placeholder="https://...">
+      </div>
+      <button class="btn-primary" style="width:100%;padding:12px" onclick="notify('Вклад отправлен на проверку! +50 XP будет начислено ⚡')">Отправить вклад →</button>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div style="font-size:14px;font-weight:600;margin-bottom:14px">Мои вклады</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Название</th><th>XP</th><th>Статус</th></tr></thead>
+            <tbody>
+              <tr><td>Статья о бане</td><td style="color:var(--purple-l)">+50</td><td><span class="badge badge-green">✓ Принят</span></td></tr>
+              <tr><td>Видео с фермы</td><td style="color:var(--purple-l)">+70</td><td><span class="badge badge-green">✓ Принят</span></td></tr>
+              <tr><td>Воркшоп по огороду</td><td style="color:var(--muted)">+80</td><td><span class="badge badge-amber">⏳ На проверке</span></td></tr>
+              <tr><td>Пост о ценностях</td><td style="color:var(--purple-l)">+50</td><td><span class="badge badge-green">✓ Принят</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card" style="background:rgba(124,58,237,.06);border-color:rgba(124,58,237,.3)">
+        <div style="font-size:13px;font-weight:600;margin-bottom:8px;color:var(--purple-l)">💡 Совет</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.6">Регулярные вклады увеличивают твой рейтинг. 10 вкладов подряд дают бонус <strong style="color:var(--text)">×1.5 XP</strong> на следующие.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ REWARDS ══ -->
+<div class="screen" id="screen-rewards">
+  <div class="page-header">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div>
+        <div class="page-title">Маркет наград 🎁</div>
+        <div class="page-sub">Обменивай points на реальные ценности</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px">Твой баланс</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--purple-l)">1,250 pts</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rewards-grid">
+    <div class="reward-card featured">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+        <div class="reward-icon">🏡</div>
+        <span class="badge badge-purple">🔥 Популярное</span>
+      </div>
+      <div class="reward-name">Скидка на участок</div>
+      <div class="reward-desc">500 points = скидка $500 на покупку участка 0.25 акра в Агоре</div>
+      <div class="reward-price">500 pts</div>
+      <button class="btn-redeem active" onclick="notify('Награда активирована! Свяжемся с тобой 🏡')">Активировать</button>
+    </div>
+    <div class="reward-card">
+      <div class="reward-icon">🧖</div>
+      <div class="reward-name">Велнес-пакет</div>
+      <div class="reward-desc">Месяц неограниченного доступа к бане, сауне и cold plunge</div>
+      <div class="reward-price">300 pts</div>
+      <button class="btn-redeem active" onclick="notify('Велнес-пакет активирован! 🧖')">Активировать</button>
+    </div>
+    <div class="reward-card">
+      <div class="reward-icon">🌱</div>
+      <div class="reward-name">Коробка с фермы</div>
+      <div class="reward-desc">Органические продукты с наших ферм — еженедельная доставка на 4 недели</div>
+      <div class="reward-price">200 pts</div>
+      <button class="btn-redeem active" onclick="notify('Органик-коробка на пути! 🌱')">Активировать</button>
+    </div>
+    <div class="reward-card">
+      <div class="reward-icon">🧠</div>
+      <div class="reward-name">Коучинг-сессия</div>
+      <div class="reward-desc">Индивидуальная сессия с ментором Агоры — 1 час личной работы</div>
+      <div class="reward-price">400 pts</div>
+      <button class="btn-redeem active" onclick="notify('Сессия забронирована! 🧠')">Активировать</button>
+    </div>
+    <div class="reward-card">
+      <div class="reward-icon">🎖️</div>
+      <div class="reward-name">NFT-бейдж</div>
+      <div class="reward-desc">Эксклюзивный цифровой бейдж участника Agora Foundation на блокчейне</div>
+      <div class="reward-price">150 pts</div>
+      <button class="btn-redeem active" onclick="notify('NFT-бейдж выпущен! 🎖️')">Получить</button>
+    </div>
+    <div class="reward-card">
+      <div class="reward-icon">🎟️</div>
+      <div class="reward-name">Билет на фестиваль</div>
+      <div class="reward-desc">Бесплатный вход на ближайший фестиваль Агоры (питание включено)</div>
+      <div class="reward-price">1,500 pts</div>
+      <button class="btn-redeem disabled">Нужно ещё 250 pts</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DONATE ══ -->
+<div class="screen" id="screen-donate">
+  <div class="page-header">
+    <div class="page-title">Поддержать Агору 💛</div>
+    <div class="page-sub">Каждый доллар идёт на строительство — земля, инфраструктура, сообщество</div>
+  </div>
+  <div class="grid2">
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div style="font-size:15px;font-weight:600;margin-bottom:16px">Сумма доната</div>
+        <div class="donate-amounts">
+          <button class="donate-btn" onclick="setDonate(this,'$10')">$10</button>
+          <button class="donate-btn active" onclick="setDonate(this,'$25')">$25</button>
+          <button class="donate-btn" onclick="setDonate(this,'$50')">$50</button>
+          <button class="donate-btn" onclick="setDonate(this,'$100')">$100</button>
+          <button class="donate-btn" onclick="setDonate(this,'$250')">$250</button>
+          <button class="donate-btn" onclick="setDonate(this,'$500')">$500</button>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Или введи свою сумму</label>
+          <input class="form-input" type="number" placeholder="$" min="1">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Комментарий (необязательно)</label>
+          <input class="form-input" type="text" placeholder="Строим вместе!">
+        </div>
+        <div style="background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.25);border-radius:10px;padding:14px;margin-bottom:16px">
+          <div style="font-size:13px;font-weight:600;color:var(--purple-l);margin-bottom:4px">🎁 Бонус за донат</div>
+          <div style="font-size:13px;color:var(--muted)">За донат $25 — <strong style="color:var(--text)">+250 points</strong> на твой счёт</div>
+        </div>
+        <button class="btn-primary" style="width:100%;padding:13px;font-size:15px" onclick="notify('Спасибо за поддержку! +250 points начислено 💛')">Поддержать $25 →</button>
+        <div style="font-size:12px;color:var(--muted);text-align:center;margin-top:8px">Безопасная оплата через Stripe / GoFundMe</div>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div style="font-size:14px;font-weight:600;margin-bottom:14px">Прогресс сбора</div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px">
+          <span style="color:var(--muted)">Собрано</span>
+          <span style="font-weight:600">$34,200 из $100,000</span>
+        </div>
+        <div class="xp-bar-wrap" style="height:12px;margin-bottom:8px">
+          <div class="xp-bar-fill" style="width:34%;background:linear-gradient(90deg,var(--amber),var(--green))"></div>
+        </div>
+        <div style="font-size:12px;color:var(--muted)">147 человек поддержали · Цель: покупка земли</div>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <div style="font-size:14px;font-weight:600;margin-bottom:14px">Последние донаты</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px">
+            <div class="avatar-sm" style="background:linear-gradient(135deg,#fbbf24,#f59e0b);width:28px;height:28px;font-size:11px">A</div>
+            <div style="flex:1"><span style="color:var(--text)">Alexandra K.</span> <span style="color:var(--muted)">· 2 ч назад</span></div>
+            <div style="font-weight:600;color:var(--green)">$100</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px">
+            <div class="avatar-sm" style="background:linear-gradient(135deg,#6366f1,#4338ca);width:28px;height:28px;font-size:11px">S</div>
+            <div style="flex:1"><span style="color:var(--text)">Sergei B.</span> <span style="color:var(--muted)">· вчера</span></div>
+            <div style="font-weight:600;color:var(--green)">$50</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px">
+            <div class="avatar-sm" style="background:linear-gradient(135deg,#10b981,#059669);width:28px;height:28px;font-size:11px">E</div>
+            <div style="flex:1"><span style="color:var(--text)">Elena R.</span> <span style="color:var(--muted)">· 2 дня назад</span></div>
+            <div style="font-weight:600;color:var(--green)">$25</div>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="background:rgba(245,158,11,.06);border-color:rgba(245,158,11,.3)">
+        <div style="font-size:13px;font-weight:600;color:var(--amber);margin-bottom:8px">💡 Куда идут деньги</div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted)">
+          <div style="display:flex;justify-content:space-between"><span>Покупка земли</span><span style="color:var(--text)">60%</span></div>
+          <div style="display:flex;justify-content:space-between"><span>Инфраструктура</span><span style="color:var(--text)">25%</span></div>
+          <div style="display:flex;justify-content:space-between"><span>Программы</span><span style="color:var(--text)">15%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MARKET ══ -->
+<div class="screen" id="screen-market">
+  <div class="page-header">
+    <div class="page-title">Маркет 🛍️</div>
+    <div class="page-sub">Продукты и услуги сообщества — от резидентов для резидентов</div>
+  </div>
+  <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap">
+    <button class="btn-primary" style="font-size:12px;padding:7px 16px">Все</button>
+    <button class="btn-outline" style="font-size:12px;padding:7px 16px">🌱 Еда</button>
+    <button class="btn-outline" style="font-size:12px;padding:7px 16px">🧖 Велнес</button>
+    <button class="btn-outline" style="font-size:12px;padding:7px 16px">📚 Знания</button>
+    <button class="btn-outline" style="font-size:12px;padding:7px 16px">🏕️ Глэмпинг</button>
+    <button class="btn-outline" style="font-size:12px;padding:7px 16px">🛠️ Услуги</button>
+  </div>
+  <div class="rewards-grid">
+    <div class="reward-card">
+      <div class="reward-icon">🫐</div>
+      <div class="reward-name">Органик-короб с фермы</div>
+      <div class="reward-desc">Свежие овощи и зелень с теплиц Агоры. Еженедельно. Доставка включена.</div>
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:14px">
+        <div class="reward-price" style="margin-bottom:0">$45</div>
+        <span class="badge badge-green">или 200 pts</span>
+      </div>
+      <button class="btn-redeem active" onclick="notify('Заказ оформлен! 🫐')">Заказать</button>
+    </div>
+    <div class="reward-card featured">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+        <div class="reward-icon">🏕️</div>
+        <span class="badge badge-purple">Новое</span>
+      </div>
+      <div class="reward-name">Глэмпинг-уикенд</div>
+      <div class="reward-desc">2 ночи на территории Агоры. Баня, костёр, органическое питание включены.</div>
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:14px">
+        <div class="reward-price" style="margin-bottom:0">$180</div>
+        <span class="badge badge-purple">или 800 pts</span>
+      </div>
+      <button class="btn-redeem active" onclick="notify('Глэмпинг забронирован! 🏕️')">Забронировать</button>
+    </div>
+    <div class="reward-card">
+      <div class="reward-icon">📚</div>
+      <div class="reward-name">Курс по финансам</div>
+      <div class="reward-desc">Онлайн-курс от резидента: финансовая грамотность, инвестиции, активы.</div>
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:14px">
+        <div class="reward-price" style="margin-bottom:0">$99</div>
+        <span class="badge badge-blue">или 450 pts</span>
+      </div>
+      <button class="btn-redeem active" onclick="notify('Доступ к курсу открыт! 📚')">Купить</button>
+    </div>
+    <div class="reward-card">
+      <div class="reward-icon">🛠️</div>
+      <div class="reward-name">Помощь мастера</div>
+      <div class="reward-desc">Резидент-мастер поможет со строительством, ремонтом или огородом.</div>
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:14px">
+        <div class="reward-price" style="margin-bottom:0">$60/час</div>
+        <span class="badge badge-amber">или 270 pts</span>
+      </div>
+      <button class="btn-redeem active" onclick="notify('Мастер забронирован! 🛠️')">Забронировать</button>
+    </div>
+    <div class="reward-card">
+      <div class="reward-icon">🍯</div>
+      <div class="reward-name">Мёд с пасеки</div>
+      <div class="reward-desc">Натуральный мёд с пасеки Агоры. 1 кг. Сертифицирован резидентами.</div>
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:14px">
+        <div class="reward-price" style="margin-bottom:0">$28</div>
+        <span class="badge badge-green">или 120 pts</span>
+      </div>
+      <button class="btn-redeem active" onclick="notify('Заказ мёда оформлен! 🍯')">Заказать</button>
+    </div>
+    <div class="reward-card">
+      <div class="reward-icon">🧘</div>
+      <div class="reward-name">Ретрит от выгорания</div>
+      <div class="reward-desc">5-дневная программа восстановления. Коучинг, практики, природа, питание.</div>
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:14px">
+        <div class="reward-price" style="margin-bottom:0">$450</div>
+        <span class="badge badge-purple">или 2,000 pts</span>
+      </div>
+      <button class="btn-redeem disabled">Нужно ещё 750 pts</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+function showScreen(id, el) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  if (el) {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    el.classList.add('active');
+  }
+}
+
+function notify(msg) {
+  const n = document.getElementById('notif');
+  n.textContent = msg;
+  n.classList.add('show');
+  setTimeout(() => n.classList.remove('show'), 2800);
+}
+
+function setDonate(btn, val) {
+  document.querySelectorAll('.donate-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
