@@ -179,6 +179,7 @@ td:first-child{color:var(--text)}
 <!-- AUTH -->
 <div id="authWrap" class="auth-wrap">
   <div class="auth-box">
+    <a href="index.html" style="display:inline-block;font-size:13px;color:var(--muted);text-decoration:none;margin-bottom:14px">← На сайт</a>
     <div class="auth-logo">AGORA <span>·</span></div>
     <div class="auth-sub">Войди в сообщество строителей</div>
     <div class="auth-tabs">
@@ -224,10 +225,10 @@ td:first-child{color:var(--text)}
 
   <!-- SIDEBAR -->
   <div class="sidebar" id="sidebar">
-    <div class="sidebar-logo">
+    <a href="index.html" class="sidebar-logo" style="text-decoration:none;color:inherit;display:block">
       <div class="logo-text">AGORA <span>·</span></div>
       <div class="logo-sub">Community</div>
-    </div>
+    </a>
     <div style="overflow-y:auto;flex:1">
       <div class="nav-section">Главное</div>
       <div class="nav-item active" onclick="showScreen('dashboard',this)"><span class="nav-icon">🏠</span><span>Дашборд</span></div>
@@ -248,6 +249,7 @@ td:first-child{color:var(--text)}
           <div class="user-mini-level" id="sidebarLevel">Level 1</div>
         </div>
       </div>
+      <a href="index.html" class="logout-btn" style="text-decoration:none;display:block;text-align:center;margin-bottom:8px">← На сайт</a>
       <button class="logout-btn" onclick="doLogout()">Выйти →</button>
     </div>
   </div>
