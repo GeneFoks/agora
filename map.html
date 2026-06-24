@@ -8,6 +8,8 @@
   <script src="theme.js"></script>
   <link rel="stylesheet" href="style.css">
   <script src="i18n.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <style>
     .estate { position: relative; width: 100%; min-height: 100vh; padding: 92px 0 60px; overflow: hidden;
       background:
@@ -23,15 +25,12 @@
 
     /* ── OVERVIEW: 10 acres → 0.25-acre parcels ── */
     .ov-board { position: relative; width: 100%; aspect-ratio: 8 / 5; border-radius: 18px; overflow: hidden;
-      box-shadow: 0 30px 70px rgba(0,0,0,.45), inset 0 0 0 1px var(--border);
-      background:
-        radial-gradient(80% 120% at 25% 20%, rgba(150,180,110,.25), transparent 55%),
-        radial-gradient(90% 120% at 80% 90%, rgba(110,150,95,.3), transparent 55%),
-        linear-gradient(160deg, #6f8f53, #587544 60%, #4d6a3c); }
-    .ov-grid { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(5, 1fr); }
-    .parcel { position: relative; border-right: 1px solid rgba(255,255,255,.08); border-bottom: 1px solid rgba(0,0,0,.10); cursor: pointer; transition: background .18s, box-shadow .18s; }
-    .parcel:hover { background: rgba(196,137,74,.22); box-shadow: inset 0 0 0 2px rgba(244,239,226,.5); z-index: 2; }
-    .parcel-id { position: absolute; top: 7px; left: 9px; font-size: 11px; letter-spacing: .08em; color: rgba(244,239,226,.55); font-weight: 500; }
+      box-shadow: 0 30px 70px rgba(0,0,0,.45), inset 0 0 0 1px var(--border); background: #11150f; }
+    #ovMap { position: absolute; inset: 0; z-index: 0; pointer-events: none; background: #11150f; }
+    .ov-grid { position: absolute; inset: 0; z-index: 1; display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(5, 1fr); }
+    .parcel { position: relative; border-right: 1px solid rgba(255,255,255,.22); border-bottom: 1px solid rgba(255,255,255,.22); cursor: pointer; transition: background .18s, box-shadow .18s; }
+    .parcel:hover { background: rgba(196,137,74,.30); box-shadow: inset 0 0 0 2px rgba(244,239,226,.7); z-index: 2; }
+    .parcel-id { position: absolute; top: 7px; left: 9px; font-size: 11px; letter-spacing: .08em; color: #fff; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,.85); }
     .parcel-count { position: absolute; bottom: 7px; right: 9px; font-size: 10px; padding: 2px 7px; border-radius: 20px; background: rgba(196,137,74,.85); color: #1a1308; font-weight: 600; display: none; }
     .parcel.has-items .parcel-count { display: block; }
     .ov-hint { text-align: center; font-size: 12.5px; color: var(--muted); margin-top: 16px; letter-spacing: .03em; }
@@ -125,7 +124,7 @@
       <p id="estateSub"></p>
     </div>
 
-    <div class="ov-board"><div class="ov-grid" id="ovGrid"></div></div>
+    <div class="ov-board"><div id="ovMap"></div><div class="ov-grid" id="ovGrid"></div></div>
     <div class="ov-hint" id="ovHint"></div>
   </div>
 
@@ -376,9 +375,25 @@
     renderHow();
   }
 
+  // ── satellite background (Esri World Imagery) ──
+  function initSatellite() {
+    if (typeof L === 'undefined') return;
+    var map = L.map('ovMap', {
+      zoomControl: false, attributionControl: true,
+      dragging: false, scrollWheelZoom: false, doubleClickZoom: false,
+      boxZoom: false, keyboard: false, touchZoom: false, tap: false
+    }).setView([29.98815, -97.61940], 17);
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 19, attribution: 'Imagery © Esri'
+    }).addTo(map);
+    setTimeout(function () { map.invalidateSize(); }, 200);
+    window.addEventListener('resize', function () { map.invalidateSize(); });
+  }
+
   // ── init ──
   applyTexts();
   buildOverview();
+  initSatellite();
 
   var origSetLang = null;
   var iv = setInterval(function () {
