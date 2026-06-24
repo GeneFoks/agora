@@ -2,3 +2,34 @@
 [build]
   publish = "."
   command = ""
+
+# Clean URLs: 301 the old .html paths to extensionless ones.
+# (Netlify still serves /about from about.html, /map from map.html, etc.)
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+[[redirects]]
+  from = "/about.html"
+  to = "/about"
+  status = 301
+[[redirects]]
+  from = "/land.html"
+  to = "/land"
+  status = 301
+[[redirects]]
+  from = "/map.html"
+  to = "/map"
+  status = 301
+[[redirects]]
+  from = "/join.html"
+  to = "/join"
+  status = 301
+[[redirects]]
+  from = "/platform.html"
+  to = "/platform"
+  status = 301
+[[redirects]]
+  from = "/app.html"
+  to = "/app"
+  status = 301

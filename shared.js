@@ -1,12 +1,13 @@
 (function() {
-  var p = window.location.pathname.split('/').pop() || 'index.html';
+  var p = window.location.pathname.replace(/\/+$/, '').split('/').pop().replace(/\.html$/, '');
+  if (p === '' || p === 'index') p = 'home';
 
   var links = [
-    { href: 'index.html', key: 'nav.home' },
-    { href: 'about.html', key: 'nav.about' },
-    { href: 'land.html',  key: 'nav.land' },
-    { href: 'map.html',   key: 'nav.map' },
-    { href: 'join.html',  key: 'nav.join' },
+    { href: '/',      slug: 'home',  key: 'nav.home' },
+    { href: '/about', slug: 'about', key: 'nav.about' },
+    { href: '/land',  slug: 'land',  key: 'nav.land' },
+    { href: '/map',   slug: 'map',   key: 'nav.map' },
+    { href: '/join',  slug: 'join',  key: 'nav.join' },
   ];
 
   function renderNav() {
@@ -15,15 +16,15 @@
 
     document.getElementById('nav-placeholder').innerHTML =
       '<nav>' +
-        '<a href="index.html" class="nav-logo">AGORA <span>·</span> FOUNDATION</a>' +
+        '<a href="/" class="nav-logo">AGORA <span>·</span> FOUNDATION</a>' +
         '<div class="nav-links">' +
           links.map(function(l) {
-            return '<a href="' + l.href + '" class="' + (p === l.href ? 'active' : '') + '" data-i18n="' + l.key + '">' + t(l.key) + '</a>';
+            return '<a href="' + l.href + '" class="' + (p === l.slug ? 'active' : '') + '" data-i18n="' + l.key + '">' + t(l.key) + '</a>';
           }).join('') +
-          '<a href="app.html" class="nav-login"><span class="nav-login-icon">' +
+          '<a href="/app" class="nav-login"><span class="nav-login-icon">' +
             '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>' +
           '</span><span>' + (lang === 'ru' ? 'Кабинет' : 'Account') + '</span></a>' +
-          '<a href="join.html" class="nav-cta" data-i18n="nav.cta">' + t('nav.cta') + '</a>' +
+          '<a href="/join" class="nav-cta" data-i18n="nav.cta">' + t('nav.cta') + '</a>' +
           '<div class="lang-switcher">' +
             '<button class="lang-btn' + (lang === 'ru' ? ' active' : '') + '" data-lang="ru" onclick="window.AgoraI18n.setLang(\'ru\')">RU</button>' +
             '<button class="lang-btn' + (lang === 'en' ? ' active' : '') + '" data-lang="en" onclick="window.AgoraI18n.setLang(\'en\')">EN</button>' +
@@ -57,8 +58,8 @@
             '<a href="https://t.me/agorausa" target="_blank">Telegram: t.me/agorausa</a>' +
             '<a href="https://gofund.me/41a2c4cc1" target="_blank">GoFundMe</a>' +
             '<a href="https://bestiehere.com/signup?ref=D46EB3DC" target="_blank" data-i18n="nav.app">' + t('nav.app') + '</a>' +
-            '<a href="join.html" data-i18n="nav.cta">' + t('nav.cta') + '</a>' +
-            '<a href="land.html" data-i18n="nav.land">' + t('nav.land') + '</a>' +
+            '<a href="/join" data-i18n="nav.cta">' + t('nav.cta') + '</a>' +
+            '<a href="/land" data-i18n="nav.land">' + t('nav.land') + '</a>' +
           '</div>' +
         '</div>' +
         '<div class="footer-bottom">' +
