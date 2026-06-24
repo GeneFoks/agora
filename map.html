@@ -76,6 +76,25 @@
     .ci-rule { font-size: 10.5px; color: #d98; margin-top: 2px; }
     .cellmenu-rm { color: #e08a7a; }
 
+    /* ── how-it-works + catalog ── */
+    .how { padding: 18px 0 40px; }
+    .how-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    .how h2 { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: clamp(24px,3vw,34px); text-align: center; margin: 0 0 28px; }
+    .how-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 40px; }
+    .how-step { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 22px; }
+    .how-step-n { width: 30px; height: 30px; border-radius: 50%; background: var(--earth); color: #1a1308; font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 12px; }
+    .how-step h4 { margin: 0 0 6px; font-size: 16px; font-weight: 500; }
+    .how-step p { margin: 0; font-size: 13.5px; color: var(--muted); line-height: 1.65; font-weight: 300; }
+    .how h3 { text-align: center; font-size: 18px; font-weight: 500; margin: 0 0 18px; }
+    .cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap: 12px; }
+    .cat-card { display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
+    .cat-card svg { width: 38px; height: 38px; flex-shrink: 0; }
+    .cat-card .nm { font-size: 14px; color: var(--text); }
+    .cat-card .pr { font-size: 13px; color: var(--earth); font-weight: 600; margin-top: 2px; }
+    .cat-note { margin: 22px auto 0; max-width: 720px; text-align: center; font-size: 13px; color: var(--muted); line-height: 1.7; font-weight: 300; }
+    .cat-note.soon { color: var(--earth); opacity: .85; }
+    @media (max-width: 700px) { .how-steps { grid-template-columns: 1fr; } }
+
     @media (max-width: 600px) {
       .ov-board { aspect-ratio: 5 / 7; }
       .ov-grid { grid-template-columns: repeat(5,1fr); grid-template-rows: repeat(8,1fr); }
@@ -135,6 +154,8 @@
   <!-- cell purchase / info menu -->
   <div class="cellmenu" id="cellMenu"></div>
 </section>
+
+<section class="how"><div class="how-inner" id="howInner"></div></section>
 
 <section class="cta-section">
   <div class="container">
@@ -325,11 +346,34 @@
   }
 
   // ── texts that depend on language ──
+  function renderHow() {
+    var steps = [
+      [L('Выбери делянку', 'Pick a parcel'), L('10 акров поделены на делянки по 0.25 акра. Нажми на любую свободную.', '10 acres are split into 0.25-acre parcels. Click any free one.')],
+      [L('Открой её сетку', 'Open its grid'), L('Внутри делянки — мелкая сетка. Нажми на свободную клетку, чтобы выбрать место.', 'Inside the parcel is a fine grid. Click a free cell to choose a spot.')],
+      [L('Размести и поддержи', 'Place & support'), L('Выбери дерево, куст, цветы или животное. Каждый объект — твой живой вклад в землю Агоры.', 'Choose a tree, shrub, flowers or an animal. Each one is your living contribution to AGORA\'s land.')]
+    ];
+    var html = '<h2>' + L('Как устроена карта', 'How the map works') + '</h2><div class="how-steps">';
+    steps.forEach(function (s, i) { html += '<div class="how-step"><div class="how-step-n">' + (i+1) + '</div><h4>' + s[0] + '</h4><p>' + s[1] + '</p></div>'; });
+    html += '</div><h3>' + L('Что можно разместить', 'What you can place') + '</h3><div class="cat-grid">';
+    ITEMS.forEach(function (it) {
+      html += '<div class="cat-card">' + ICON[it.id] + '<div><div class="nm">' + (RU ? it.ru : it.en) + '</div><div class="pr">$' + it.price + '</div></div></div>';
+    });
+    html += '</div>';
+    html += '<p class="cat-note">' + L(
+      'Большое дерево (яблоня, апельсин) занимает место: рядом нельзя посадить ещё одно дерево, но можно куст, цветы, курицу, зайца или улей. Сейчас это превью — выбор и цены предварительные, оплата появится позже.',
+      'A large tree (apple, orange) takes space: you can\'t plant another tree right next to it, but a shrub, flowers, hen, rabbit or beehive are fine. This is a preview — selection and prices are provisional; payment will come later.') + '</p>';
+    html += '<p class="cat-note soon">' + L(
+      '📹 Скоро: к клеткам привяжем живое видео с камер по периметру — будешь видеть свой уголок земли в реальном времени.',
+      '📹 Coming soon: cells will link to live video from perimeter cameras — watch your corner of the land in real time.') + '</p>';
+    document.getElementById('howInner').innerHTML = html;
+  }
+
   function applyTexts() {
     document.getElementById('estateSub').textContent = L(
       '10 акров поделены на делянки по 0.25 акра. Выбери делянку, открой её клетки и размести дерево, куст, курицу или улей.',
       '10 acres split into 0.25-acre parcels. Pick a parcel, open its cells, and place a tree, shrub, hen or beehive.');
     document.getElementById('ovHint').textContent = L('Нажми на делянку, чтобы открыть её сетку →', 'Click a parcel to open its grid →');
+    renderHow();
   }
 
   // ── init ──
