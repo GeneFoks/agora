@@ -395,8 +395,7 @@
   // ── init ──
   applyTexts();
   buildOverview();
-  if (document.readyState === 'complete') initSatellite();
-  else window.addEventListener('load', initSatellite);
+  // satellite is initialized by the standalone block below
 
   var origSetLang = null;
   var iv = setInterval(function () {
@@ -410,6 +409,26 @@
       clearInterval(iv);
     }
   }, 50);
+})();
+</script>
+
+<!-- Standalone satellite background initializer (independent of the main script) -->
+<script>
+(function initEstateSatellite() {
+  var el = document.getElementById('ovMap');
+  if (typeof L === 'undefined' || !el) { return setTimeout(initEstateSatellite, 100); }
+  if (el._leaflet_id) return;
+  var map = L.map(el, {
+    zoomControl: false, attributionControl: true,
+    dragging: false, scrollWheelZoom: false, doubleClickZoom: false,
+    boxZoom: false, keyboard: false, touchZoom: false, tap: false
+  }).setView([29.98815, -97.61940], 17);
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 19, attribution: 'Imagery © Esri'
+  }).addTo(map);
+  window.__agoraMap = map;
+  setTimeout(function () { map.invalidateSize(); }, 250);
+  window.addEventListener('resize', function () { map.invalidateSize(); });
 })();
 </script>
 
