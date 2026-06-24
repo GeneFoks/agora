@@ -34,6 +34,13 @@
     .parcel-id { position: absolute; top: 7px; left: 9px; font-size: 11px; letter-spacing: .08em; color: #fff; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,.85); }
     .parcel-count { position: absolute; bottom: 7px; right: 9px; font-size: 10px; padding: 2px 7px; border-radius: 20px; background: rgba(196,137,74,.85); color: #1a1308; font-weight: 600; display: none; }
     .parcel.has-items .parcel-count { display: block; }
+    /* sellable plots (top rows) */
+    .parcel.plot { box-shadow: inset 0 0 0 1px rgba(196,137,74,.5); }
+    .parcel.plot.st-prepaid { background: rgba(196,137,74,.42); }
+    .parcel.plot.st-booking { background: rgba(196,137,74,.24); }
+    .parcel.plot.st-bought  { background: var(--earth); }
+    .parcel-tag { position: absolute; top: 6px; right: 6px; font-size: 8px; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; padding: 1px 5px; border-radius: 20px; background: rgba(8,7,5,.55); color: #f4efe2; }
+    .parcel-owner { position: absolute; bottom: 6px; left: 7px; right: 7px; font-size: 10px; color: #fff; font-weight: 500; text-shadow: 0 1px 3px rgba(0,0,0,.9); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .ov-hint { text-align: center; font-size: 12.5px; color: var(--muted); margin-top: 16px; letter-spacing: .03em; }
 
     /* ── DETAIL modal ── */
@@ -207,6 +214,21 @@
   var PLACE = {};  // parcelId -> { "cx,cy": itemId }
   function pData(pid) { if (!PLACE[pid]) PLACE[pid] = {}; return PLACE[pid]; }
 
+  // ── Sellable plots: top PLOT_ROWS rows (4 cols × 3 = 12 участков) ──
+  var PLOT_ROWS = 3;
+  // status: available | booking | prepaid | bought
+  var PLOTS = {
+    'A3': { owner: 'Геннадий',  status: 'prepaid' },
+    'B3': { owner: 'Евгений',   status: 'prepaid' },
+    'C3': { owner: 'Александр', status: 'booking' }
+  };
+  function isPlot(c, r) { return r < PLOT_ROWS; }
+  function statusLabel(s) {
+    return RU
+      ? ({ available: 'Свободно', booking: 'Бронь', prepaid: 'Предоплата', bought: 'Куплено' }[s] || s)
+      : ({ available: 'Available', booking: 'Booked', prepaid: 'Prepaid', bought: 'Sold' }[s] || s);
+  }
+
   // ── Overview ──
   var ovGrid = document.getElementById('ovGrid');
   function parcelId(c, r) { return COL_LETTERS[c] + (r + 1); }
@@ -217,9 +239,20 @@
       for (var c = 0; c < OV_COLS; c++) {
         var id = parcelId(c, r);
         var count = Object.keys(pData(id)).length;
+        var plot = isPlot(c, r);
+        var data = plot ? (PLOTS[id] || { status: 'available' }) : null;
         var div = document.createElement('div');
-        div.className = 'parcel' + (count ? ' has-items' : '');
-        div.innerHTML = '<span class="parcel-id">' + id + '</span><span class="parcel-count">' + count + '</span>';
+        var cls = 'parcel' + (count ? ' has-items' : '');
+        if (plot) cls += ' plot st-' + data.status;
+        div.className = cls;
+        var html = '<span class="parcel-id">' + id + '</span>';
+        if (plot) {
+          html += '<span class="parcel-tag">' + statusLabel(data.status) + '</span>';
+          if (data.owner) html += '<span class="parcel-owner">' + data.owner + '</span>';
+        } else {
+          html += '<span class="parcel-count">' + count + '</span>';
+        }
+        div.innerHTML = html;
         (function (pid) { div.addEventListener('click', function () { openParcel(pid); }); })(id);
         ovGrid.appendChild(div);
       }
@@ -236,13 +269,22 @@
     curParcel = pid;
     var c = COL_LETTERS.indexOf(pid.charAt(0));
     var r = parseInt(pid.slice(1), 10) - 1;
-    document.getElementById('dTitle').textContent = L('Делянка ', 'Parcel ') + pid;
+    var plot = isPlot(c, r);
+    var pinfo = plot ? (PLOTS[pid] || { status: 'available' }) : null;
+    document.getElementById('dTitle').textContent = (plot ? L('Участок ', 'Plot ') : L('Делянка ', 'Parcel ')) + pid;
     var acres = 10 / (OV_COLS * OV_ROWS);
     var side = Math.round(Math.sqrt(acres * 43560));   // ft per side of a square parcel
     var cellFt = Math.max(1, Math.round(side / FINE));
-    document.getElementById('dSub').textContent = L(
-      '≈' + acres.toFixed(2) + ' акра · ≈' + side + ' × ' + side + ' фт · сетка ' + FINE + '×' + FINE + ' (клетка ≈ ' + cellFt + ' фт)',
-      '≈' + acres.toFixed(2) + ' acre · ≈' + side + ' × ' + side + ' ft · ' + FINE + '×' + FINE + ' grid (cell ≈ ' + cellFt + ' ft)');
+    var acreLine = '≈' + acres.toFixed(2) + (RU ? ' акра · ≈' : ' acre · ≈') + side + ' × ' + side + (RU ? ' фт' : ' ft');
+    var sub;
+    if (plot) {
+      sub = (RU ? 'Статус: ' : 'Status: ') + statusLabel(pinfo.status)
+          + (pinfo.owner ? (RU ? ' · Владелец: ' : ' · Owner: ') + pinfo.owner : '')
+          + ' · ' + acreLine;
+    } else {
+      sub = acreLine + (RU ? ' · сетка ' : ' · ') + FINE + '×' + FINE + (RU ? ' (клетка ≈ ' + cellFt + ' фт)' : ' grid (cell ≈ ' + cellFt + ' ft)');
+    }
+    document.getElementById('dSub').textContent = sub;
     buildFine();
     // Show the aerial crop of this exact parcel behind the fine grid (zoom keeps the image).
     fineGrid.style.backgroundImage = "url('land-bg.png')";
