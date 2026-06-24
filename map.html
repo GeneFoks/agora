@@ -395,7 +395,8 @@
   // ── init ──
   applyTexts();
   buildOverview();
-  initSatellite();
+  if (document.readyState === 'complete') initSatellite();
+  else window.addEventListener('load', initSatellite);
 
   var origSetLang = null;
   var iv = setInterval(function () {
