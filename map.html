@@ -397,18 +397,17 @@
   buildOverview();
   // satellite is initialized by the standalone block below
 
-  var origSetLang = null;
-  var iv = setInterval(function () {
-    if (window.AgoraI18n && !origSetLang) {
-      origSetLang = window.AgoraI18n.setLang;
-      window.AgoraI18n.setLang = function (l) {
-        origSetLang(l); RU = (l !== 'en');
-        applyTexts(); buildOverview();
-        if (detail.classList.contains('open')) openParcel(curParcel);
-      };
-      clearInterval(iv);
-    }
-  }, 50);
+  // Re-render all JS-built text whenever the language changes (robust against
+  // setLang wrapper ordering between shared.js and this page).
+  var lastLang = lang();
+  function onLangMaybeChanged() {
+    var cur = lang();
+    if (cur === lastLang) return;
+    lastLang = cur; RU = (cur !== 'en');
+    applyTexts(); buildOverview();
+    if (detail.classList.contains('open')) openParcel(curParcel);
+  }
+  setInterval(onLangMaybeChanged, 250);
 })();
 </script>
 
