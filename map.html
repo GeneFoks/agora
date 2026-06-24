@@ -60,8 +60,10 @@
     .ripple { animation: ripple 4.5s ease-out infinite; transform-box: fill-box; transform-origin: 50% 50%; }
     .ripple.r2 { animation-delay: 2.2s; }
     @keyframes ripple { 0% { transform: scale(.3); opacity: .6; } 100% { transform: scale(1.6); opacity: 0; } }
+    .blades { animation: spin 9s linear infinite; transform-box: fill-box; transform-origin: 50% 50%; }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     @media (prefers-reduced-motion: reduce) {
-      .art-sway,.art-sway2,.art-bob,.art-hop,.map-cloud,.smoke,.flame,.ripple { animation: none !important; }
+      .art-sway,.art-sway2,.art-bob,.art-hop,.map-cloud,.smoke,.flame,.ripple,.blades { animation: none !important; }
       .ent.roams { transition: none !important; }
     }
 
@@ -141,10 +143,25 @@
       <linearGradient id="gRabbit"   x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cdbfae"/><stop offset="1" stop-color="#a89683"/></linearGradient>
       <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="2.5" stdDeviation="2.2" flood-color="#000" flood-opacity="0.28"/></filter>
       <filter id="blurS"><feGaussianBlur stdDeviation="6"/></filter>
+      <!-- iso building faces -->
+      <linearGradient id="gWallR" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cdae84"/><stop offset="1" stop-color="#a98a5f"/></linearGradient>
+      <linearGradient id="gWallL" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9a7c52"/><stop offset="1" stop-color="#735733"/></linearGradient>
+      <linearGradient id="gRoofR" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c47b3f"/><stop offset="1" stop-color="#9c5d2a"/></linearGradient>
+      <linearGradient id="gRoofL" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9a5a2c"/><stop offset="1" stop-color="#74411d"/></linearGradient>
+      <linearGradient id="gBarnR" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b14a3a"/><stop offset="1" stop-color="#8a3328"/></linearGradient>
+      <linearGradient id="gBarnL" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a3328"/><stop offset="1" stop-color="#642319"/></linearGradient>
+      <linearGradient id="gHay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e7c469"/><stop offset="1" stop-color="#bd9740"/></linearGradient>
+      <linearGradient id="gStone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b9b2a6"/><stop offset="1" stop-color="#8d877b"/></linearGradient>
+      <!-- terrain textures -->
+      <pattern id="grassTex" width="46" height="46" patternUnits="userSpaceOnUse" patternTransform="rotate(6)">
+        <path d="M8 30 q2 -8 4 0 M9 30 q0 -6 0 0 M22 38 q2 -7 4 0 M23 38 q0 -5 0 0 M34 24 q2 -8 4 0 M35 24 q0 -6 0 0 M16 16 q2 -6 3 0" stroke="#3e5a32" stroke-width="1.4" fill="none" opacity=".5" stroke-linecap="round"/>
+      </pattern>
+      <radialGradient id="vign" cx="50%" cy="45%" r="75%"><stop offset="55%" stop-color="#000" stop-opacity="0"/><stop offset="100%" stop-color="#000" stop-opacity=".32"/></radialGradient>
     </defs>
 
     <!-- base terrain -->
     <rect width="1600" height="1000" fill="url(#grass)"/>
+    <rect width="1600" height="1000" fill="url(#grassTex)"/>
 
     <!-- organic zones -->
     <path d="M40,330 C200,250 470,275 610,365 C660,540 635,780 565,915 C420,975 175,960 95,865 C30,720 5,470 40,330 Z" fill="url(#gCommon)"/>
@@ -170,77 +187,18 @@
     <path d="M250,720 C470,650 560,520 770,475 C1000,425 1110,520 1300,505" stroke="#c2a06a" stroke-width="30" fill="none" stroke-linecap="round" opacity=".85"/>
     <path d="M250,720 C470,650 560,520 770,475 C1000,425 1110,520 1300,505" stroke="#e7cd9c" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="2 16" opacity=".7"/>
 
-    <!-- ════ COMMON ZONE buildings ════ -->
-    <!-- deck -->
-    <g filter="url(#softShadow)">
-      <rect x="300" y="640" width="170" height="92" rx="8" fill="#b98a55"/>
-      <path d="M300,664 H470 M300,688 H470 M300,712 H470" stroke="#9a6f3e" stroke-width="2" opacity=".6"/>
-    </g>
-    <!-- main lodge -->
-    <g filter="url(#softShadow)">
-      <rect x="330" y="540" width="160" height="110" rx="10" fill="#7a5a36"/>
-      <polygon points="330,560 410,512 490,560" fill="url(#gRoof)"/>
-      <rect x="330" y="556" width="160" height="14" rx="4" fill="url(#gRoof2)"/>
-      <rect x="356" y="588" width="26" height="26" rx="3" fill="#f3d79a" opacity=".85"/>
-      <rect x="438" y="588" width="26" height="26" rx="3" fill="#f3d79a" opacity=".85"/>
-      <rect x="396" y="606" width="28" height="44" rx="3" fill="#5a3f22"/>
-    </g>
-    <!-- banya + smoke -->
-    <g filter="url(#softShadow)">
-      <rect x="180" y="540" width="96" height="80" rx="8" fill="#6f4f2e"/>
-      <polygon points="180,556 228,520 276,556" fill="url(#gRoof2)"/>
-      <rect x="246" y="512" width="14" height="30" rx="2" fill="#4a3420"/>
-      <rect x="200" y="582" width="24" height="22" rx="3" fill="#f3d79a" opacity=".8"/>
-    </g>
-    <g fill="#e9e4da">
-      <circle class="smoke"    cx="253" cy="512" r="7"/>
-      <circle class="smoke s2" cx="253" cy="512" r="6"/>
-      <circle class="smoke s3" cx="253" cy="512" r="8"/>
-    </g>
-    <!-- cold plunge pool -->
-    <g filter="url(#softShadow)">
-      <rect x="296" y="500" width="78" height="50" rx="10" fill="#3a5b50"/>
-      <rect x="302" y="506" width="66" height="38" rx="7" fill="url(#gWater)"/>
-      <circle class="ripple" cx="335" cy="525" r="14" fill="none" stroke="#dff3f6" stroke-width="1.6" opacity=".55"/>
-    </g>
-    <!-- fire pit -->
-    <g filter="url(#softShadow)">
-      <circle cx="430" cy="730" r="22" fill="#4a4036"/>
-      <circle cx="430" cy="730" r="14" fill="#2a241c"/>
-      <path class="flame"    d="M430,742 C422,730 426,720 430,712 C434,720 438,730 430,742 Z" fill="#f0a93c"/>
-      <path class="flame f2" d="M424,742 C419,733 421,726 424,720 C428,726 429,734 424,742 Z" fill="#e8772a"/>
-      <path class="flame f3" d="M436,742 C431,733 433,726 436,720 C440,726 441,734 436,742 Z" fill="#f4c54e"/>
-    </g>
-
-    <!-- ════ FARM buildings ════ -->
-    <!-- greenhouse -->
-    <g filter="url(#softShadow)">
-      <rect x="800" y="320" width="150" height="92" rx="6" fill="url(#gGlass)" stroke="#cfe7ea" stroke-width="2"/>
-      <polygon points="800,330 875,296 950,330" fill="url(#gGlass)" stroke="#cfe7ea" stroke-width="2"/>
-      <path d="M825,330 V412 M850,310 V412 M875,300 V412 M900,310 V412 M925,330 V412" stroke="#bcd9dc" stroke-width="1.5" opacity=".8"/>
-    </g>
-    <!-- barn -->
-    <g filter="url(#softShadow)">
-      <rect x="660" y="560" width="120" height="92" rx="8" fill="#9a3f33"/>
-      <polygon points="660,576 720,536 780,576" fill="#7a2f26"/>
-      <rect x="704" y="600" width="32" height="52" rx="3" fill="#e2c690"/>
-      <path d="M704,600 L736,652 M736,600 L704,652" stroke="#9a3f33" stroke-width="3"/>
-    </g>
-    <!-- garden beds -->
+    <!-- garden beds (farm) -->
     <g opacity=".9">
       <rect x="980" y="540" width="70" height="16" rx="4" fill="#6b8f4e"/>
       <rect x="980" y="566" width="70" height="16" rx="4" fill="#6b8f4e"/>
       <rect x="980" y="592" width="70" height="16" rx="4" fill="#6b8f4e"/>
     </g>
 
-    <!-- building labels -->
-    <g>
-      <g><rect class="b-label-bg" x="338" y="660" width="110" height="22" rx="6"/><text class="b-label" x="393" y="675" text-anchor="middle" data-i18n="map.b.main">Главный дом</text></g>
-      <g><rect class="b-label-bg" x="188" y="628" width="66" height="22" rx="6"/><text class="b-label" x="221" y="643" text-anchor="middle" data-i18n="map.b.banya">Баня</text></g>
-      <g><rect class="b-label-bg" x="288" y="556" width="104" height="22" rx="6"/><text class="b-label" x="340" y="571" text-anchor="middle" data-i18n="map.b.plunge">Колд-плендж</text></g>
-      <g><rect class="b-label-bg" x="792" y="420" width="92" height="22" rx="6"/><text class="b-label" x="838" y="435" text-anchor="middle" data-i18n="map.b.greenhouse">Теплица</text></g>
-      <g><rect class="b-label-bg" x="668" y="660" width="76" height="22" rx="6"/><text class="b-label" x="706" y="675" text-anchor="middle" data-i18n="map.b.barn">Амбар</text></g>
-    </g>
+    <!-- wooden fence around residential (generated) -->
+    <g id="fence" transform="rotate(-4 1290 580)"></g>
+
+    <!-- iso buildings (generated) -->
+    <g id="buildings"></g>
 
     <!-- residential plots (generated) -->
     <g id="plotsGroup" transform="rotate(-4 1290 580)"></g>
@@ -261,6 +219,9 @@
       <g class="map-cloud cb"><path d="M620,90 c-24,0 -40,-14 -40,-30 0,-18 18,-30 38,-29 5,-14 19,-24 35,-24 19,0 35,13 37,30 18,0 32,11 32,26 0,16 -16,26 -36,26 z" opacity=".5"/></g>
       <g class="map-cloud cc"><path d="M1120,150 c-24,0 -40,-14 -40,-30 0,-18 18,-30 38,-29 5,-14 19,-24 35,-24 19,0 35,13 37,30 18,0 32,11 32,26 0,16 -16,26 -36,26 z" opacity=".5"/></g>
     </g>
+
+    <!-- vignette -->
+    <rect width="1600" height="1000" fill="url(#vign)" pointer-events="none"/>
   </svg>
 
   <!-- floating UI -->
@@ -510,7 +471,169 @@
     });
   }
 
+  // ════════════════════════════════════════════════
+  //  ISOMETRIC BUILDINGS (Cossacks-style sprites)
+  //  ▸ kinds: house | barn | greenhouse | windmill | well | haystack | plunge | firepit
+  // ════════════════════════════════════════════════
+  var BUILDINGS = [
+    { kind:'house',     x:400, y:680, s:1.6, label:'map.b.main',  lw:118 },
+    { kind:'house',     x:215, y:625, s:1.0, label:'map.b.banya', lw:64, smoke:true },
+    { kind:'plunge',    x:325, y:560, s:1.0, label:'map.b.plunge', lw:104 },
+    { kind:'firepit',   x:455, y:745, s:1.0 },
+    { kind:'well',      x:150, y:700, s:1.0 },
+    { kind:'barn',      x:700, y:660, s:1.25, label:'map.b.barn', lw:74 },
+    { kind:'greenhouse',x:865, y:450, s:1.15, label:'map.b.greenhouse', lw:92 },
+    { kind:'windmill',  x:985, y:485, s:1.2 },
+    { kind:'haystack',  x:1015,y:615, s:1.0 },
+    { kind:'haystack',  x:1055,y:645, s:0.8 }
+  ];
+
+  function isoBox(ax, ay, s, W, H, V, Rh, wR, wL, rR, rL) {
+    W*=s; H*=s; V*=s; Rh*=s;
+    function P(x,y){ return (ax+x).toFixed(1)+','+(ay+y).toFixed(1); }
+    var S=P(0,0),E=P(W,-H),Wp=P(-W,-H), S2=P(0,-V),E2=P(W,-H-V),N2=P(0,-2*H-V),W2=P(-W,-H-V), apex=P(0,-(V+H+Rh));
+    return '<polygon points="'+P(9,5)+' '+P(W+9,-H+5)+' '+P(9,-2*H+5)+' '+P(-W+9,-H+5)+'" fill="#000" opacity=".15"/>'+
+      '<polygon points="'+S+' '+E+' '+E2+' '+S2+'" fill="'+wR+'"/>'+
+      '<polygon points="'+S+' '+Wp+' '+W2+' '+S2+'" fill="'+wL+'"/>'+
+      '<polygon points="'+W2+' '+S2+' '+apex+'" fill="'+rL+'"/>'+
+      '<polygon points="'+S2+' '+E2+' '+apex+'" fill="'+rR+'"/>';
+  }
+
+  function isoHouse(b, barn) {
+    var s=b.s, ax=b.x, ay=b.y, W=(barn?54:40), H=(barn?22:20), V=(barn?34:40), Rh=(barn?26:34);
+    var box = isoBox(ax, ay, s, W, H, V, Rh,
+      barn?'url(#gBarnR)':'url(#gWallR)', barn?'url(#gBarnL)':'url(#gWallL)',
+      barn?'url(#gBarnR)':'url(#gRoofR)', barn?'url(#gBarnL)':'url(#gRoofL)');
+    var Ws=W*s, Hs=H*s, Vs=V*s;
+    function P(x,y){ return (ax+x).toFixed(1)+','+(ay+y).toFixed(1); }
+    function R(u,v){ return P(u*Ws, -u*Hs - v*Vs); }   // right-wall plane
+    function L(u,v){ return P(-u*Ws, -u*Hs - v*Vs); }   // left-wall plane
+    var dw = barn ? 0.34 : 0.22;
+    var door = '<polygon points="'+R(0.5-dw,0)+' '+R(0.5+dw,0)+' '+R(0.5+dw,0.55)+' '+R(0.5-dw,0.55)+'" fill="#4a3420"/>';
+    var win  = '<polygon points="'+R(0.78,0.34)+' '+R(0.92,0.27)+' '+R(0.92,0.5)+' '+R(0.78,0.57)+'" fill="#f3d79a" opacity=".85"/>'+
+               '<polygon points="'+L(0.5,0.34)+' '+L(0.7,0.24)+' '+L(0.7,0.47)+' '+L(0.5,0.57)+'" fill="#dcc187" opacity=".7"/>';
+    var smoke = '';
+    if (b.smoke) {
+      var sx=(ax).toFixed(1), sy=(ay-(V*s+H*s+Rh*s)-2).toFixed(1);
+      smoke = '<g fill="#e9e4da"><circle class="smoke" cx="'+sx+'" cy="'+sy+'" r="6"/><circle class="smoke s2" cx="'+sx+'" cy="'+sy+'" r="5"/><circle class="smoke s3" cx="'+sx+'" cy="'+sy+'" r="7"/></g>';
+    }
+    return box + door + win + smoke;
+  }
+
+  function greenhouse(b) {
+    var s=b.s, ax=b.x, ay=b.y, W=46,H=22,V=34,Rh=24;
+    var box = isoBox(ax, ay, s, W, H, V, Rh, 'rgba(150,200,205,.62)','rgba(110,165,175,.6)','rgba(180,220,225,.7)','rgba(140,190,198,.66)');
+    W*=s;H*=s;V*=s;
+    function P(x,y){ return (ax+x).toFixed(1)+','+(ay+y).toFixed(1); }
+    var frame='<g stroke="#dceef0" stroke-width="1.4" opacity=".8" fill="none">'+
+      '<line x1="'+(ax)+'" y1="'+(ay-V)+'" x2="'+(ax)+'" y2="'+(ay)+'"/>'+
+      '<line x1="'+(ax-W*0.5)+'" y1="'+(ay-H*0.5-V)+'" x2="'+(ax-W*0.5)+'" y2="'+(ay-H*0.5)+'"/>'+
+      '<line x1="'+(ax+W*0.5)+'" y1="'+(ay-H*0.5-V)+'" x2="'+(ax+W*0.5)+'" y2="'+(ay-H*0.5)+'"/></g>';
+    return box + frame;
+  }
+
+  function windmill(b) {
+    var s=b.s, ax=b.x, ay=b.y, Th=70*s, bw=22*s, tw=13*s, rh=26*s;
+    function P(x,y){ return (ax+x).toFixed(1)+','+(ay+y).toFixed(1); }
+    var shadow='<polygon points="'+P(10,4)+' '+P(bw+10,2)+' '+P(10,-2)+' '+P(-bw+10,2)+'" fill="#000" opacity=".15"/>';
+    var tower='<polygon points="'+P(-bw,0)+' '+P(bw,0)+' '+P(tw,-Th)+' '+P(-tw,-Th)+'" fill="url(#gStone)"/>'+
+              '<polygon points="'+P(0,0)+' '+P(bw,0)+' '+P(tw,-Th)+' '+P(0,-Th)+'" fill="#000" opacity=".12"/>';
+    var roof='<polygon points="'+P(-tw-5,-Th)+' '+P(tw+5,-Th)+' '+P(0,-Th-rh)+'" fill="url(#gRoofL)"/>';
+    var hubY=-Th*0.74, L=34*s;
+    var blades='<g class="blades" style="transform-box:fill-box;transform-origin:50% 50%">'+
+      '<rect x="'+(ax-3)+'" y="'+(ay+hubY-L)+'" width="6" height="'+(2*L)+'" rx="2.5" fill="#6f5230"/>'+
+      '<rect x="'+(ax-L)+'" y="'+(ay+hubY-3)+'" width="'+(2*L)+'" height="6" rx="2.5" fill="#6f5230"/>'+
+      '<rect x="'+(ax-2)+'" y="'+(ay+hubY-L)+'" width="13" height="'+(L*0.72)+'" rx="1.5" fill="#cdae84" opacity=".8"/>'+
+      '<rect x="'+(ax-11)+'" y="'+(ay+hubY-2)+'" width="'+(L*0.72)+'" height="13" rx="1.5" fill="#cdae84" opacity=".8"/>'+
+      '<rect x="'+(ax-11)+'" y="'+(ay+hubY+2-L*0.72)+'" width="13" height="'+(L*0.72)+'" rx="1.5" fill="#cdae84" opacity=".8"/>'+
+      '<rect x="'+(ax+2-L*0.72)+'" y="'+(ay+hubY-11)+'" width="'+(L*0.72)+'" height="13" rx="1.5" fill="#cdae84" opacity=".8"/>'+
+      '<circle cx="'+ax+'" cy="'+(ay+hubY)+'" r="4.5" fill="#4a3420"/></g>';
+    return shadow + tower + roof + blades;
+  }
+
+  function well(b) {
+    var s=b.s, ax=b.x, ay=b.y, w=18*s, h=9*s, bh=16*s;
+    function P(x,y){ return (ax+x).toFixed(1)+','+(ay+y).toFixed(1); }
+    return '<ellipse cx="'+ax+'" cy="'+(ay+3)+'" rx="'+(w+4)+'" ry="'+(h*0.7)+'" fill="#000" opacity=".15"/>'+
+      '<path d="M'+P(-w,0)+' L'+P(-w,-bh)+' A'+w+' '+h+' 0 0 1 '+P(w,-bh)+' L'+P(w,0)+' A'+w+' '+h+' 0 0 1 '+P(-w,0)+' Z" fill="url(#gStone)"/>'+
+      '<ellipse cx="'+ax+'" cy="'+(ay-bh)+'" rx="'+w+'" ry="'+h+'" fill="#3a5b50"/>'+
+      '<ellipse cx="'+ax+'" cy="'+(ay-bh)+'" rx="'+(w*0.7)+'" ry="'+(h*0.6)+'" fill="url(#gWater)"/>'+
+      '<rect x="'+(ax-w-2)+'" y="'+(ay-bh-34*s)+'" width="4" height="'+(34*s)+'" fill="#6f5230"/>'+
+      '<rect x="'+(ax+w-2)+'" y="'+(ay-bh-34*s)+'" width="4" height="'+(34*s)+'" fill="#6f5230"/>'+
+      '<polygon points="'+P(-w-6,-bh-32*s)+' '+P(w+6,-bh-32*s)+' '+P(0,-bh-48*s)+'" fill="url(#gRoofL)"/>';
+  }
+
+  function haystack(b) {
+    var s=b.s, ax=b.x, ay=b.y, w=26*s, h=30*s;
+    function P(x,y){ return (ax+x).toFixed(1)+','+(ay+y).toFixed(1); }
+    return '<ellipse cx="'+ax+'" cy="'+(ay+2)+'" rx="'+(w+3)+'" ry="'+(w*0.32)+'" fill="#000" opacity=".15"/>'+
+      '<path d="M'+P(-w,0)+' Q'+P(-w*0.7,-h*0.7)+' '+P(0,-h)+' Q'+P(w*0.7,-h*0.7)+' '+P(w,0)+' Z" fill="url(#gHay)"/>'+
+      '<path d="M'+P(-w*0.6,-h*0.2)+' Q'+P(0,-h*0.1)+' '+P(w*0.6,-h*0.2)+'" stroke="#a8842f" stroke-width="2" fill="none" opacity=".6"/>'+
+      '<path d="M'+P(-w*0.4,-h*0.5)+' Q'+P(0,-h*0.42)+' '+P(w*0.4,-h*0.5)+'" stroke="#a8842f" stroke-width="2" fill="none" opacity=".6"/>';
+  }
+
+  function plunge(b) {
+    var s=b.s, ax=b.x, ay=b.y, w=40*s, h=22*s;
+    function P(x,y){ return (ax+x).toFixed(1)+','+(ay+y).toFixed(1); }
+    return '<polygon points="'+P(0,0)+' '+P(w,-h/2)+' '+P(0,-h)+' '+P(-w,-h/2)+'" fill="#3a5b50"/>'+
+      '<polygon points="'+P(0,4)+' '+P(w-7,-h/2+4)+' '+P(0,-h+8)+' '+P(-w+7,-h/2+4)+'" fill="url(#gWater)"/>'+
+      '<circle class="ripple" cx="'+ax+'" cy="'+(ay-h/2+2)+'" r="9" fill="none" stroke="#dff3f6" stroke-width="1.6" opacity=".55"/>'+
+      '<circle class="ripple r2" cx="'+(ax-6)+'" cy="'+(ay-h/2-1)+'" r="7" fill="none" stroke="#dff3f6" stroke-width="1.4" opacity=".5"/>';
+  }
+
+  function firepit(b) {
+    var s=b.s, ax=b.x, ay=b.y;
+    function P(x,y){ return (ax+x).toFixed(1)+','+(ay+y).toFixed(1); }
+    return '<ellipse cx="'+ax+'" cy="'+ay+'" rx="'+(22*s)+'" ry="'+(11*s)+'" fill="#4a4036"/>'+
+      '<ellipse cx="'+ax+'" cy="'+ay+'" rx="'+(14*s)+'" ry="'+(7*s)+'" fill="#2a241c"/>'+
+      '<path class="flame" d="M'+P(0,2)+' C'+P(-7,-9)+' '+P(-3,-18)+' '+P(0,-26)+' C'+P(3,-18)+' '+P(7,-9)+' '+P(0,2)+' Z" fill="#f0a93c"/>'+
+      '<path class="flame f2" d="M'+P(-6,2)+' C'+P(-10,-7)+' '+P(-7,-13)+' '+P(-5,-20)+' C'+P(-2,-13)+' '+P(-2,-7)+' '+P(-6,2)+' Z" fill="#e8772a"/>'+
+      '<path class="flame f3" d="M'+P(6,2)+' C'+P(2,-7)+' '+P(2,-13)+' '+P(5,-20)+' C'+P(8,-13)+' '+P(10,-7)+' '+P(6,2)+' Z" fill="#f4c54e"/>';
+  }
+
+  function buildingSprite(b) {
+    if (b.kind === 'house') return isoHouse(b, false);
+    if (b.kind === 'barn') return isoHouse(b, true);
+    if (b.kind === 'greenhouse') return greenhouse(b);
+    if (b.kind === 'windmill') return windmill(b);
+    if (b.kind === 'well') return well(b);
+    if (b.kind === 'haystack') return haystack(b);
+    if (b.kind === 'plunge') return plunge(b);
+    if (b.kind === 'firepit') return firepit(b);
+    return '';
+  }
+
+  function buildBuildings() {
+    var sorted = BUILDINGS.slice().sort(function (a, b) { return a.y - b.y; });
+    var html = sorted.map(function (b) {
+      var sprite = '<g>' + buildingSprite(b) + '</g>';
+      if (b.label) {
+        var lw = b.lw || 90;
+        sprite += '<g><rect class="b-label-bg" x="' + (b.x - lw/2) + '" y="' + (b.y + 10) + '" width="' + lw + '" height="20" rx="6"/>' +
+          '<text class="b-label" x="' + b.x + '" y="' + (b.y + 24) + '" text-anchor="middle" data-i18n="' + b.label + '">' + t(b.label) + '</text></g>';
+      }
+      return sprite;
+    }).join('');
+    document.getElementById('buildings').innerHTML = html;
+  }
+
+  function buildFence() {
+    var f = { x: 1052, y: 286, w: 496, h: 572 }, step = 44, out = '';
+    function post(px, py) { return '<rect x="' + (px-2.5) + '" y="' + (py-17) + '" width="5" height="19" rx="1.5" fill="#6f5230"/><rect x="' + (px-3.5) + '" y="' + (py-20) + '" width="7" height="3.5" rx="1.5" fill="#8a6a3e"/>'; }
+    var x, y;
+    for (x = f.x; x <= f.x + f.w; x += step) { out += post(x, f.y) + post(x, f.y + f.h); }
+    for (y = f.y; y <= f.y + f.h; y += step) { out += post(f.x, y) + post(f.x + f.w, y); }
+    var rail = '<g fill="#7a5a32" opacity=".75">' +
+      '<rect x="' + f.x + '" y="' + (f.y-10) + '" width="' + f.w + '" height="3"/>' +
+      '<rect x="' + f.x + '" y="' + (f.y+f.h-10) + '" width="' + f.w + '" height="3"/>' +
+      '<rect x="' + (f.x-1) + '" y="' + f.y + '" width="3" height="' + f.h + '"/>' +
+      '<rect x="' + (f.x+f.w-1) + '" y="' + f.y + '" width="3" height="' + f.h + '"/></g>';
+    document.getElementById('fence').innerHTML = rail + out;
+  }
+
   // ── init ──
+  buildFence();
+  buildBuildings();
   buildPlots();
   updateCounter();
   buildEntities();
@@ -521,7 +644,7 @@
       origSetLang = window.AgoraI18n.setLang;
       window.AgoraI18n.setLang = function (l) {
         origSetLang(l);
-        buildPlots(); updateCounter(); buildEntities();
+        buildFence(); buildBuildings(); buildPlots(); updateCounter(); buildEntities();
         window.closeMapPanel();
       };
       clearInterval(iv);
