@@ -412,23 +412,43 @@
 })();
 </script>
 
-<!-- Standalone satellite background initializer (independent of the main script) -->
+<!-- Standalone map-background initializer (independent of the main script) -->
+<!-- Uses a static aerial photo (land-bg.jpg) if present; otherwise falls back to live Esri satellite tiles. -->
 <script>
-(function initEstateSatellite() {
+(function initEstateBg() {
   var el = document.getElementById('ovMap');
-  if (typeof L === 'undefined' || !el) { return setTimeout(initEstateSatellite, 100); }
-  if (el._leaflet_id) return;
-  var map = L.map(el, {
-    zoomControl: false, attributionControl: true,
-    dragging: false, scrollWheelZoom: false, doubleClickZoom: false,
-    boxZoom: false, keyboard: false, touchZoom: false, tap: false
-  }).setView([29.98815, -97.61940], 17);
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    maxZoom: 19, attribution: 'Imagery © Esri'
-  }).addTo(map);
-  window.__agoraMap = map;
-  setTimeout(function () { map.invalidateSize(); }, 250);
-  window.addEventListener('resize', function () { map.invalidateSize(); });
+  if (!el) { return setTimeout(initEstateBg, 100); }
+  if (el.dataset.bgDone) return;
+
+  function useLeaflet() {
+    if (typeof L === 'undefined') { return setTimeout(useLeaflet, 100); }
+    if (el._leaflet_id) return;
+    var map = L.map(el, {
+      zoomControl: false, attributionControl: true,
+      dragging: false, scrollWheelZoom: false, doubleClickZoom: false,
+      boxZoom: false, keyboard: false, touchZoom: false, tap: false
+    }).setView([29.98815, -97.61940], 17);
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 19, attribution: 'Imagery © Esri'
+    }).addTo(map);
+    window.__agoraMap = map;
+    setTimeout(function () { map.invalidateSize(); }, 250);
+    window.addEventListener('resize', function () { map.invalidateSize(); });
+  }
+
+  // Prefer the project's own aerial photo if it exists.
+  var img = new Image();
+  img.onload = function () {
+    el.dataset.bgDone = '1';
+    el.style.backgroundImage = "url('land-bg.jpg')";
+    el.style.backgroundSize = 'cover';
+    el.style.backgroundPosition = 'center';
+  };
+  img.onerror = function () {
+    el.dataset.bgDone = '1';
+    useLeaflet();
+  };
+  img.src = 'land-bg.jpg';
 })();
 </script>
 
