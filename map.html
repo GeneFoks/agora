@@ -377,8 +377,10 @@
 
   // ── satellite background (Esri World Imagery) ──
   function initSatellite() {
-    if (typeof L === 'undefined') return;
-    var map = L.map('ovMap', {
+    var el = document.getElementById('ovMap');
+    if (!el || el._leaflet_id) return;                 // missing or already initialized
+    if (typeof L === 'undefined') { setTimeout(initSatellite, 100); return; }  // wait for Leaflet
+    var map = L.map(el, {
       zoomControl: false, attributionControl: true,
       dragging: false, scrollWheelZoom: false, doubleClickZoom: false,
       boxZoom: false, keyboard: false, touchZoom: false, tap: false
