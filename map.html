@@ -24,10 +24,10 @@
     .estate-head p { font-size: 15px; color: var(--muted); font-weight: 300; max-width: 560px; margin: 0 auto; line-height: 1.7; }
 
     /* ── OVERVIEW: 10 acres → 0.25-acre parcels ── */
-    .ov-board { position: relative; width: 100%; aspect-ratio: 8 / 5; border-radius: 18px; overflow: hidden;
+    .ov-board { position: relative; width: 100%; aspect-ratio: 11 / 4; border-radius: 18px; overflow: hidden;
       box-shadow: 0 30px 70px rgba(0,0,0,.45), inset 0 0 0 1px var(--border); background: #11150f; }
-    #ovMap { position: absolute; inset: 0; z-index: 0; pointer-events: none; background: #11150f; }
-    .ov-grid { position: absolute; inset: 0; z-index: 1; display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(5, 1fr); }
+    #ovMap { position: absolute; inset: 0; z-index: 0; pointer-events: none; background: #11150f no-repeat center/100% 100%; }
+    .ov-grid { position: absolute; inset: 0; z-index: 1; display: grid; grid-template-columns: repeat(11, 1fr); grid-template-rows: repeat(4, 1fr); }
     .parcel { position: relative; border-right: 1px solid rgba(255,255,255,.22); border-bottom: 1px solid rgba(255,255,255,.22); cursor: pointer; transition: background .18s, box-shadow .18s; }
     .parcel:hover { background: rgba(196,137,74,.30); box-shadow: inset 0 0 0 2px rgba(244,239,226,.7); z-index: 2; }
     .parcel-id { position: absolute; top: 7px; left: 9px; font-size: 11px; letter-spacing: .08em; color: #fff; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,.85); }
@@ -48,7 +48,7 @@
     .detail-close:hover { color: var(--earth); border-color: var(--border-earth); }
     .detail-body { padding: 20px 22px; overflow: auto; }
     .fine-wrap { position: relative; width: min(560px, 100%); margin: 0 auto;
-      background: linear-gradient(160deg, #6f8f53, #506a3b); border-radius: 12px; padding: 8px;
+      background: #11150f; border-radius: 12px; padding: 8px;
       box-shadow: inset 0 0 0 1px rgba(0,0,0,.18); }
     .fine-grid { display: grid; gap: 0; aspect-ratio: 1; }
     .fcell { border-right: 1px solid rgba(255,255,255,.05); border-bottom: 1px solid rgba(0,0,0,.06); cursor: pointer; position: relative; transition: background .12s; }
@@ -94,10 +94,6 @@
     .cat-note.soon { color: var(--earth); opacity: .85; }
     @media (max-width: 700px) { .how-steps { grid-template-columns: 1fr; } }
 
-    @media (max-width: 600px) {
-      .ov-board { aspect-ratio: 5 / 7; }
-      .ov-grid { grid-template-columns: repeat(5,1fr); grid-template-rows: repeat(8,1fr); }
-    }
   </style>
 </head>
 <body>
@@ -176,9 +172,9 @@
   function L(ru, en) { return RU ? ru : en; }
 
   // ── Land model ──
-  var OV_COLS = 8, OV_ROWS = 5;          // 40 parcels × 0.25 acre = 10 acres
+  var OV_COLS = 11, OV_ROWS = 4;         // 44 parcels across the 10-acre aerial (matches image ~2.66:1)
   var FINE = 20;                          // 20×20 fine grid inside a parcel
-  var COL_LETTERS = 'ABCDEFGH';
+  var COL_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
   // ── Catalog (visual prototype prices) ──
   // kind 'tree' items reserve `radius` cells from OTHER trees; animals/bush/etc only need an empty cell.
@@ -237,10 +233,23 @@
 
   function openParcel(pid) {
     curParcel = pid;
+    var c = COL_LETTERS.indexOf(pid.charAt(0));
+    var r = parseInt(pid.slice(1), 10) - 1;
     document.getElementById('dTitle').textContent = L('Делянка ', 'Parcel ') + pid;
-    document.getElementById('dSub').textContent = L('0.25 акра · ≈104 × 104 фт · сетка ' + FINE + '×' + FINE + ' (клетка ≈ 5 фт)',
-                                                    '0.25 acre · ≈104 × 104 ft · ' + FINE + '×' + FINE + ' grid (cell ≈ 5 ft)');
+    var acres = 10 / (OV_COLS * OV_ROWS);
+    var side = Math.round(Math.sqrt(acres * 43560));   // ft per side of a square parcel
+    var cellFt = Math.max(1, Math.round(side / FINE));
+    document.getElementById('dSub').textContent = L(
+      '≈' + acres.toFixed(2) + ' акра · ≈' + side + ' × ' + side + ' фт · сетка ' + FINE + '×' + FINE + ' (клетка ≈ ' + cellFt + ' фт)',
+      '≈' + acres.toFixed(2) + ' acre · ≈' + side + ' × ' + side + ' ft · ' + FINE + '×' + FINE + ' grid (cell ≈ ' + cellFt + ' ft)');
     buildFine();
+    // Show the aerial crop of this exact parcel behind the fine grid (zoom keeps the image).
+    fineGrid.style.backgroundImage = "url('land-bg.png')";
+    fineGrid.style.backgroundRepeat = 'no-repeat';
+    fineGrid.style.backgroundSize = (OV_COLS * 100) + '% ' + (OV_ROWS * 100) + '%';
+    fineGrid.style.backgroundPosition =
+      (OV_COLS > 1 ? (c / (OV_COLS - 1) * 100) : 0) + '% ' +
+      (OV_ROWS > 1 ? (r / (OV_ROWS - 1) * 100) : 0) + '%';
     detail.classList.add('open');
   }
   window.closeDetail = function () { detail.classList.remove('open'); closeMenu(); buildOverview(); };
@@ -440,8 +449,9 @@
   img.onload = function () {
     el.dataset.bgDone = '1';
     el.style.backgroundImage = "url('land-bg.png')";
-    el.style.backgroundSize = 'cover';
+    el.style.backgroundSize = '100% 100%';
     el.style.backgroundPosition = 'center';
+    el.style.backgroundRepeat = 'no-repeat';
   };
   img.onerror = function () {
     el.dataset.bgDone = '1';
