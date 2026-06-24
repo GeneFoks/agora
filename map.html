@@ -412,7 +412,7 @@
 </script>
 
 <!-- Standalone map-background initializer (independent of the main script) -->
-<!-- Uses a static aerial photo (land-bg.jpg) if present; otherwise falls back to live Esri satellite tiles. -->
+<!-- Uses a static aerial photo (land-bg.png) if present; otherwise falls back to live Esri satellite tiles. -->
 <script>
 (function initEstateBg() {
   var el = document.getElementById('ovMap');
@@ -439,7 +439,7 @@
   var img = new Image();
   img.onload = function () {
     el.dataset.bgDone = '1';
-    el.style.backgroundImage = "url('land-bg.jpg')";
+    el.style.backgroundImage = "url('land-bg.png')";
     el.style.backgroundSize = 'cover';
     el.style.backgroundPosition = 'center';
   };
@@ -447,7 +447,7 @@
     el.dataset.bgDone = '1';
     useLeaflet();
   };
-  img.src = 'land-bg.jpg';
+  img.src = 'land-bg.png';
 })();
 </script>
 
