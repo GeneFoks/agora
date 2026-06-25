@@ -24,11 +24,10 @@
     .estate-head p { font-size: 15px; color: var(--muted); font-weight: 300; max-width: 560px; margin: 0 auto; line-height: 1.7; }
 
     /* ── OVERVIEW: 10 acres → 0.25-acre parcels ── */
-    .ov-board { position: relative; margin: 0 auto; border-radius: 18px; overflow: hidden;
-      height: min(80vh, 880px); width: min(92vw, calc(min(80vh, 880px) * 4 / 11));
+    .ov-board { position: relative; width: 100%; aspect-ratio: 9 / 5; margin: 0 auto; border-radius: 18px; overflow: hidden;
       box-shadow: 0 30px 70px rgba(0,0,0,.45), inset 0 0 0 1px var(--border); background: #11150f; }
     #ovMap { position: absolute; inset: 0; z-index: 0; pointer-events: none; background: #11150f no-repeat center/100% 100%; }
-    .ov-grid { position: absolute; inset: 0; z-index: 1; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(11, 1fr); }
+    .ov-grid { position: absolute; inset: 0; z-index: 1; display: grid; grid-template-columns: repeat(9, 1fr); grid-template-rows: repeat(5, 1fr); }
     .parcel { position: relative; border-right: 1px solid rgba(255,255,255,.22); border-bottom: 1px solid rgba(255,255,255,.22); cursor: pointer; transition: background .18s, box-shadow .18s; }
     .parcel:hover { background: rgba(196,137,74,.30); box-shadow: inset 0 0 0 2px rgba(244,239,226,.7); z-index: 2; }
     .parcel-id { position: absolute; top: 7px; left: 9px; font-size: 11px; letter-spacing: .08em; color: #fff; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,.85); }
@@ -180,7 +179,7 @@
   function L(ru, en) { return RU ? ru : en; }
 
   // ── Land model ──
-  var OV_COLS = 4, OV_ROWS = 11;         // 44 parcels over the vertical aerial (image rotated to ~0.38:1)
+  var OV_COLS = 9, OV_ROWS = 5;          // 45 parcels over the horizontal aerial (image ~1.79:1)
   var FINE = 20;                          // 20×20 fine grid inside a parcel
   var COL_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
@@ -222,7 +221,7 @@
     'B3': { owner: 'Евгений',   status: 'prepaid' },
     'C3': { owner: 'Александр', status: 'booking' }
   };
-  function isPlot(c, r) { return r < PLOT_ROWS; }
+  function isPlot(c, r) { return !!PLOTS[parcelId(c, r)]; }
   function statusLabel(s) {
     return RU
       ? ({ available: 'Свободно', booking: 'Бронь', prepaid: 'Предоплата', bought: 'Куплено' }[s] || s)
