@@ -27,6 +27,10 @@
     .ov-board { position: relative; width: 100%; aspect-ratio: 9 / 5; margin: 0 auto; border-radius: 18px; overflow: hidden;
       box-shadow: 0 30px 70px rgba(0,0,0,.45), inset 0 0 0 1px var(--border); background: #11150f; }
     #ovMap { position: absolute; inset: 0; z-index: 0; pointer-events: none; background: #11150f no-repeat center/100% 100%; }
+    #ovObjects { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+    .ovtile { position: absolute; border-radius: 1px; }
+    .ovobj { position: absolute; transform: translate(-50%,-50%); aspect-ratio: 1; }
+    .ovobj svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 1px 1px rgba(0,0,0,.55)); }
     .ov-grid { position: absolute; inset: 0; z-index: 1; display: grid; grid-template-columns: repeat(9, 1fr); grid-template-rows: repeat(5, 1fr); }
     .parcel { position: relative; border-right: 1px solid rgba(255,255,255,.22); border-bottom: 1px solid rgba(255,255,255,.22); cursor: pointer; transition: background .18s, box-shadow .18s; }
     .parcel:hover { background: rgba(196,137,74,.30); box-shadow: inset 0 0 0 2px rgba(244,239,226,.7); z-index: 2; }
@@ -134,7 +138,7 @@
       <p id="estateSub"></p>
     </div>
 
-    <div class="ov-board"><div id="ovMap"></div><div class="ov-grid" id="ovGrid"></div></div>
+    <div class="ov-board"><div id="ovMap"></div><div class="ov-grid" id="ovGrid"></div><div id="ovObjects"></div></div>
     <div class="ov-hint" id="ovHint"></div>
   </div>
 
@@ -286,6 +290,32 @@
         ovGrid.appendChild(div);
       }
     }
+    renderOverviewObjects();
+  }
+
+  // draw every placed object on the big map (at its real position inside its parcel)
+  function renderOverviewObjects() {
+    var layer = document.getElementById('ovObjects');
+    if (!layer) return;
+    var cw = 100 / (OV_COLS * FINE), ch = 100 / (OV_ROWS * FINE); // one fine cell, % of board
+    var html = '';
+    Object.keys(PLACE).forEach(function (pid) {
+      var c = COL_LETTERS.indexOf(pid.charAt(0)), r = parseInt(pid.slice(1), 10) - 1;
+      if (c < 0 || r < 0) return;
+      var data = PLACE[pid];
+      Object.keys(data).forEach(function (k) {
+        var kind = data[k], pp = k.split(','), cx = +pp[0], cy = +pp[1];
+        if (typeof CONNECT !== 'undefined' && CONNECT[kind]) {
+          var col = (kind === 'road') ? '#c6a86a' : ((TILE[kind] && TILE[kind].fill) || '#999');
+          var lx = (c + cx / FINE) / OV_COLS * 100, ly = (r + cy / FINE) / OV_ROWS * 100;
+          html += '<div class="ovtile" style="left:' + lx + '%;top:' + ly + '%;width:' + cw + '%;height:' + ch + '%;background:' + col + '"></div>';
+        } else {
+          var ccx = (c + (cx + 0.5) / FINE) / OV_COLS * 100, ccy = (r + (cy + 0.5) / FINE) / OV_ROWS * 100;
+          html += '<div class="ovobj" style="left:' + ccx + '%;top:' + ccy + '%;width:' + (cw * 2.4) + '%">' + ICON[kind] + '</div>';
+        }
+      });
+    });
+    layer.innerHTML = html;
   }
 
   // ── Detail (fine grid) ──
