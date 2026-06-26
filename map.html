@@ -57,12 +57,19 @@
     .fine-wrap { position: relative; width: min(560px, 100%); margin: 0 auto;
       background: #11150f; border-radius: 12px; padding: 8px;
       box-shadow: inset 0 0 0 1px rgba(0,0,0,.18); }
-    .fine-grid { display: grid; gap: 0; aspect-ratio: 1; }
+    .fine-grid { display: grid; gap: 0; aspect-ratio: 1; position: relative; }
     .fcell { border-right: 1px solid rgba(255,255,255,.05); border-bottom: 1px solid rgba(0,0,0,.06); cursor: pointer; position: relative; transition: background .12s; }
     .fcell:hover { background: rgba(244,239,226,.16); }
     .fcell.occupied { cursor: pointer; }
     .fcell.blocked-preview { background: rgba(220,80,60,.18); }
     .fcell svg { position: absolute; inset: 8%; width: 84%; height: 84%; pointer-events: none; filter: drop-shadow(0 1px 1.5px rgba(0,0,0,.4)); }
+    /* roaming animals layer */
+    .fine-animals { position: absolute; inset: 0; pointer-events: none; z-index: 4; }
+    .fanim { position: absolute; aspect-ratio: 1; transform: translate(-50%,-50%); transition: left 2.5s ease-in-out, top 2.5s ease-in-out; pointer-events: auto; cursor: pointer; filter: drop-shadow(0 1px 2px rgba(0,0,0,.55)); }
+    .fanim svg { width: 100%; height: 100%; display: block; }
+    .fanim .bob { width: 100%; height: 100%; animation: fbob 1.7s ease-in-out infinite; }
+    @keyframes fbob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10%); } }
+    @media (prefers-reduced-motion: reduce) { .fanim { transition: none; } .fanim .bob { animation: none; } }
     .detail-foot { padding: 14px 22px; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; font-size: 13px; }
     .foot-tally { display: flex; flex-wrap: wrap; gap: 12px; color: var(--muted); }
     .foot-tally b { color: var(--text); }
@@ -184,6 +191,10 @@
   var SUPA_KEY = 'sb_publishable_nJoq76v_sMb1h5KH_B-TVw_A3kWYSox';
   var sb = (window.supabase && window.supabase.createClient) ? window.supabase.createClient(SUPA_URL, SUPA_KEY) : null;
   var isAdmin = false;
+  var animTimers = [];
+  var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // animals may only live in the D–E columns (pasture zone)
+  function animalAllowedHere() { var c = (curParcel || '').charAt(0); return c === 'D' || c === 'E'; }
 
   // ── Land model ──
   var OV_COLS = 9, OV_ROWS = 5;          // 45 parcels over the horizontal aerial (image ~1.79:1)
@@ -201,11 +212,11 @@
     { id:'chicken', ru:'Курица',   en:'Hen',         price:30,  kind:'animal' },
     { id:'rabbit',  ru:'Заяц',     en:'Rabbit',      price:25,  kind:'animal' },
     { id:'bee',     ru:'Улей',     en:'Beehive',     price:80,  kind:'bee' },
+    { id:'road',       ru:'Дорога',  en:'Road',       price:0, kind:'road' },
     { id:'house',      ru:'Дом',     en:'House',      price:0, kind:'building' },
     { id:'banya',      ru:'Баня',    en:'Banya',      price:0, kind:'building' },
     { id:'barn',       ru:'Амбар',   en:'Barn',       price:0, kind:'building' },
     { id:'greenhouse', ru:'Теплица', en:'Greenhouse', price:0, kind:'building' },
-    { id:'well',       ru:'Колодец', en:'Well',       price:0, kind:'building' },
     { id:'gazebo',     ru:'Беседка', en:'Gazebo',     price:0, kind:'building' }
   ];
   function item(id) { for (var i=0;i<ITEMS.length;i++) if (ITEMS[i].id===id) return ITEMS[i]; return null; }
@@ -224,7 +235,7 @@
     banya:'<svg viewBox="0 0 48 48"><path d="M9 23 24 12 39 23z" fill="#6f4d28"/><rect x="14" y="23" width="20" height="16" fill="#8a6a3e"/><rect x="30" y="9" width="4" height="9" fill="#4a3420"/><circle cx="32" cy="6" r="2.2" fill="#ddd" opacity=".7"/><rect x="20" y="28" width="8" height="11" fill="#5a3f22"/></svg>',
     barn:'<svg viewBox="0 0 48 48"><path d="M9 21 24 11 39 21z" fill="#7a2f26"/><rect x="12" y="21" width="24" height="18" fill="#b14a3a"/><rect x="20" y="27" width="8" height="12" fill="#e2c690"/><path d="M20 27 28 39M28 27 20 39" stroke="#7a2f26" stroke-width="2"/></svg>',
     greenhouse:'<svg viewBox="0 0 48 48"><path d="M10 22 24 12 38 22z" fill="#a7d2d8" opacity=".85"/><rect x="13" y="22" width="22" height="17" fill="#bfe2e6" opacity=".7"/><path d="M19 22V39M24 14V39M29 22V39" stroke="#7fb3bb" stroke-width="1"/></svg>',
-    well:'<svg viewBox="0 0 48 48"><rect x="15" y="10" width="2" height="15" fill="#6f5230"/><rect x="31" y="10" width="2" height="15" fill="#6f5230"/><path d="M12 12 24 6 36 12z" fill="#9a5a2c"/><rect x="16" y="24" width="16" height="14" rx="2" fill="#8d877b"/><ellipse cx="24" cy="24" rx="8" ry="3" fill="#4a7f8c"/></svg>',
+    road:'<svg viewBox="0 0 48 48"><rect x="6" y="6" width="36" height="36" rx="6" fill="#5a7d4f" opacity=".15"/><path d="M24 5V43" stroke="#c6a86a" stroke-width="13" stroke-linecap="round"/><path d="M24 10v6M24 22v6M24 34v4" stroke="#efe0c0" stroke-width="2" stroke-linecap="round"/></svg>',
     gazebo:'<svg viewBox="0 0 48 48"><path d="M9 20 24 9 39 20z" fill="#9a6f3e"/><rect x="14" y="20" width="2.5" height="18" fill="#6f5230"/><rect x="31.5" y="20" width="2.5" height="18" fill="#6f5230"/><rect x="13" y="36" width="22" height="3" fill="#6f5230"/></svg>'
   };
 
@@ -313,24 +324,94 @@
       (OV_ROWS > 1 ? (r / (OV_ROWS - 1) * 100) : 0) + '%';
     detail.classList.add('open');
   }
-  window.closeDetail = function () { detail.classList.remove('open'); closeMenu(); buildOverview(); };
+  window.closeDetail = function () { animTimers.forEach(clearInterval); animTimers = []; detail.classList.remove('open'); closeMenu(); buildOverview(); };
   detail.addEventListener('click', function (e) { if (e.target === detail) window.closeDetail(); });
 
+  // ── connectable tiles: roads + buildings merge with same-kind neighbours ──
+  var CONNECT = { road:1, house:1, banya:1, barn:1, greenhouse:1, gazebo:1 };
+  var TILE = {
+    house:      { fill:'#c08a55',             edge:'#8a5a2c' },
+    banya:      { fill:'#8a6a3e',             edge:'#5a4226' },
+    barn:       { fill:'#b14a3a',             edge:'#7a2f26' },
+    greenhouse: { fill:'rgba(160,205,210,.78)', edge:'#6f9aa0' },
+    gazebo:     { fill:'#9a6f3e',             edge:'#6f5230' }
+  };
+  function roadTileHTML(n, e, s, w) {
+    var c = '#c6a86a', p = '<rect x="3.4" y="3.4" width="5.2" height="5.2" rx="1.4" fill="' + c + '"/>';
+    if (n) p += '<rect x="3.4" y="0" width="5.2" height="5" fill="' + c + '"/>';
+    if (s) p += '<rect x="3.4" y="7" width="5.2" height="5" fill="' + c + '"/>';
+    if (e) p += '<rect x="7" y="3.4" width="5" height="5.2" fill="' + c + '"/>';
+    if (w) p += '<rect x="0" y="3.4" width="5" height="5.2" fill="' + c + '"/>';
+    return '<svg viewBox="0 0 12 12" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%">' + p + '</svg>';
+  }
+  function buildTileHTML(kind, n, e, s, w, anchor) {
+    var t = TILE[kind], sh = [];
+    if (!n) sh.push('inset 0 2px 0 ' + t.edge);
+    if (!s) sh.push('inset 0 -2px 0 ' + t.edge);
+    if (!e) sh.push('inset -2px 0 0 ' + t.edge);
+    if (!w) sh.push('inset 2px 0 0 ' + t.edge);
+    var base = 'position:absolute;inset:0;background:' + t.fill + ';' + (sh.length ? 'box-shadow:' + sh.join(',') + ';' : '');
+    var roof = 'position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(0,0,0,.14));';
+    var h = '<div style="' + base + '"></div><div style="' + roof + '"></div>';
+    if (anchor) h += '<div style="position:absolute;inset:12%;pointer-events:none">' + ICON[kind] + '</div>';
+    return h;
+  }
+
   function buildFine() {
+    animTimers.forEach(clearInterval); animTimers = [];
     fineGrid.style.gridTemplateColumns = 'repeat(' + FINE + ',1fr)';
     var data = pData(curParcel);
     var html = '';
     for (var y = 0; y < FINE; y++) {
       for (var x = 0; x < FINE; x++) {
-        var id = data[x + ',' + y];
-        html += '<div class="fcell' + (id ? ' occupied' : '') + '" data-x="' + x + '" data-y="' + y + '">' + (id ? ICON[id] : '') + '</div>';
+        var id = data[x + ',' + y], inner = '', it0 = id ? item(id) : null;
+        if (id) {
+          if (CONNECT[id]) {
+            var n = data[x + ',' + (y-1)] === id, s = data[x + ',' + (y+1)] === id,
+                e = data[(x+1) + ',' + y] === id, w = data[(x-1) + ',' + y] === id;
+            inner = (id === 'road') ? roadTileHTML(n, e, s, w) : buildTileHTML(id, n, e, s, w, !n && !w);
+          } else if (it0 && it0.kind === 'animal') {
+            inner = '';   // animals are drawn (and roam) in the overlay layer below
+          } else {
+            inner = ICON[id];
+          }
+        }
+        html += '<div class="fcell' + (id ? ' occupied' : '') + '" data-x="' + x + '" data-y="' + y + '">' + inner + '</div>';
       }
     }
     fineGrid.innerHTML = html;
     Array.prototype.forEach.call(fineGrid.children, function (cell) {
       cell.addEventListener('click', function (e) { onCell(this, e); });
     });
+    buildAnimals(data);
     updateTally();
+  }
+
+  // roaming animals: wander randomly within ~30 ft, clamped to the parcel (so they never leave D/E)
+  function buildAnimals(data) {
+    var layer = document.createElement('div');
+    layer.className = 'fine-animals';
+    fineGrid.appendChild(layer);
+    var acres = 10 / (OV_COLS * OV_ROWS), cellFt = Math.sqrt(acres * 43560) / FINE;
+    var roamR = Math.max(1, Math.round(30 / cellFt));
+    function clampC(v) { return Math.max(0, Math.min(FINE - 1, v)); }
+    Object.keys(data).forEach(function (k) {
+      var id = data[k], it = item(id);
+      if (!it || it.kind !== 'animal') return;
+      var pp = k.split(','), ax = +pp[0], ay = +pp[1];
+      var el = document.createElement('div');
+      el.className = 'fanim';
+      el.style.width = (160 / FINE) + '%';
+      el.innerHTML = '<div class="bob">' + ICON[id] + '</div>';
+      el.addEventListener('click', function (ev) { ev.stopPropagation(); showInfoMenu(id, ax, ay, ev); });
+      layer.appendChild(el);
+      function pos(cx, cy) { el.style.left = ((cx + 0.5) / FINE * 100) + '%'; el.style.top = ((cy + 0.5) / FINE * 100) + '%'; }
+      pos(ax, ay);
+      if (reducedMotion) return;
+      function step() { pos(clampC(ax + Math.round((Math.random()*2 - 1) * roamR)), clampC(ay + Math.round((Math.random()*2 - 1) * roamR))); }
+      animTimers.push(setInterval(step, 2400 + Math.random() * 2200));
+      setTimeout(step, Math.random() * 1400);
+    });
   }
 
   function hasTreeNear(data, x, y, radius) {
@@ -345,6 +426,7 @@
 
   function canPlace(data, it, x, y) {
     if (data[x + ',' + y]) return L('Клетка занята', 'Cell is taken');
+    if (it.kind === 'animal' && !animalAllowedHere()) return L('Животных — только в зоне D–E', 'Animals — only in zone D–E');
     if (it.kind === 'tree') {
       // a new tree may not sit next to another tree within max(itsRadius, otherTreeRadius=1)
       if (hasTreeNear(data, x, y, Math.max(it.radius, 1))) return L('Рядом уже есть дерево', 'A tree is already nearby');
@@ -444,7 +526,7 @@
     steps.forEach(function (s, i) { html += '<div class="how-step"><div class="how-step-n">' + (i+1) + '</div><h4>' + s[0] + '</h4><p>' + s[1] + '</p></div>'; });
     html += '</div><h3>' + L('Что можно разместить', 'What you can place') + '</h3><div class="cat-grid">';
     ITEMS.forEach(function (it) {
-      html += '<div class="cat-card">' + ICON[it.id] + '<div><div class="nm">' + (RU ? it.ru : it.en) + '</div><div class="pr">$' + it.price + '</div></div></div>';
+      html += '<div class="cat-card">' + ICON[it.id] + '<div><div class="nm">' + (RU ? it.ru : it.en) + '</div><div class="pr">' + (it.price ? '$' + it.price : '') + '</div></div></div>';
     });
     html += '</div>';
     html += '<p class="cat-note">' + L(
