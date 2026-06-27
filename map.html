@@ -31,6 +31,11 @@
     .ovtile { position: absolute; border-radius: 1px; }
     .ovobj { position: absolute; transform: translate(-50%,-50%); aspect-ratio: 1; }
     .ovobj svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 1px 1px rgba(0,0,0,.55)); }
+    /* roaming animals on the big map (wander within their own parcel) */
+    .ovanim { position: absolute; transform: translate(-50%,-50%); aspect-ratio: 1; transition: left 2.6s ease-in-out, top 2.6s ease-in-out; }
+    .ovanim svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 1px 1px rgba(0,0,0,.55)); }
+    .ovanim .bob { width: 100%; height: 100%; animation: fbob 1.7s ease-in-out infinite; }
+    @media (prefers-reduced-motion: reduce) { .ovanim { transition: none; } .ovanim .bob { animation: none; } }
     .ov-grid { position: absolute; inset: 0; z-index: 1; display: grid; grid-template-columns: repeat(9, 1fr); grid-template-rows: repeat(5, 1fr); }
     .parcel { position: relative; border-right: 1px solid rgba(255,255,255,.22); border-bottom: 1px solid rgba(255,255,255,.22); cursor: pointer; transition: background .18s, box-shadow .18s; }
     .parcel:hover { background: rgba(196,137,74,.30); box-shadow: inset 0 0 0 2px rgba(244,239,226,.7); z-index: 2; }
@@ -196,6 +201,7 @@
   var sb = (window.supabase && window.supabase.createClient) ? window.supabase.createClient(SUPA_URL, SUPA_KEY) : null;
   var isAdmin = false;
   var animTimers = [];
+  var ovAnimTimers = [];
   var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   // animals may only live in the D–E columns (pasture zone)
   function animalAllowedHere() { var c = (curParcel || '').charAt(0); return c === 'D' || c === 'E'; }
@@ -297,15 +303,21 @@
   function renderOverviewObjects() {
     var layer = document.getElementById('ovObjects');
     if (!layer) return;
+    ovAnimTimers.forEach(clearInterval); ovAnimTimers = [];
     var cw = 100 / (OV_COLS * FINE), ch = 100 / (OV_ROWS * FINE); // one fine cell, % of board
-    var html = '';
+    var acres = 10 / (OV_COLS * OV_ROWS), cellFt = Math.sqrt(acres * 43560) / FINE;
+    var roamR = Math.max(1, Math.round(30 / cellFt));   // ~30 ft wander, in fine cells
+    function clampC(v) { return Math.max(0, Math.min(FINE - 1, v)); }
+    var html = '', animals = [];
     Object.keys(PLACE).forEach(function (pid) {
       var c = COL_LETTERS.indexOf(pid.charAt(0)), r = parseInt(pid.slice(1), 10) - 1;
       if (c < 0 || r < 0) return;
       var data = PLACE[pid];
       Object.keys(data).forEach(function (k) {
-        var kind = data[k], pp = k.split(','), cx = +pp[0], cy = +pp[1];
-        if (typeof CONNECT !== 'undefined' && CONNECT[kind]) {
+        var kind = data[k], pp = k.split(','), cx = +pp[0], cy = +pp[1], it = item(kind);
+        if (it && it.kind === 'animal') {
+          animals.push({ id: kind, c: c, r: r, cx: cx, cy: cy });   // roams in the layer below
+        } else if (typeof CONNECT !== 'undefined' && CONNECT[kind]) {
           var col = (kind === 'road') ? '#c6a86a' : ((TILE[kind] && TILE[kind].fill) || '#999');
           var lx = (c + cx / FINE) / OV_COLS * 100, ly = (r + cy / FINE) / OV_ROWS * 100;
           html += '<div class="ovtile" style="left:' + lx + '%;top:' + ly + '%;width:' + cw + '%;height:' + ch + '%;background:' + col + '"></div>';
@@ -316,6 +328,23 @@
       });
     });
     layer.innerHTML = html;
+    // roaming animals: wander randomly within ~30 ft of home, clamped to their parcel (never leave D/E)
+    animals.forEach(function (a) {
+      var el = document.createElement('div');
+      el.className = 'ovanim';
+      el.style.width = (cw * 2.4) + '%';
+      el.innerHTML = '<div class="bob">' + ICON[a.id] + '</div>';
+      layer.appendChild(el);
+      function pos(nx, ny) {
+        el.style.left = ((a.c + (nx + 0.5) / FINE) / OV_COLS * 100) + '%';
+        el.style.top  = ((a.r + (ny + 0.5) / FINE) / OV_ROWS * 100) + '%';
+      }
+      pos(a.cx, a.cy);
+      if (reducedMotion) return;
+      function step() { pos(clampC(a.cx + Math.round((Math.random()*2 - 1) * roamR)), clampC(a.cy + Math.round((Math.random()*2 - 1) * roamR))); }
+      ovAnimTimers.push(setInterval(step, 2600 + Math.random() * 2400));
+      setTimeout(step, Math.random() * 1600);
+    });
   }
 
   // ── Detail (fine grid) ──
