@@ -5,6 +5,7 @@
   var links = [
     { href: '/',      slug: 'home',  key: 'nav.home' },
     { href: '/about', slug: 'about', key: 'nav.about' },
+    { href: '/manifesto', slug: 'manifesto', key: 'nav.manifesto' },
     { href: '/land',  slug: 'land',  key: 'nav.land' },
     { href: '/map',   slug: 'map',   key: 'nav.map' },
     { href: '/join',  slug: 'join',  key: 'nav.join' },

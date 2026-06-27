@@ -14,6 +14,10 @@
   to = "/about"
   status = 301
 [[redirects]]
+  from = "/manifesto.html"
+  to = "/manifesto"
+  status = 301
+[[redirects]]
   from = "/land.html"
   to = "/land"
   status = 301
