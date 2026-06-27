@@ -22,6 +22,10 @@
   to = "/land"
   status = 301
 [[redirects]]
+  from = "/own.html"
+  to = "/own"
+  status = 301
+[[redirects]]
   from = "/map.html"
   to = "/map"
   status = 301
