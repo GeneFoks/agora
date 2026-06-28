@@ -8,6 +8,12 @@
   <script src="theme.js"></script>
   <link rel="stylesheet" href="style.css">
   <script src="i18n.js"></script>
+  <style>
+    .offer-card-link { display: block; max-width: 440px; margin: 0 auto; text-decoration: none; color: inherit; }
+    .offer-card-link .card { transition: transform .15s, border-color .15s, box-shadow .15s; }
+    .offer-card-link:hover .card { transform: translateY(-3px); border-color: var(--earth); }
+    .offer-more { margin-top: 16px; font-size: 13.5px; color: var(--earth); font-weight: 600; letter-spacing: .02em; }
+  </style>
 </head>
 <body>
 
@@ -80,13 +86,16 @@
       <div class="section-label" data-i18n="own.tiers.label">Предложение</div>
       <h2 class="section-title" data-i18n="own.tiers.title">Резидентство — 6 мест</h2>
     </div>
-    <div class="card" style="max-width:440px;margin:0 auto;border-top:2px solid var(--earth);box-shadow:0 24px 60px rgba(0,0,0,.35);text-align:center;">
-      <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--earth);font-weight:600;margin-bottom:10px;" data-i18n="own.tier2.badge">Первая земля · 5 акров</div>
-      <div class="card-title" data-i18n="own.tier2.name">Сосед-совладелец</div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:34px;color:var(--earth);margin:10px 0 16px;" data-i18n="own.tier2.price">$10 000 = 5%</div>
-      <p class="card-text" style="margin-bottom:16px;" data-i18n="own.tier2.desc">5% компании Agora Land и твой участок 0.25 акра под застройку. Полное членство: ферма, велнес, программы, мероприятия. Голос в управлении.</p>
-      <p style="font-size:13px;color:var(--earth);font-weight:400;" data-i18n="own.tier2.note">Всего 6 мест в первых 5 акрах.</p>
-    </div>
+    <a href="/offer" class="offer-card-link">
+      <div class="card" style="border-top:2px solid var(--earth);box-shadow:0 24px 60px rgba(0,0,0,.35);text-align:center;">
+        <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--earth);font-weight:600;margin-bottom:10px;" data-i18n="own.tier2.badge">Первая земля · 5 акров</div>
+        <div class="card-title" data-i18n="own.tier2.name">Сосед-совладелец</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:34px;color:var(--earth);margin:10px 0 16px;" data-i18n="own.tier2.price">$10 000 = 5%</div>
+        <p class="card-text" style="margin-bottom:16px;" data-i18n="own.tier2.desc">5% компании Agora Land и твой участок 0.25 акра под застройку. Полное членство: ферма, велнес, программы, мероприятия. Голос в управлении.</p>
+        <p style="font-size:13px;color:var(--earth);font-weight:400;" data-i18n="own.tier2.note">Всего 6 мест в первых 5 акрах.</p>
+        <div class="offer-more" data-i18n="own.tier2.more">Открыть полное предложение →</div>
+      </div>
+    </a>
   </div>
 </section>
 
