@@ -21,14 +21,27 @@
   from = "/land.html"
   to = "/land"
   status = 301
+# Money/offer pages retired — old links land on the join page.
+[[redirects]]
+  from = "/own"
+  to = "/join"
+  status = 301
+  force = true
 [[redirects]]
   from = "/own.html"
-  to = "/own"
+  to = "/join"
   status = 301
+  force = true
+[[redirects]]
+  from = "/offer"
+  to = "/join"
+  status = 301
+  force = true
 [[redirects]]
   from = "/offer.html"
-  to = "/offer"
+  to = "/join"
   status = 301
+  force = true
 [[redirects]]
   from = "/map.html"
   to = "/map"

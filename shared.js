@@ -7,8 +7,6 @@
     { href: '/about', slug: 'about', key: 'nav.about' },
     { href: '/manifesto', slug: 'manifesto', key: 'nav.manifesto' },
     { href: '/land',  slug: 'land',  key: 'nav.land' },
-    { href: '/own',   slug: 'own',   key: 'nav.own' },
-    { href: '/map',   slug: 'map',   key: 'nav.map' },
     { href: '/join',  slug: 'join',  key: 'nav.join' },
   ];
 
@@ -58,7 +56,6 @@
           '<div class="footer-col">' +
             '<h4 data-i18n="footer.contact">' + t('footer.contact') + '</h4>' +
             '<a href="https://t.me/agorausa" target="_blank">Telegram: t.me/agorausa</a>' +
-            '<a href="https://gofund.me/41a2c4cc1" target="_blank">GoFundMe</a>' +
             '<a href="https://bestiehere.com/signup?ref=D46EB3DC" target="_blank" data-i18n="nav.app">' + t('nav.app') + '</a>' +
             '<a href="/join" data-i18n="nav.cta">' + t('nav.cta') + '</a>' +
             '<a href="/land" data-i18n="nav.land">' + t('nav.land') + '</a>' +
