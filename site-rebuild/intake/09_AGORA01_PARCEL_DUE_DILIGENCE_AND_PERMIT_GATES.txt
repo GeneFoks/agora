@@ -1,0 +1,99 @@
+AGORA CIVILIZATION BLUEPRINT 1.0
+DOCUMENT 09 / 39
+AGORA-01 — PARCEL DUE DILIGENCE & PERMIT GATES
+Проверка земельного участка и разрешительных условий до покупки
+Версия: 1.0 | 9 октября 2026
+Статус: рабочий протокол, НЕ юридическое заключение и НЕ подтверждение пригодности конкретного участка.
+
+1. ЗАДАЧА
+Не допустить покупки земли, на которой невозможно законно и экономически реализовать Minimum Viable Settlement (MVS), затем гостевой глэмпинг, сауну, мероприятия и долгосрочную лабораторию Agora. Решение о покупке должно опираться на документы и письменные ответы ведомств, а не слова брокера.
+
+2. ИСХОДНЫЕ ПРЕДПОЛОЖЕНИЯ
+Около 18 acres возле Austin, Texas; потенциальное озеро около 2 acres. Ориентир покупки $250,000, down payment $30,000, кредит приблизительно на 10 лет. Отдельно $25,000 на первый год улучшений плюс труд основателей и законно полученные пригодные вторичные материалы. 15 декабря 2026 — желаемый тестовый сбор; 15 января 2027 — целевой MVS с собственной баней. Покупка и адрес участка не подтверждены в данном документе. Эти сроки условны и не отменяют разрешения и безопасность.
+
+3. КРАСНЫЕ ВОРОТА: ДО НЕВОЗВРАТНОГО ДЕПОЗИТА
+GATE A — ТИТУЛ И ДОСТУП. Получить title commitment, актуальный survey (желательно ALTA/NSPS, если оправдано), legal description, подтверждение выхода на публичную дорогу или зарегистрированного easement. Проверить сервитуты, pipeline, utility, mineral rights и возможные права третьих лиц. Нет законного доступа — STOP.
+GATE B — ПРАВИЛА ЗЕМЛЕПОЛЬЗОВАНИЯ. Установить county, city limits, ETJ, subdivision/platting status, deed restrictions, HOA/POA. Отдельно получить письменную позицию по RV occupancy, camping/glamping rentals, short-term rental, sauna, event venue, restaurant, agriculture и жилым строениям. Нельзя считать, что сельский участок автоматически допускает все эти функции.
+GATE C — ВОДА И СТОКИ. Проверить источник питьевой воды, наличие счетчика/водопровода, доступность новой точки подключения, capacity, стоимость и сроки. Для колодца — возможность бурения, правила groundwater conservation district, качество и дебит. Для стоков — существующий разрешенный OSSF/septic, проектная вместимость и возможность расширения; предварительная оценка почв и площади. Отсутствие реалистичного санитарного решения — STOP для проживания/приема гостей.
+GATE D — НАВОДНЕНИЕ И ОЗЕРО. FEMA National Flood Hazard Layer, местные floodplain maps, реальный рельеф, сток, дамба/плотина, wetlands и waters of the United States. Нельзя копать, углублять, засыпать или менять берег/плотину без проверки прав и разрешений. Озеро не считать автоматически пригодным для купания, водозабора или коммерческого использования.
+GATE E — ЭЛЕКТРОЭНЕРГИЯ И ПОЖАРНЫЙ ДОСТУП. Определить utility provider, расстояние до сети, наличие трансформатора, мощность, meter, тариф, цену extension и сроки. Проверить подъезд пожарной техники, адресацию, доступ скорой помощи, burn bans, требования к сауне/печи, кострам, электромонтажу и эвакуации.
+GATE F — ФИНАНСИРОВАНИЕ. Получить письменный term sheet с APR, amortization, balloon, origination fees, lien, collateral, insurance, property taxes и возможными ограничениями на коммерческое использование. Рассчитать платеж и денежный резерв. Не считать 10-летний кредит подтвержденным.
+
+4. КОМУ ЗАДАВАТЬ ВОПРОСЫ
+1) Seller / listing broker: utilities, история озера, прежнее использование, документы, ограничения, существующие постройки, расходы, известные проблемы. Ответы брокера — только старт.
+2) Title company / real estate attorney: title, restrictions, easements, liens, access, mineral rights, legal entity ownership, договорные contingencies.
+3) Licensed surveyor: границы, топография, зоны застройки, подъезд, water features.
+4) County development services / permitting / environmental health: OSSF, floodplain, driveway, fire, RV, temporary structures, occupancy, events. Название офиса зависит от точного county.
+5) City planning / ETJ jurisdiction: zoning, permits, platting, commercial operations. Сначала определить точный статус адреса.
+6) Electric utility: service availability letter, capacity, extension estimate.
+7) Water utility / water supply corporation / groundwater district: service availability, meter and tap fees, well restrictions.
+8) Fire marshal / local fire department: access, assembly occupancy, tents, sauna, fire features, inspection.
+9) Texas Commission on Environmental Quality (TCEQ) and authorized OSSF agent: septic/wastewater and environmental questions.
+10) FEMA / county floodplain administrator: floodplain and development permissions.
+11) US Army Corps of Engineers (USACE) and potentially Texas Parks and Wildlife / TCEQ: lake, fill, dredging, wetlands, dams and water rights as applicable.
+12) Texas Department of Transportation or county road authority: driveway/culvert/access permits.
+13) Insurance broker: liability for guests, events, sauna, water, RVs, commercial use.
+14) Licensed civil engineer / OSSF designer / electrician: constructability and budget.
+
+5. ПИСЬМЕННЫЕ ВОПРОСЫ ПРОДАВЦУ
+— Есть ли активный электрический счетчик? Кому принадлежит линия? Сколько amps/kVA доступно? Где точка подключения?
+— Есть ли действующий водяной счетчик и оплаченный tap? Какая организация обслуживает? Можно ли получить письмо о возможности подключения?
+— Есть ли разрешенный septic/OSSF? Где схема, permit, расчетная нагрузка, maintenance history? Если нет, были ли soil/percolation investigations?
+— Есть ли legal recorded access и какие-либо shared road agreements?
+— Имеются ли deed restrictions, HOA/POA, mineral, pipeline, drainage, conservation или utility easements?
+— Были ли flooding, erosion, lake overflow, drought, fish kills, algae blooms или dam repairs?
+— Кто владеет озером/дном/берегами? Искусственное ли оно? Есть ли дамба, outlet, water rights, permits?
+— Были ли официальные отказы в разрешениях или code violations?
+— Какие строения, RV, кемпинг, аренда, мероприятия и коммерческое использование уже разрешены документально?
+— Есть ли survey, title policy, utility bills, tax statements, geotechnical/soil reports?
+
+6. РЕГУЛЯТОРНЫЕ ВОРОТА ПО ВИДАМ ДЕЯТЕЛЬНОСТИ
+A. Проживание двух основателей в RV: zoning/land-use, длительность стоянки, электричество, питьевая вода, OSSF, адресация, fire safety. Не обещать постоянное проживание до письменной проверки.
+B. Палатки на деревянных платформах: строительные/пожарные нормы, санитария, weather exposure, ADA applicability, insurance, guest occupancy.
+C. Аренда RV и glamping: lodging rules, sales/hotel occupancy taxes (включая местные, если применимы), fire/health standards, insurance, STR requirements.
+D. Сауна: конструкция, нагреватель, электрика/дымовая труба, вентиляция, fire separation, water, accessibility, commercial use, liability.
+E. Свадьбы и events: assembly occupancy, parking, noise, fire, restrooms, food vendors, alcohol licensing if relevant, traffic, emergency plan.
+F. Ресторан/кухня: health department permits, food safety, wastewater, grease disposal, commercial kitchen, accessibility.
+G. Озеро: купание/пирс/лодки/земляные работы только после инженерной и правовой проверки; вода требует отдельной оценки качества и спасательной стратегии.
+H. Ферма/животные: animal welfare, fencing, water, manure, veterinary care, land-use, biosecurity, guest contact and liability.
+I. Nonprofit/research: отдельно проверить corporate, tax-exemption and charitable-solicitation requirements; не смешивать средства nonprofit с доходами founders.
+
+7. ТЕХНИЧЕСКИЙ ПОЛЕВОЙ ОСМОТР
+Сделать геопривязанные фото: въезд, дороги, уровень воды, берега, высокие/низкие точки, растительность, линии электропередач, счетчики, колодцы, трубы, септик, соседи. Проверить сигнал связи, шум, запахи, промышленные объекты, wildlife, wildfire exposure. Зафиксировать точки предполагаемых RV, палаток, сауны и санузлов, но НЕ начинать земляные работы до проверки ограничений.
+
+8. БЮДЖЕТ И ПРАВИЛО STOP
+Не утверждать, что $25,000 хватит на весь MVS: цена подключения воды, OSSF, электроэнергии, дорожного доступа и страховки может поглотить бюджет. До покупки получить диапазоны с подтвержденными предложениями минимум по: electric service, potable water, wastewater, access/driveway, basic sanitation, fire compliance, insurance. Добавить contingency и cash reserve. Не использовать вторичные кабели/трубы/материалы без проверки происхождения, состояния, назначения и соответствия нормам.
+
+9. ПРИОРИТЕТНЫЙ ПОРЯДОК РАБОТ
+День 1–3: точный адрес, parcel ID, county, city/ETJ; запрос survey/title/deed restrictions; preliminary flood review.
+День 3–7: письменные обращения в county/city, utility providers, OSSF authority, floodplain administrator; назначить site walk.
+День 7–14: инженерные оценки и utility estimates; консультация fire marshal; предварительный страховой quote.
+До окончания due-diligence period: получить юридическую и финансовую матрицу GO / CONDITIONAL GO / NO-GO. Если документы не успевают — согласовать продление или отказаться, а не гадать.
+После закрытия и получения разрешений: временная безопасная инфраструктура; затем тестовое мероприятие и измерение KPI.
+
+10. GO / NO-GO МАТРИЦА
+NO-GO: нет законного доступа; запрет на ключевые функции; неприемлемый flood risk; нет санитарного решения; неподъемная стоимость коммуникаций; непрозрачный титул; невозможное финансирование.
+CONDITIONAL GO: функции допустимы, но нужны дополнительные permits/engineering, стоимость и сроки укладываются в подтвержденный план.
+GO: письменная проверка разрешенных видов использования, доступ, utilities/OSSF feasibility, страхование и финансовая модель с резервом подтверждены.
+
+11. МЕТРИКИ И АРТЕФАКТЫ
+Собрать Data Room: 01 Parcel Facts; 02 Survey/Title; 03 Deed/Easements; 04 Zoning/ETJ; 05 Flood/Wetlands/Lake; 06 Utilities; 07 OSSF; 08 Fire/Access; 09 Commercial Use; 10 Quotes/Budget; 11 Insurance; 12 Financing; 13 Written Agency Responses; 14 Risk Register; 15 Decision Memo.
+Каждому пункту присвоить: VERIFIED / PENDING / BLOCKED, источник, дату, ответственного, ссылку/файл и следующее действие.
+
+12. ПЕРВЫЕ 10 ВОПРОСОВ ДЛЯ СЛЕДУЮЩЕГО РАУНДА
+1. Каков точный адрес и county участка?
+2. Находится ли он в city limits или ETJ?
+3. Есть ли актуальный survey и title commitment?
+4. Подтвержден ли legal road access?
+5. Есть ли электрический meter и capacity letter?
+6. Есть ли water tap и service availability letter?
+7. Есть ли OSSF permit либо предварительное заключение о feasibility?
+8. Какой статус floodplain и озера?
+9. Подтверждены ли письменно RV occupancy, glamping, sauna и events?
+10. Какова реальная полная стоимость до первого безопасного проживания?
+
+13. ИНСТРУКЦИЯ ДЛЯ AI COUNCIL
+Не выдумывать адреса офисов, названия ведомств конкретного county, сроки, цены, нормы или полученные разрешения. Для site-specific заключений требовать parcel ID и актуальные документы; отмечать «❓ ПРОВЕРИТЬ». Разделять факт, предположение, проектную идею и юридическое требование. Подготовить отдельные email-шаблоны для брокера, county, water/electric utility, OSSF agent и fire marshal после получения точного адреса.
+
+ИТОГ
+Первый результат документа №09 — не чертеж и не покупка земли, а обоснованное решение: можно ли законно, безопасно и финансово разумно запустить Agora-01 именно на этом участке. Сначала право на использование и инфраструктура; затем RV, палатки, баня, гости и масштабирование.

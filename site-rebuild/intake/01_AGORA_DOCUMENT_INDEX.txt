@@ -1,0 +1,66 @@
+AGORA CIVILIZATION BLUEPRINT — DOCUMENT INDEX
+Version 1.0 | 2026-10-09
+
+TOTAL PLANNED: 36 TEXT DOCUMENTS (00–35)
+
+FOUNDATIONS
+00 Canonical Master Context — founder-approved inputs, constraints, vision [CREATED]
+01 Document Index and Production Protocol [CREATED]
+02 Manifesto — Why Agora Exists
+03 Civilization Problem and First Principles
+04 Agora Constitution — Rights, Culture, Ethics
+05 Founder Charter — 50/50 Control and Deadlock
+06 Legal Entity Architecture — For-profit / Nonprofit / Membership
+07 Vision Horizons — 2026 / 2030 / 2040 / 2050 / 2100
+
+AGORA-01: LAND AND OPERATIONS
+08 Austin-01 Site Master Plan and Spatial Program
+09 Parcel Due Diligence and Permit Gates
+10 First 100 Days — Dec 15 and Jan 15 Milestones
+11 Lean Infrastructure — Water, Power, Waste, Roads, Fire
+12 Housing — RV, Tents, Decks, Cabins and Accessibility
+13 Sauna, Wellness, Health and Public Safety
+14 Hospitality, Events, Weddings and Guest Experience
+15 Food Systems — Farm, Greenhouse, Animals and Veterinary Care
+16 Architecture, Materials Reuse and Regenerative Construction
+17 Financial Model — $25k Pilot, Debt, Revenue, Cash Flow
+18 Operations — Maintenance, Staffing, Procurement, SOPs
+19 Community Formation — Membership, Rituals, Conflict Resolution
+
+CIVILIZATION SYSTEMS
+20 Human Flourishing — Health, Education, Movement, Culture
+21 Economy — Internal Marketplace and Shared Prosperity
+22 Agora OS — Digital Twin, AI, Data Governance
+23 Robotics, Automation and Autonomous Production
+24 Governance at Scale — Transparency, Representation, Accountability
+25 Resilience and Knowledge Ark — Continuity of Civilization
+26 Environmental Systems — Biodiversity, Climate, Circularity
+27 Security, Emergency Management and Risk Register
+
+SCALE AND FUTURE
+28 Agora Protocol — Replicable Settlement Templates
+29 Network Strategy — Membership, Partnerships, Expansion
+30 Frontier R&D — Desert, Arctic, Ocean, Moon, Mars
+31 Metrics — Civilization Scorecard and Experiment Design
+32 Fundraising — Capital Stack, Grants, Investment and Donations
+33 Brand, Narrative, Marketing and Movement Building
+34 AI Council — Multi-model Research Workflow and Prompt Pack
+35 Idea Registry, Decision Log and Master Roadmap
+
+PRODUCTION RULES
+- Numbering and filenames never change silently.
+- Each document begins with version, status, assumptions and cross-references.
+- Mark decisions versus proposals; retain contradictions as explicit questions.
+- Each applied document ends with experiments, KPIs, risks, legal gates and 'Tomorrow Morning'.
+- Keep 00 unchanged unless founders approve an amendment; log amendments in 35.
+- Do not claim the site is purchased, financed, permitted or operational until verified.
+- All figures beyond founder inputs are estimates and require validation.
+- AI outputs are research drafts; licensed professional sign-off is required where relevant.
+
+RECOMMENDED COPY ORDER INTO FLOT / CLAUDE / OTHER AI
+First upload 00 and 01 as permanent project context. Then upload 02 onward in sequence. For any specialist AI, provide 00 + 01 + the relevant numbered document. Ask for a critique with assumptions and red-team objections, not a rewrite of founder decisions.
+
+CURRENT PRODUCTION STATUS
+00 Complete first draft
+01 Complete first draft
+02–35 Planned; to be written and iterated in sequence

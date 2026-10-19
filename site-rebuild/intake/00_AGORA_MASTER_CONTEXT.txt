@@ -1,0 +1,77 @@
+AGORA CIVILIZATION BLUEPRINT
+DOCUMENT 00 — CANONICAL MASTER CONTEXT
+Version 1.0 | 2026-10-09 | Status: founder inputs + hypotheses, not legal/engineering approval
+
+PURPOSE
+This is the source-of-truth brief for all future Agora documents and AI collaborators. Preserve original ideas; distinguish decisions, targets, hypotheses and unknowns. Never silently convert a speculative concept into an approved plan.
+
+1. CIVILIZATIONAL NORTH STAR
+Agora is an experimental platform for a new, replicable infrastructure of human civilization, beginning with an 18-acre prototype near Austin, Texas. It is not merely a campground, wedding venue, eco-village or glamping company. The first settlement is a living laboratory for human flourishing, affordable living, community, resilience, autonomy, technology and regenerative systems. The far horizon includes networks of settlements, extreme environments and potentially off-world habitats. These are aspirations, not claims of technical feasibility.
+
+Core proposition: create settlements that adapt to people rather than forcing people to adapt to rigid systems. Build a repeatable protocol for founding and operating healthy, productive, increasingly resilient communities.
+
+2. FOUR INTERLOCKING HORIZONS
+A. Agora-01: the Austin-area physical laboratory, operating as a modest settlement, event and hospitality experiment.
+B. Agora Network: replicated sites of different sizes, shared identity, membership and portable access.
+C. Agora OS / Protocol: software, AI, digital twins, construction and operating standards, finance and governance tools, measurable playbooks for replication.
+D. Agora Civilization: long-horizon resilience, knowledge preservation, autonomous production and settlement capability in extreme terrestrial and eventually extraterrestrial settings.
+
+Illustrative settlement templates: Agora-25, Agora-100, Agora-500, later much larger scales. These are conceptual design targets, not zoning entitlements.
+
+3. FOUNDERS AND CONTROL — DECIDED PRINCIPLES
+Co-founders: Evgen and Gennady Fokin, equal 50/50 founding partnership. They seek durable protection of land, IP, brand, strategic direction and financial control. Membership must be represented honestly: participation rights are real and defined, not falsely presented as equal ownership or voting power. Build a transparent Founder Control Architecture with reserved matters, safeguards against hostile capture, conflict-of-interest controls, accounting transparency, succession and a Founder Deadlock Protocol. The exact legal instruments remain subject to independent Texas counsel and tax advice.
+
+4. INSTITUTIONAL MODEL — DIRECTION APPROVED
+Hybrid architecture: for-profit commercial operations; a substantial nonprofit foundation/institute for research, education, public benefit and potential grants; and a membership community. Separate entities, accounts, contracts, governance and conflicts appropriately. Nonprofit assets and funds cannot simply be controlled or redirected for private founder benefit; exempt status and private-benefit rules must be assessed professionally.
+
+5. SITE AND FINANCIAL BASELINE — TARGETS, NOT VERIFIED
+Candidate site: approximately 18 acres near Austin, with an approximately 2-acre lake. Purchase target $250,000; down payment approximately $30,000; balance financed over approximately 10 years (interest rate, fees, collateral, amortization and monthly debt service unknown). Cash for first 12 months AFTER purchase: $25,000, plus founder labor and legally obtained, inspected reusable materials (e.g., pipe, cable, fencing). No assumption that salvaged materials meet electrical, plumbing or building codes. Land deal and site attributes remain unverified.
+
+6. EARLY PHYSICAL MILESTONES — FOUNDER TARGETS
+15 December 2026: Gennady's birthday / first controlled field test on site, contingent on acquisition and lawful approvals. Aim for 1–2 inexpensive used RVs (roughly $3,000 discussed; confirm whether each or total), three wooden tent platforms and tents, toilets, grilling/fire area, basic overnight facilities and sauna (owned if ready, otherwise legally rented). Use the two-day gathering as a stress test for comfort, safety, systems, logistics and community.
+15 January 2027: target Minimum Viable Settlement with an OWNED small functional sauna, 1–2 RVs, 1–3 tent platforms, toilets, utilities, communal zone, and capacity for the two founders to reside there, with occasional invited guests or workers if legally permitted. These are conditional targets, not permission to occupy or rent units.
+
+Critical gate: BEFORE occupancy, paid stays, events, fires, wastewater disposal, lake modification or sauna operation, verify parcel-specific county/city/ETJ jurisdiction, deed restrictions, legal access, floodplain, fire and building requirements, water rights/supply, sanitation/septic, electrical service, occupancy and short-term-rental/event rules, insurance and emergency access. Lake dredging/filling and wetlands may trigger additional approvals. If permits make target dates impossible, preserve the intent through lawful off-site or non-occupancy pilots.
+
+7. NEAR-TERM BUSINESS ENGINE
+Begin with simple, safe infrastructure; earn from permitted RV/glamping stays, sauna/wellness sessions, small gatherings, retreats and potentially weddings or a later event space. Possible longer-term offerings: cabins, restaurant/communal kitchen, wellness center, farm, greenhouse, animal experiences, workshops, coworking, membership. Each is an option to validate, not an automatic construction commitment. Commercial revenue may support nonprofit mission only through lawful, documented mechanisms.
+
+8. CULTURAL DNA AND HUMAN DEVELOPMENT
+Influenced by Burning Man: participation, gifting, creativity, radical self-expression paired with responsibility, mutual aid and contribution. Community culture rejects hatred, aggression, coercion, exploitative greed, tobacco and harmful alcohol-centered behavior. Favor nourishing food over junk food, movement, physical health, mental and cognitive growth, emotional maturity, spiritual exploration without religious dogma, and care for each other. Never shame people for different abilities, fitness levels or learning pace. Use fair, behavior-based community standards and reasonable accommodation; avoid discrimination against people based on disability, health status, religion or other protected traits.
+
+Political and religious posture: cooperate with governments, regulators, parties and civil institutions across viewpoints; do not define Agora by confrontation with states or religions; reject violent extremism and coercive proselytizing. Respect lawful freedom of belief and expression.
+
+Psychoactive-substance discussion: founders expressed personal interest in altered-state/self-exploration practices. Agora's institutional policies must comply with applicable law, licensing, safeguarding and medical standards. No covert illegal program, deceptive public representation or unlicensed therapy. Research or programming, if any, must undergo separate legal, clinical and ethical review.
+
+9. ECONOMIC FLYWHEEL
+Encourage voluntary internal exchange: members can hire member businesses, purchase from local producers, share tools, pool procurement, mentor founders, and reinvest surplus in community services and infrastructure. No mandatory closed economy, deceptive promises, coercive labor or unsupported investment claims. Develop a clear, auditable relationship between earned income, operating reserves, founder-owned ventures and nonprofit projects.
+
+10. CIVILIZATION RESILIENCE
+Agora works WITH existing civilization while learning to function through interruptions of centralized services. Research local water, energy, food, shelter, waste, repair, healthcare access, education, safety, knowledge archiving and coordination. The Knowledge Ark preserves practical know-how, curricula, designs and cultural memory so a settlement can maintain and rebuild complexity after disruptions. Resilience is not apocalyptic branding or an excuse to evade public institutions.
+
+11. AGORA OS / AI / ROBOTICS
+Long-term integrated platform tracks energy, water, food production, inventory, equipment, booking, maintenance, financial health, community skills and resource needs. Model scenarios with a digital twin. Introduce automation only when it clearly improves safety, cost, reliability and human time. Future possibilities include agricultural robots, groundskeeping, energy management, autonomous logistics and lower-cost construction. Require privacy, cybersecurity, human override and explicit consent for sensitive data. KPI: human labor hours per resident-day required to sustain a defined standard of living, alongside quality of life, resilience and cost.
+
+12. SCALE AND FRONTIER
+Develop replicable design patterns, cost models, operating manuals, training and certification. Test membership portability across sites. Explore 100, 1,000, 100,000 and 10 million-person scenarios as systems-thinking exercises, not growth forecasts. Frontier R&D may include deserts, cold climates, remote locations, ocean environments and eventual lunar/Martian applications; Venus/Jupiter references are speculative imagination, not near-term habitable destinations.
+
+13. CIVILIZATION SCORECARD — INITIAL CANDIDATES
+Safety incidents; legal compliance; guest/resident satisfaction; occupancy and net operating margin; cash runway and debt coverage; water and energy reliability; local food fraction; waste diverted; labor hours per resident-day; affordability; participation and retention; learning hours; biodiversity/ecological health; governance trust; documented replicability; resilience days without external utilities. Set baselines and definitions before claiming improvement.
+
+14. RESEARCH AND DESIGN DISCIPLINES
+System engineering, master planning, architecture, land development, Texas land-use law, fire and life safety, civil/environmental engineering, water/wastewater, power, agriculture, veterinary care and animal welfare, medicine/public health, psychology, education, sociology, governance, nonprofit law, finance, hospitality, marketing, AI, robotics, manufacturing, security, ecology and foresight. AI can simulate competing expert viewpoints; it does NOT replace credentialed experts or imply they were consulted.
+
+15. NON-NEGOTIABLE METHOD
+Think 100 years; build in 100 days; test every week. For EVERY grand claim: identify an Agora-01 experiment, a rough budget, a measurable outcome, a safety/legal gate and a next-stage decision. Classify every statement as DECIDED, TARGET, HYPOTHESIS, OPEN QUESTION or FAR-HORIZON. Keep an idea registry so no concept is discarded. Include a 'What we do tomorrow morning' block in operational documents. Build with first-principles reasoning; challenge founders' assumptions; separate physically possible, legally permitted, economically viable and speculative.
+
+16. IMMEDIATE OPEN QUESTIONS
+Exact parcel address, survey and legal description; zoning/jurisdiction/ETJ; lake and floodplain status; deed/HOA restrictions; access and easements; utility capacity and connection costs; sanitation pathway; fire access and permits; financing terms and cash flow; insurance; founders' operating agreement; RV purchase/repair budget; whether commercial stays/events are legal; nonprofit charitable purpose and board structure; staffing and emergency plan; timeline feasibility.
+
+17. POSITIONING AND LANGUAGE
+Working title: Agora Civilization Blueprint 1.0.
+Possible site marker: 'AGORA 01 — Prototype of Human Civilization — Austin, Texas — 2026.'
+Working statement: 'We begin with 18 acres. We do not intend to stop at Earth.'
+These are creative lines, not factual claims of a working autonomous civilization.
+
+18. AI COLLABORATION RULE
+Give this file unchanged to each AI. Assign distinct roles: visionary/futurist, systems architect, site engineer, hospitality economist, legal/regulatory skeptic, community ethicist, AI/robotics lead and red team. Require each to state assumptions, cite sources for current facts, surface contradictions, quantify trade-offs and propose testable pilots. Merge recommendations only after resolving conflicts and logging founder decisions. Never silently edit this canonical baseline.

@@ -1,0 +1,134 @@
+AGORA CIVILIZATION BLUEPRINT 1.0
+DOCUMENT 11 — AGORA-01 FINANCIAL MODEL & CAPITAL STRATEGY
+Version 1.0 | 9 October 2026 | Working draft, not an investment projection
+
+PURPOSE
+Build a financeable, testable first settlement near Austin while protecting the long-term mission. This is a planning model, not a lender quote, appraisal, insurance quote, or confirmation of lawful land use.
+
+1. CANONICAL INPUTS
+Founders: Eugene and Gennady Fokin, proposed 50/50 ownership.
+Candidate land: approximately 18 acres, potentially including a 2-acre lake; acquisition NOT confirmed.
+Target land price: $250,000. Down payment assumption: $30,000 (12%). Proposed loan principal: $220,000, ten-year amortization (terms unverified). Development cash budget for first 12 months: $25,000, excluding acquisition down payment. Founders' labor and legitimately obtained, code-compliant reusable materials are additional in-kind resources, not free cash.
+Milestones: December 15, 2026 first gathering/test; January 15, 2027 target minimum viable settlement and own sauna, conditional on closing, permits and safety.
+
+2. FIRST REALITY CHECK: ACQUISITION CASH
+The $30,000 down payment is not necessarily the full cash-to-close. Separately budget title/escrow, survey, legal review, lender fees, appraisal, environmental/soil/water assessments, prepaid insurance, tax prorations, and contingency. A lender may demand substantially more than 12% down on raw land, a shorter term, balloon payment, or higher rate. Obtain written term sheets and a cash-to-close worksheet before making commitments. Avoid using all liquidity for down payment; preserve reserves.
+
+3. DEBT-SERVICE SCENARIOS (ILLUSTRATIVE ONLY)
+For a fully amortizing $220,000 loan over 120 months:
+Annual rate | Approximate monthly principal + interest
+6%          | $2,442
+8%          | $2,669
+10%         | $2,907
+12%         | $3,157
+These exclude property tax, insurance, maintenance, utilities and any lender fees. Actual raw-land loan structure may differ materially.
+
+4. MONTHLY HOLDING-COST FRAMEWORK
+Monthly land debt payment: scenario-dependent (above).
+Property taxes: verify parcel tax account, exemptions, agricultural valuation and post-sale reassessment; do not assume ag exemption survives new uses.
+Insurance: quote vacant land, premises liability, short-term rental, RV, sauna, event coverage separately.
+Utilities: account for temporary power, meters, water delivery/well, wastewater, trash, internet.
+Maintenance: roads, lake edge, vegetation, fire control, equipment and sanitation.
+Administration: bookkeeping, software, licenses, accounting, bank fees.
+Reserve: target several months of unavoidable costs; do not count gross bookings as available cash.
+
+5. $25,000 DEVELOPMENT CASH: PROVISIONAL ENVELOPE
+Due diligence / permitting / site planning: $3,000
+Basic sanitation and handwashing: $3,500
+Electrical and safe distribution: $3,000
+Water storage / delivery / connections: $2,000
+RV purchase / repair reserve: $5,000
+Tent platforms and weather protection: $2,500
+Sauna pilot / first-build materials: $2,500
+Fire safety / access / lighting / signage: $1,000
+Contingency: $2,500
+TOTAL: $25,000
+This is an allocation exercise, NOT a claim that the listed infrastructure can be completed at these costs. Some single items (approved septic, well, power extension, accessible facilities) may exceed the entire budget. Reallocate only after written estimates and regulatory feasibility checks. $3,000 RVs may be uninhabitable or need major repair; inspect titles, leaks, electrical, propane and wastewater systems.
+
+6. PHASE-GATED CAPITAL RELEASE
+GATE 0 — Before closing: confirm legal access, floodplain/wetlands, lake restrictions, deed restrictions, ETJ/city jurisdiction, utility feasibility, residential RV use, paid overnight stays, event use, fire and wastewater approvals. NO-GO if essential use is prohibited or infrastructure costs are unaffordable.
+GATE 1 — After closing: survey, site safety, temporary sanitation, lawful occupancy path, emergency access.
+GATE 2 — Founders' habitation: functioning safe water, wastewater, electricity, weatherproof shelter, fire precautions and required permits.
+GATE 3 — Invitation-only testing: documented safety procedures, appropriate insurance, lawful event authorization, guest feedback and expense tracking.
+GATE 4 — Paid hospitality: verify land-use authorization, lodging taxes, licenses, insurance, accessibility and operational readiness before advertising or collecting money.
+GATE 5 — Expand only if demand and unit economics support it.
+
+7. REVENUE ENGINES (HYPOTHESES, NOT APPROVED USES)
+A. RV overnight stays: rate × occupied nights × units.
+B. Glamping tents: rate × occupied nights × units.
+C. Sauna sessions: paid sessions × net receipts/session.
+D. Workshops and private events: event revenue minus staffing, cleaning, insurance, permits and damage costs.
+E. Membership: dues tied to real, clearly defined benefits, subject to applicable law.
+F. Later: wellness programs, educational retreats, research partnerships, licensing, technology and consulting.
+No public bookings before confirming permissions and insurability. Nonprofit revenue, donations, and grants must not be treated as unrestricted founder operating cash.
+
+8. ILLUSTRATIVE GROSS-REVENUE SENSITIVITY
+Assume 2 rentable units at $100/night, 30 nights/month:
+20% occupancy = $1,200/month gross.
+40% occupancy = $2,400/month gross.
+60% occupancy = $3,600/month gross.
+Assume 3 rentable tents at $80/night, 30 nights/month:
+20% occupancy = $1,440/month gross.
+40% occupancy = $2,880/month gross.
+60% occupancy = $4,320/month gross.
+Combined gross at 40% occupancy: $5,280/month BEFORE platform fees, taxes, turnover, cleaning, maintenance, utilities, insurance, labor, refunds and debt service. These rates and occupancies are hypothetical, not Austin market research or validated demand. Founders living in RVs reduce rentable inventory.
+
+9. CONTRIBUTION MARGIN & BREAK-EVEN
+For each unit track: gross booking revenue; lodging/sales taxes collected; platform/payment fees; variable utilities; cleaning/laundry; consumables; repair reserve; insurance allocation; net contribution.
+Monthly operating cash flow = contributions from all revenue lines − fixed operating costs − debt service − required capital replacement reserve.
+Break-even occupied nights = (monthly fixed costs + debt service − other contribution) / contribution per occupied night; compute only after actual costs and prices are known.
+Never confuse bookings, revenue, EBITDA, cash flow, and profit.
+
+10. SAUNA AS FIRST ECONOMIC EXPERIMENT
+Pilot with rented mobile sauna if permitted. Track: all-in rental and delivery cost; attendees; willingness to pay; heating fuel/power; cleaning and turnaround; safety incidents; labor hours; repeat intent. Build a permanent sauna only after evaluating construction, fire code, setbacks, sanitation, insurance and demand. No medical claims or unsupervised high-risk practices.
+
+11. CAPITAL STRATEGY — ORDER OF PREFERENCE
+1) Founders' available cash with a protected emergency reserve.
+2) Legitimately reusable materials documented at fair value and inspected for safety/code compliance.
+3) Sweat equity with hours logged, but not recorded as liquid funding.
+4) Customer-funded, legally permitted pilots and pre-sales with clear refund terms.
+5) Vendor financing/equipment rentals when cheaper than purchase and risk is contained.
+6) Strategic partnerships and sponsorships with documented deliverables.
+7) Mission-aligned investment only with proper securities/legal advice and clear founder-control terms.
+8) Grants/donations through an appropriately structured nonprofit for eligible public-benefit work, not private enrichment.
+Avoid expensive unsecured debt, informal promises of equity, and personal guarantees without understanding downside.
+
+12. FOUNDERS' FINANCIAL GOVERNANCE
+Proposed 50/50 ownership does not remove deadlock risk. Establish operating agreement and deadlock protocol before major borrowing. Separate personal and project bank accounts; require dual approval above an agreed threshold; monthly bank reconciliation; vendor quotes; expense receipts; related-party transaction disclosures; no undocumented cash collections; documented IP and asset ownership. Determine who personally guarantees land debt and how that risk is allocated.
+
+13. THREE OPERATING SCENARIOS
+DEFENSIVE: acquisition delayed or site cannot legally host overnight rentals. Preserve liquidity; conduct off-site community events and sauna pilots; no irreversible improvements.
+BASE: lawful founders' occupancy and a small paid hospitality pilot; grow from verified net contribution, not headline gross.
+EXPANSION: demand, permitting, utilities, reserves and safety are proven; add units, workshops and eventually more sophisticated facilities in stages.
+Do not build restaurant, wedding venue, multiple saunas or major lake works merely because they are in the long-term vision.
+
+14. NONPROFIT / FOUNDATION FINANCE FIREWALL
+Commercial property, hospitality, foundation, and technology initiatives may eventually have distinct entities. Any nonprofit must operate for genuine exempt purposes, have appropriate independent governance, avoid private inurement, and document fair-market-value transactions. Seek Texas counsel and a CPA before forming or funding intercompany arrangements. Do not promise tax deductibility before qualification.
+
+15. CIVILIZATIONAL R&D CAPITAL ALLOCATION
+Protect a small, explicitly approved experimental budget after essential costs are covered. Examples: metering water and power, digital inventory, community participation metrics, modular platform designs, knowledge archive and simple Agora OS dashboards. Track experiment cost, hypothesis, result and replicability. Do not spend survival capital on speculative technology.
+
+16. DASHBOARD — UPDATE MONTHLY
+Cash on hand; months of runway; committed but unpaid invoices; acquisition and loan balance; cash-to-close variance; capex by category; fixed costs; revenue by line; net contribution; occupancy; customer acquisition cost; repeat visitors; cash flow after debt service; safety incidents; founder labor hours; legal/permit status; reserve coverage; experiments completed.
+
+17. DECISION THRESHOLDS (PROPOSED, TO BE APPROVED)
+STOP: essential use disallowed, no legal access, unsafe water/wastewater, uninsured public activity, unfinanceable cash-to-close, or no emergency reserve.
+PAUSE: costs exceed budget, construction depends on unverified donated materials, or schedule conflicts with permits.
+GO: legal pathway confirmed in writing, funding available, safe utilities feasible, and downside survives conservative occupancy.
+
+18. QUESTIONS TO ANSWER NEXT
+What is the parcel address/APN and county? Is it in city limits or ETJ? What does the seller's title commitment show? What loan term sheet is available? Actual closing costs? Current annual property tax? Can RVs be occupied full time? Are transient stays and events permitted? What water source and septic capacity are available? What is the power connection quote? Are the lake and shoreline regulated? What is the all-in cost of safe winter habitation? How much founder cash remains after closing? How will each partner's guarantee and cash contributions be recorded?
+
+19. FIRST 14-DAY FINANCE TASKS
+Day 1–2: obtain parcel identification, asking price, seller disclosures, preliminary title and loan offers.
+Day 3–5: get written utility/water/wastewater and insurance estimates; verify land use.
+Day 6–7: build closing statement and 12-month cash flow with 0%, 20%, 40% occupancy cases.
+Day 8–10: inspect RV options, obtain sanitation/sauna/platform quotes, audit reusable materials.
+Day 11–12: draft founder contribution ledger and spending approval policy.
+Day 13–14: hold GO / CONDITIONAL GO / NO-GO meeting, document unresolved risks.
+
+20. LINK TO THE CIVILIZATION VISION
+Agora-01 must demonstrate not only that visitors pay for stays, but that a small group can build safe shared infrastructure, cooperate, reduce waste, learn systematically, and produce a reproducible settlement protocol. Hospitality is the early financing engine, not the ultimate purpose.
+
+STATUS: PROVISIONAL FINANCIAL BLUEPRINT. All amounts beyond user-supplied targets are illustrative assumptions requiring verification. Update this file after lender quotes, county confirmation, contractor bids and operating results.
+NEXT DOCUMENT 12: AGORA-01 INFRASTRUCTURE — WATER, WASTEWATER, POWER & CONNECTIVITY.

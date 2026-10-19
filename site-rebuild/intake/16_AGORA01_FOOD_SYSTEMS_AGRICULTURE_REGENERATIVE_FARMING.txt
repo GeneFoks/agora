@@ -1,0 +1,151 @@
+AGORA CIVILIZATION BLUEPRINT 1.0
+DOCUMENT 16 / 39
+AGORA-01 — FOOD SYSTEMS, AGRICULTURE & REGENERATIVE FARMING
+Version 1.0 | 9 October 2026 | Status: concept / hypotheses pending site verification
+
+PURPOSE
+Build a safe, financially disciplined, measurable food-system laboratory on a prospective ~18-acre site near Austin, Texas, with a possible ~2-acre lake. Food production is one part of Agora's broader mission: healthy people, community cooperation, resilience, education, ecological regeneration and reproducible settlement protocols. This is NOT a claim that the parcel has been purchased, that the lake is usable for irrigation, or that agriculture or livestock is permitted.
+
+01. NORTH STAR
+Agora's food system should move through four capabilities: (1) buy nutritious food intelligently; (2) grow a modest share locally; (3) conserve, process and store it safely; (4) document an economically replicable system. Do not confuse a picturesque farm with food security. Measure nutrition, labor, water, land, dollars, ecological outcomes and social value together.
+
+02. FOUNDING PARAMETERS
+Founders: Eugene and Gennady Fokin, proposed 50/50 partnership. Land target ~$250,000 with ~$30,000 down and financing; proposed post-purchase first-year development budget $25,000 for ALL Agora-01 needs, not agriculture alone. Reused materials and founders' labor are potential resources, not free or automatically code-compliant. Dec 15, 2026 gathering and Jan 15, 2027 minimum viable settlement are aspirations conditional on closing, approvals, utilities and safety. Food systems must not jeopardize sanitation, water, shelter, fire protection or debt payments.
+
+03. DESIGN PRINCIPLES
+- Human nutrition before agricultural spectacle.
+- Soil, water and biodiversity as long-term assets.
+- Small, modular, reversible pilots before capital-intensive buildout.
+- No animal acquisition before daily care, fencing, veterinary access and financial reserves are secured.
+- Community participation must be voluntary and roles explicit.
+- Preserve a separation between food for residents, food sold to the public, and educational demonstrations; each may face different regulatory duties.
+- Capture real data, including failed harvests and unpaid labor.
+
+04. SITE DUE DILIGENCE — HARD GATES
+Before ground disturbance or livestock: obtain survey and title/easement review; confirm jurisdiction (county/city/ETJ), deed restrictions, floodplain and wetlands, lake/shoreline restrictions, drainage, access and relevant permits. Obtain soil tests (pH, nutrients, contaminants where warranted), sunlight/shade survey, slope and erosion assessment, and a defensible year-round water budget. Confirm whether a well, rainwater capture, hauled water or utility supply is legal and practical. Lake water may be unsuitable or legally unavailable for irrigation; never assume it is potable. Confirm setbacks for compost, animal areas and sanitation systems. Check Texas and local requirements for on-site food preparation/sales, lodging food service, agricultural operations and animal keeping. Engage county extension, licensed engineers and relevant regulators before committing funds. Mark every unverified issue: ❓ VERIFY.
+
+05. THE FIRST 12 MONTHS — FOUR PHASES
+Phase 0 (before closing): inventory sunlight, water, soil, market demand and food budget; ask seller about past land use, flooding, herbicides and livestock. No permanent work without ownership and approvals.
+Phase 1 (days 1–30 after legal access): safe drinking water and food storage first; choose a simple shared meal system; set up a small, contained composting pilot only where legal and away from water; test a few container-grown herbs/greens.
+Phase 2 (days 31–100): establish a fenced, irrigated demonstration garden only after water capacity is verified; use raised beds if soil uncertainty warrants; implement pest monitoring and harvest log. No promise of winter harvest by January.
+Phase 3 (months 4–12): expand only if yields, labor and water costs justify it; consider drip irrigation, shade cloth, season extension, fruit trees and a small nursery; evaluate eggs or other livestock as a separate business case.
+
+06. FOOD BEFORE FARMING
+Start with a procurement cooperative: local growers, bulk staples, seasonal produce, shared menus, safe refrigeration and transparent meal contributions. A shared kitchen can reduce costs but must meet applicable health and fire requirements, especially if guests pay for meals. Aim for varied meals with adequate protein, fiber and vegetables; accommodate allergies, disabilities and personal preferences. Avoid turning healthy eating into moral judgment.
+
+07. GARDEN PILOT
+Illustrative first trial: 4–8 raised beds or an equivalent 200–500 sq ft cultivated area, depending on available water and labor. Trial herbs, leafy greens and region-appropriate seasonal crops; consult Texas A&M AgriLife Extension planting calendars for the actual county and season. Record seed/transplant costs, irrigation gallons, soil amendments, pest pressure, hours worked, harvest weight, spoilage and food value. Test one variable at a time where practical.
+
+08. WATER STRATEGY
+Use soil moisture checks, mulching, drip irrigation and drought-tolerant choices. Create separate meters or reliable measurement for household, hospitality and agricultural consumption. Never compromise potable-water reserves for irrigation. Calculate peak summer demand, drought restrictions and backup supply before expansion. Rainwater harvesting requires appropriate design, maintenance and treatment depending on intended use. Lake withdrawals and shoreline alterations require specific verification.
+
+09. SOIL & REGENERATIVE PRACTICES
+Baseline soil organic matter, compaction, infiltration and ground cover; repeat tests at consistent intervals. Explore cover crops, compost, rotational beds, perennial plants, native habitat and reduced disturbance. Do not claim carbon sequestration or soil restoration without measurements. Avoid manure application near harvest without food-safety protocols. Manage runoff so it does not enter the lake or neighboring property.
+
+10. GREENHOUSE / HYDROPONICS
+A greenhouse is not automatically economical in Central Texas: summer cooling, ventilation, shade and water can dominate costs. Compare simple shade structure, low tunnel, screened nursery and greenhouse before purchase. Hydroponics may be an R&D experiment, not an assumed low-cost source of calories. Track kWh, water, nutrient inputs, labor, yield and equipment failures. Prefer a tiny pilot over a permanent greenhouse until data supports it.
+
+11. ANIMALS & VETERINARY SYSTEM
+Possible future components: chickens for eggs, small ruminants for educational husbandry, and carefully designed grazing. Cattle and a public petting zoo should NOT be default phase-one commitments: feed, fencing, veterinary care, biosecurity, waste, liability and animal welfare costs can be high. Before introducing animals require: permitted use, species-appropriate shelter and acreage, predator protection, water, heat/cold plans, daily caretakers, emergency backup, veterinarian relationship, vaccination/parasite plan, quarantine, manure management and liability review. Public animal contact requires handwashing, supervision and zoonotic-disease controls. Animals are living responsibilities, not props.
+
+12. FOOD SAFETY
+Separate potable from non-potable water; protect harvests from animal intrusion; maintain handwashing, refrigeration and temperature logs where needed. Design procedures for washing produce, storing meat/dairy, allergen handling and cleaning shared equipment. Food service and direct sales may require inspections or permits; cottage-food rules are not a blanket exemption. Never use untreated lake water to wash food.
+
+13. NUTRITION & HEALTH
+The objective is an environment that makes healthy choices convenient, not a compulsory diet. Support balanced meals, hydration and physical activity. Evaluate access, affordability and satisfaction. Medical dietary guidance requires qualified professionals; do not promise disease treatment from produce or wellness programs.
+
+14. ECOLOGY OF THE LAKE
+Treat the possible two-acre lake as an ecological asset. Map shore setbacks, erosion, habitat and runoff. Keep fertilizers, manure and compost away from water. Do not stock fish, excavate, deepen, fill, drain or alter banks without confirming ownership, easements, environmental rules and relevant authorizations. Consider native plant buffers and citizen-science water monitoring after professional advice.
+
+15. CIRCULAR RESOURCE LOOPS
+Potential loops: food scraps to legally managed compost; leaves to mulch; rainwater to appropriate non-potable use; repaired materials to garden structures; excess harvest to shared meals. Every loop needs a contamination and maintenance check. Never recycle treated wood, unknown industrial barrels, cable insulation or chemically contaminated materials into food-contact or soil-contact applications without verification.
+
+16. ECONOMICS — PILOT ENVELOPE
+Because $25,000 covers the whole settlement, agriculture's initial allocation should be deliberately small and contingent. Illustrative planning bands, NOT bids: soil/water tests $200–$1,000; containers/beds and growing media $250–$1,500; drip and basic irrigation $200–$1,200; fencing/animal exclusion $300–$2,000; seeds, tools, storage and supplies $150–$800. A basic pilot might total ~$1,100–$6,500, excluding major utility installation and founder labor. Target the low end until water, sanitation and lodging essentials are secured. Require quotes and an explicit stop-loss ceiling.
+
+17. AGRICULTURAL BUSINESS MODEL
+Separate five propositions: (A) food-cost savings, (B) paid workshops, (C) farm-to-table experiences, (D) produce/plant sales, (E) research/education grants. Each requires independent demand, labor, regulatory and margin validation. Never assume grant eligibility or tax exemptions. Measure contribution margin after materials, paid labor, utilities, insurance and spoilage. Hospitality revenue may subsidize a demonstration garden, but do not disguise subsidy as farm profitability.
+
+18. AGORA OS — FOOD MODULE
+Start with a spreadsheet or simple database. Tables: plots, crop varieties, planting dates, irrigation readings, weather, soil tests, input purchases, work hours, harvest weights, food safety incidents, waste and guests served. Future modules: demand forecasting, crop planning, inventory alerts, predictive irrigation and digital twin. AI suggestions remain advisory; humans approve safety-critical actions. Protect resident and guest data.
+
+19. RESEARCH EXPERIMENTS
+Experiment A: purchased vs garden-grown herbs/greens (fully loaded $/edible lb).
+Experiment B: drip + mulch vs baseline watering (gallons per lb, soil moisture).
+Experiment C: community meals vs individual provisioning (cost, food waste, satisfaction).
+Experiment D: soil cover treatment (infiltration, ground cover, soil indicators).
+Experiment E: small shade structure vs open bed (yield, heat stress, labor).
+Experiment F: voluntary work sessions (attendance, satisfaction, reliable completion).
+For each, record baseline, intervention, costs, safety conditions and decision threshold.
+
+20. KPI DASHBOARD
+Core: potable-water reliability; irrigation gallons; food produced (edible lb); food purchased ($); total cost per edible lb; labor hours per edible lb; food waste; meals served; soil condition; biodiversity indicators; incidents; volunteer retention. Secondary: revenue from education/experiences, guest satisfaction and replication documentation. Avoid misleading “self-sufficiency %” without defining calories, nutrients, season and imported inputs.
+
+21. SCALE PROTOCOL
+AGORA-25: shared food procurement + demonstration beds + data standards.
+AGORA-100: dedicated food coordinator, audited water plan, expanded production only if justified.
+AGORA-500: regional supply contracts, food safety management, storage, processing and diversified farms.
+AGORA-5000+: integrate urban agriculture with regional commercial agriculture, logistics and resilient supply chains.
+Global network: open operational playbooks and locally adapted crop/livestock systems, not one universal farm design.
+Extreme environments: closed-loop nutrient and water recovery, controlled-environment agriculture and resilient food storage are long-horizon research, not near-term claims.
+
+22. GOVERNANCE & COMMUNITY
+Assign a food systems lead and backup; publish a simple budget and garden rules; clarify ownership of harvests and expectations for volunteers. Provide a clear process for allergies, food safety concerns, animal welfare complaints and environmental incidents. Paid commercial work must comply with labor laws; membership must not disguise required labor.
+
+23. RISK REGISTER
+R1 Insufficient legal water — STOP expansion until resolved.
+R2 Floodplain/shoreline restrictions — STOP ground work in affected areas.
+R3 Soil contamination — isolate and test before edible production.
+R4 Foodborne illness — sanitation plan and compliant facilities required.
+R5 Animal neglect/biosecurity — no animals until care plan funded.
+R6 Summer heat/drought — shade, irrigation and crop selection.
+R7 Budget diversion — hard cap and milestone approval.
+R8 Unpaid labor dependence — account for real labor.
+R9 Guest demand below forecast — pilot before commercial buildout.
+R10 Founder overload — simplify or pause agricultural expansion.
+
+24. DECISION GATES
+GO for containers: potable water, safe materials, responsible caretaker and modest budget.
+GO for garden: legal water, soil/siting checks, irrigation and labor plan.
+GO for paid food experiences: appropriate food-service permissions, insurance and safety systems.
+GO for animals: legal approval, fencing, veterinarian, daily care and reserve budget.
+GO for greenhouse: demonstrated production need, climate design and positive comparative economics.
+
+25. FIRST 14 ACTIONS FOR FOUNDERS
+1. Confirm parcel address, county, jurisdiction and acquisition status.
+2. Obtain survey, easements and floodplain information.
+3. Ask utilities about reliable legal water supply.
+4. Obtain soil and water testing recommendations.
+5. Map full-sun, shade, access and possible garden zones.
+6. Contact local Texas A&M AgriLife Extension office.
+7. Identify 3–5 local growers and suppliers.
+8. Draft a shared meal and food storage plan.
+9. Assign a food systems lead and backup.
+10. Approve a provisional agriculture pilot spending cap.
+11. Price a small container/raised-bed trial.
+12. Set up baseline measurement spreadsheet.
+13. Identify food-safety and event-service permitting questions.
+14. Schedule a 30-day go/no-go review.
+
+26. OPEN QUESTIONS / DO NOT ASSUME
+❓ Actual parcel address, county, legal jurisdiction and deed restrictions.
+❓ Whether lake is natural/manmade and what modifications are lawful.
+❓ Water source, quality, cost and drought reliability.
+❓ Soil history, contamination, fertility and drainage.
+❓ Permitted animal species and guest interaction rules.
+❓ Whether food sales, shared kitchen and events are allowed.
+❓ Exact allocation available after sanitation, power, RV and sauna costs.
+❓ Available founder/volunteer hours and year-round caretakers.
+❓ Market demand for farm experiences and local produce.
+
+27. RECOMMENDED INITIAL DECISION
+For the December 2026 field test, prioritize safe meals and water, local-food partnerships, and a tiny visible herb/greens demonstration rather than an expensive farm. For January 2027, establish the smallest reliable food-production module compatible with weather, permits and infrastructure. Postpone animals, greenhouses and public food sales until explicit gates are passed.
+
+28. CIVILIZATIONAL LINK
+Agora's true product is not lettuce, chickens or a greenhouse. It is a tested, documented protocol for how a community secures nutritious food with measurable labor, water, capital and ecological impacts. The Austin laboratory should discover what can be reproduced in other climates and what must remain local. The long-term ambition is resilience and knowledge continuity, not isolation from existing society.
+
+DOCUMENT CONTROL
+Owner: AGORA founders; draft for review, not adopted policy.
+Dependencies: Docs 00–15; site facts and budgets remain to be verified.
+Next document: 17 — to be defined by the approved document index.
+Revision protocol: record verified facts, founders' decisions, assumptions, estimates and unresolved questions separately; update dependent documents after any major change.
