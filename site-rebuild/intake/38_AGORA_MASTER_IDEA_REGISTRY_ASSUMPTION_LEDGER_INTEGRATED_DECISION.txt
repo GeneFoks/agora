@@ -1,0 +1,269 @@
+AGORA CIVILIZATION BLUEPRINT 1.0
+DOCUMENT 38 / 39
+AGORA MASTER IDEA REGISTRY, ASSUMPTION LEDGER & INTEGRATED DECISION ROADMAP
+Version: 1.0 | Working strategic synthesis | October 2026
+Founders: Eugene and Gennady Fokin | Proposed founder economics: 50/50, subject to executed agreements
+
+PURPOSE
+Turn the preceding blueprint into a controlled, testable decision system. This is an operating register, not a declaration that any parcel, permit, funding source, legal structure, technical specification, or forecast has been verified. The source documents remain authoritative for detailed concepts; this document establishes cross-document priorities, owners, gates, evidence requirements, and conflict-resolution rules.
+
+01. OPERATING THESIS
+Think 100 years. Build in 100 days. Test every week. Agora-01 is a real-world testbed near Austin, Texas, not a claim that a fully autonomous civilization can be delivered in its first season. The minimum useful outcome is a lawful, safe, financially survivable site with repeatable learning and a positive guest/resident experience.
+
+02. EVIDENCE LABELS
+CONFIRMED = primary documentation obtained and independently checked where appropriate.
+PROVISIONAL = credible indication, pending verification.
+ASSUMPTION = planning input with no adequate proof.
+HYPOTHESIS = claim requiring an experiment.
+BLOCKED = cannot proceed until a specified dependency is resolved.
+REJECTED = disproven, unsafe, unlawful, or economically unacceptable.
+Every critical statement in the operating dashboard must carry one label, date, source, owner, and next review date.
+
+03. DECISION CLASSES
+Class A / irreversible: land purchase, debt, entity ownership, long leases, major excavation, equity grants, construction without easy reversal. Both founders approve in writing after relevant professional review.
+Class B / significant: commitments above a founder-agreed threshold, changes to opening scope, public launch claims, new revenue lines, hiring. Approval per delegated authority matrix.
+Class C / reversible: small experiments, content drafts, prototype software, low-cost supplies. Single accountable owner within an approved budget.
+Class D / emergency: immediate protection of life and property by the on-scene responsible person, with prompt documentation and founder notification.
+
+04. FOUNDERS' DECISION RIGHTS
+Proposed equal economics do not automatically define day-to-day authority. Execute an operating agreement defining contributions, vesting if any, capital calls, distributions, ownership of improvements and IP, spending limits, tie-break process, exits, death/disability, disputes, and fiduciary duties. No unilateral transfer of land, ownership, or core IP. Community governance rights must be described truthfully and cannot be withdrawn arbitrarily once contractually granted.
+
+05. SINGLE SOURCE OF TRUTH
+Maintain a versioned folder with: 00 Master Context, 01 Index, 02–37 thematic documents, 38 this register, 39 final execution package. Each entry must link to source document, supporting evidence, last change, and responsible owner. Use stable IDs rather than copying contradictory text between files.
+
+06. MASTER IDEA REGISTRY — SCHEMA
+ID | Idea | Source docs | Horizon | Value proposition | Beneficiaries | Dependencies | Cost band | Reversibility | Risk | Evidence status | Owner | Next test | Decision date.
+No idea is approved simply because it appears in a blueprint. Duplicates are merged; competing alternatives remain visible until resolved.
+
+07. IDEA PORTFOLIO — IMMEDIATE / AGORA-01
+I-001 Acquire suitable land with legal access, buildable area and viable utilities; docs 08–12, 29; BLOCKED until diligence and financing.
+I-002 Create lawful low-cost founder habitation (RV or other approved option); docs 10, 13, 19; BLOCKED on site-specific permissions.
+I-003 Install compliant toilets, wastewater, potable water, fire protection and electrical service; docs 12, 19; BLOCKED on site design and permits.
+I-004 Build safe shared gathering and meal space; docs 08, 15–17; PROVISIONAL.
+I-005 Pilot sauna/wellness with professional safety and insurance review; doc 14; BLOCKED until permits and operating rules.
+I-006 Trial limited hospitality/event programming only after zoning, insurance and occupancy review; docs 15, 28; ASSUMPTION.
+I-007 Launch a simple member/guest code of conduct and incident response process; docs 04, 17, 19, 21, 33; READY FOR DRAFT.
+I-008 Begin basic site inventory, maintenance logs and expense tracking; docs 19, 22, 23; READY FOR PROTOTYPE.
+I-009 Establish baseline water/energy/soil/guest satisfaction metrics; docs 16, 25, 36; READY FOR DESIGN.
+I-010 Publish transparent build-in-public media without claiming unverified results; docs 27–28, 36; READY FOR DRAFT.
+
+08. IDEA PORTFOLIO — NEAR TERM / 2027–2030
+I-011 Regenerative food gardens and compost pilots after soil/water tests; docs 16, 36.
+I-012 Workshops, skill exchanges and Agora Academy; docs 18, 35.
+I-013 Agora OS minimum viable operations dashboard; docs 23, 37.
+I-014 Low-cost irrigation and sensor automation; docs 12, 16, 24.
+I-015 Documented replicable settlement kit and site selection standards; docs 26, 36.
+I-016 Partnerships with universities, makers and local community groups; docs 25, 27.
+I-017 Revenue diversification only after measured unit economics; docs 11, 15, 22, 29.
+I-018 Independent nonprofit activity with its own governance and compliant mission; docs 06, 27, 29.
+
+09. IDEA PORTFOLIO — LONG TERM / RESEARCH
+I-019 Agora Network: Agora-25, -100, -500, -5000, Agora-City; doc 26.
+I-020 AI-assisted digital twins and distributed site management; doc 23.
+I-021 Autonomous production and robotics; doc 24.
+I-022 Agora Knowledge Ark: offline, redundant, tested critical knowledge; docs 18, 30.
+I-023 Intergenerational leadership and cultural continuity; docs 33–35.
+I-024 Extreme-environment analog research; doc 32.
+I-025 Potential lunar/Martian applications: speculative research horizon, not near-term fundraising promise; docs 07, 31–32.
+
+10. CRITICAL ASSUMPTION LEDGER — LAND
+A-001 Target site around 18 acres within a workable drive of Austin. Status: ASSUMPTION. Verify actual listing, boundary survey, travel times, legal description.
+A-002 Lake around 2 acres exists and is usable. Status: ASSUMPTION. Verify survey, water rights, dam/pond status, floodplain, wetlands, aquatic habitat and restrictions on dredging/filling.
+A-003 Legal road access and emergency vehicle access. Status: ASSUMPTION. Verify recorded easements, road standards, fire department access.
+A-004 Site allows intended mix of RV residence, glamping, events, sauna, agriculture and commercial activity. Status: BLOCKED. Obtain written parcel-specific zoning/ETJ/county and applicable authority determinations.
+A-005 No disqualifying HOA, deed restrictions, easements, floodway, pipeline, mineral surface conflicts or hazardous conditions. Status: ASSUMPTION. Title, survey and specialist diligence.
+
+11. CRITICAL ASSUMPTION LEDGER — UTILITIES AND COST
+A-006 Electric meter, available capacity and affordable connection. Verify utility written service estimate, transformer/line upgrades, trenching, lead time.
+A-007 Reliable potable water. Verify public connection feasibility or lawful well with yield, quality and costs.
+A-008 Wastewater disposal feasible. Verify soils, septic suitability, permits and capacity; temporary toilets are not a substitute for long-term approvals.
+A-009 Land price ~$250,000, down payment ~$30,000, financed remainder over ~10 years. Treat as illustrative only; request written lender/seller terms, closing costs, interest, balloon provisions and personal guarantees.
+A-010 Development cash ~$25,000 in year one, separate from land acquisition. Stress-test against permits, utility extensions, wastewater, insurance, roads and contingencies.
+A-011 Used RV units at ~$3,000 each are habitable and insurable. Require inspections for water damage, title, systems, towing and safe occupancy.
+A-012 Reused construction materials are legally owned, documented, safe, fit for purpose and code-acceptable; never assume leftover employer/client materials may be taken.
+
+12. CRITICAL ASSUMPTION LEDGER — DEMAND AND COMMUNITY
+A-013 Sufficient paying demand for glamping, sauna, retreats or events. Test with comparable properties and refundable-interest waitlist, not invented bookings.
+A-014 Guests will accept site limitations. Test with honest amenity descriptions and interviews.
+A-015 Volunteers and members can contribute consistently. Test with short commitments and documented expectations; comply with labor rules and avoid disguising paid work.
+A-016 Founders can manage construction, marketing, hospitality and compliance concurrently. Test weekly time budgets and designate backup roles.
+
+13. CRITICAL ASSUMPTION LEDGER — TECHNOLOGY
+A-017 Software reduces workload rather than creating new overhead. Measure hours saved and errors prevented.
+A-018 Sensors improve reliability enough to justify cost. Pilot one water or energy metric before scaling.
+A-019 AI outputs are accurate enough for operations. Require human review for safety, money, legal matters and resident rights.
+A-020 Knowledge Ark remains accessible offline. Conduct actual retrieval drills on disconnected devices.
+
+14. THE FIVE NON-NEGOTIABLE LAUNCH GATES
+G1 LAND: clear title/rights, acceptable hazards, legal access, workable site plan.
+G2 LEGAL: written answers on land use, permits, temporary occupancy, business operations and insurance.
+G3 LIFE SAFETY: potable water, approved sanitation, safe electrical, fire response, severe weather and emergency access.
+G4 FINANCE: cash to close, reserves, realistic debt service and stop-loss trigger.
+G5 GOVERNANCE: signed founder agreement, spending authority, recordkeeping, guest rules and incident ownership.
+Failure of any gate means no public opening and no unsafe occupation. A celebration or site visit can be rescheduled or relocated.
+
+15. TIME-BOUND MILESTONES
+By Oct 15, 2026: assign owners, create document room, shortlist parcels, request utility and zoning information.
+By Oct 31: parcel diligence matrix, legal review, lender/seller financing offers, updated cost estimate.
+By Nov 15: conditional go/no-go on acquisition, with written contingencies; no deposits beyond agreed risk limit.
+By Dec 1: safety and infrastructure design, procurement plan, insurance review; decide whether Dec 15 field test is lawful and achievable.
+Dec 15: desired founder field test (1–2 RVs, up to three deck tents, toilet, grill and shared area), only if legally permitted and safe. Otherwise perform off-site tabletop/prototype test.
+Jan 15, 2027: target founder-usable minimum viable settlement and simple sauna only if approvals, safe construction and funding permit; otherwise revise schedule openly.
+Dates are targets, not guarantees; land closing and permits are critical-path dependencies.
+
+16. WORKSTREAM OWNERSHIP MATRIX
+WS-01 Land/title/zoning: founder sponsor + licensed local professionals.
+WS-02 Finance/legal entities: founder sponsor + attorney/CPA/lender.
+WS-03 Utilities/build: site lead + qualified trades/inspectors.
+WS-04 Safety/operations: named safety lead with stop-work authority.
+WS-05 Guest experience/community: named community lead.
+WS-06 Revenue/marketing: commercial lead; claims checked against approvals.
+WS-07 Data/Agora OS: technical lead; security/privacy owner.
+WS-08 Research/impact: measurement lead and external reviewer where practical.
+Assign actual names, backups, deliverables and due dates at first founder meeting.
+
+17. DECISION LOG — REQUIRED FIELDS
+D-ID; question; alternatives; affected documents; evidence; risk assessment; reversible/irreversible; stakeholder consultation; founder approvals; date; rationale; cost; implementation owner; reconsideration trigger. A decision without a written rationale is provisional, not final.
+
+18. OPEN DECISIONS TO RESOLVE FIRST
+D-001 Exact target parcel and acquisition vehicle.
+D-002 Ownership and capital-contribution mechanics for founders.
+D-003 Maximum cash-at-risk before permits and closing.
+D-004 Minimum viable site: essential services versus optional amenities.
+D-005 Which activities are private founder use versus paid public hospitality.
+D-006 Whether the lake is untouched during phase one pending legal/environmental review.
+D-007 Insurance and emergency response responsibilities.
+D-008 Staffing versus contractors versus genuine volunteers.
+D-009 Minimum viable Agora OS: spreadsheet first or custom application.
+D-010 Conditions that cancel or defer the December/January milestones.
+
+19. CONFLICTS ACROSS BLUEPRINT DOCUMENTS
+C-001 Founder control versus resident participation: distinguish asset/entity ownership, contractual membership rights, operational consultation and legally required due process.
+C-002 Autonomy versus grid dependence: measure actual self-sufficiency; do not call a grid-connected camp fully off-grid.
+C-003 Low-budget speed versus safety/permitting: life safety and law take priority over dates and aesthetic scope.
+C-004 Hospitality income versus residential community privacy: separate zones, schedules, consent and data.
+C-005 Nonprofit mission versus commercial returns: independent governance, arms-length transactions and appropriate restrictions.
+C-006 Openness/media versus privacy: opt-in photography and no publication of sensitive resident information.
+C-007 Ambitious R&D versus near-term cash flow: cap research spend until essential infrastructure is funded.
+C-008 Freedom of expression versus anti-harassment: viewpoint diversity is welcome; threats, abuse and discrimination are not.
+
+20. PRIORITIZATION METHOD
+Score each initiative 0–5 for: life-safety/legal necessity (weight 5), dependency unlock (4), economic survival (4), learning value (3), member benefit (2), reversibility (2), implementation effort (negative 2), cash intensity (negative 3), compliance uncertainty (negative 4). Use a documented rubric and sensitivity check. Mandatory legal and safety gates override the numerical score.
+
+21. FIRST 100 DAYS — THREE TRACKS
+TRACK A / MUST WORK: acquisition diligence, entity/legal, potable water, sanitation, electrical, access, fire/weather response, cash runway.
+TRACK B / MUST LEARN: customer interviews, small supervised events if lawful, member onboarding, soil/water tests, maintenance metrics, financial reporting.
+TRACK C / OPTIONAL: advanced sensors, branded architecture, large festivals, robotics, complex AI agents, custom membership currency. Defer unless independently funded and risk-free to essentials.
+
+22. CASH CONTROL
+Maintain separate acquisition, capital improvement, operations and restricted nonprofit accounts where applicable. Weekly cash forecast: opening cash + committed inflows - fixed outflows - contingency - debt obligations. No speculative revenue counts as committed. Define hard stop if projected cash falls below agreed minimum reserve. All reimbursements need receipts and approval.
+
+23. FINANCIAL SCENARIOS
+BASE: modest utilization, slow approvals, conservative guest revenue.
+DOWNSIDE: no public revenue for six months, cost overrun, financing delays, emergency repair.
+UPSIDE: repeatable compliant paid experiences with documented positive margins.
+For each scenario calculate monthly debt service, insurance, taxes, utilities, sanitation, maintenance, payroll, marketing, and replacement reserves. No numeric return is credible until parcel-specific inputs exist.
+
+24. EVIDENCE ROOM CHECKLIST
+Parcel listing and seller disclosures; title commitment; ALTA/boundary survey as applicable; FEMA mapping; wetlands/soil information; recorded easements and restrictions; zoning/ETJ correspondence; utility service letters; wastewater feasibility; water test; insurance quotes; lender terms; contractor bids; written legal advice; founder agreement; photos with dates; invoices and bank statements.
+
+25. EXPERIMENT CARD TEMPLATE
+E-ID | Hypothesis | Success metric | Baseline | Budget cap | Duration | Legal/safety precheck | Method | Sample size | Data owner | Result | Confidence | Decision. Stop any experiment when safety or consent conditions fail. Negative results are valuable and must not be hidden.
+
+26. FIRST TEN TESTS
+T-01 Parcel legal feasibility calls, documented in writing.
+T-02 Utility connection and wastewater feasibility cost estimates.
+T-03 RV purchase inspection and total cost of ownership comparison.
+T-04 Portable site sanitation and water options review.
+T-05 Ten to twenty customer interviews without promising availability.
+T-06 One small lawful invitation-only gathering to test experience and safety.
+T-07 Manual daily operations dashboard for 30 days.
+T-08 Soil and water sampling with appropriate laboratory methods.
+T-09 Emergency scenario tabletop exercise with founders and safety lead.
+T-10 Founder decision/deadlock simulation using real budget tradeoffs.
+
+27. MEASUREMENT FRAMEWORK
+Leading indicators: verified diligence items, permits secured, cash runway, incident-response readiness, tasks completed on time, hours of founder workload.
+Lagging indicators: occupancy (only when lawful), net operating cash flow, incident rates, water and energy per guest-night, resident/guest satisfaction, retention, verified learning outcomes.
+Every metric needs a numerator, denominator, collection method, frequency and limitations statement.
+
+28. RISK REGISTER — TOP TEN
+R-01 Land use disallows intended occupancy/business (critical).
+R-02 Wastewater or water infrastructure exceeds budget (critical).
+R-03 Debt terms or personal guarantees create unacceptable downside (critical).
+R-04 Flood, wildfire, heat, storms, drowning and fire (critical).
+R-05 Founder deadlock or undocumented capital contributions (high).
+R-06 Uninsured guests or construction accidents (critical).
+R-07 Revenue assumptions not supported by demand (high).
+R-08 Privacy, harassment or community trust breakdown (high).
+R-09 Overbuilding software before operations stabilize (medium).
+R-10 Brand claims outrun evidence and erode credibility (high).
+Each risk gets probability, severity, owner, mitigation, trigger and contingency.
+
+29. STOP / PIVOT / PROCEED RULES
+STOP: illegal use, material life-safety deficiency, unclear title, insolvency, inability to insure required activities, or founder agreement unresolved before major commitment.
+PIVOT: delayed approvals, unaffordable utility extension, weak demand, inadequate volunteer capacity; shrink scope or select a different parcel.
+PROCEED: written gate evidence, affordable downside case, trained operators, funded contingencies and accountable owners.
+
+30. AGORA OS — MINIMUM DATA MODEL
+Tables: Parcels, Evidence, Assumptions, Ideas, Decisions, Tasks, Risks, Budgets, Assets, Inspections, Incidents, Experiments, Metrics, Members (privacy restricted), Vendors. Include unique IDs, audit timestamps, owner and access role. Start with a secure spreadsheet or simple database; automate only after workflow stability.
+
+31. AI COUNCIL REVIEW LOOP
+Step 1: Founder writes a neutral question and evidence pack.
+Step 2: Independent models produce analyses without seeing each other's conclusions.
+Step 3: Red team searches for failure modes, legal/safety issues and hidden assumptions.
+Step 4: Human domain expert verifies high-stakes claims.
+Step 5: Founders record a decision and dissenting arguments.
+Step 6: Revisit after new evidence or a preset interval. AI never signs contracts or overrides safety decisions.
+
+32. STAKEHOLDER MAP
+Founders; land seller; neighbors; local planning/fire/health authorities; utilities; lender; insurers; contractors; residents; guests; university partners; donors; nonprofit board (if formed). Record what each stakeholder can authorize, influence or veto. Do not imply governmental endorsement or university partnership without written confirmation.
+
+33. COMMUNICATION RULES
+Use four public labels: planned, permitted, under construction, operating. Never call an idea completed because it appears in a concept image. Disclose meaningful limitations of water, toilets, access, safety, privacy and accessibility. Obtain photo/video consent. Separate fundraising representations from inspirational storytelling.
+
+34. REPLICATION READINESS
+Do not open Agora-02 until Agora-01 has at least one full operating cycle, documented unit economics, acceptable incident history, stable leadership coverage, repeatable compliance checklist, measurable participant value and a realistic funding plan. Scale the process, not the mythology.
+
+35. DOCUMENT CHANGE CONTROL
+Proposed changes require: change ID, reason, impacted documents, evidence, cost/schedule impact, owner and approval. Archive prior versions. Mark superseded assertions clearly. Review critical assumptions weekly during acquisition, monthly after opening, and after every major incident or regulatory change.
+
+36. WEEKLY FOUNDER MEETING — 60 MINUTES
+10 min safety and unresolved incidents; 10 min cash/runway; 10 min land/permitting critical path; 10 min blockers; 10 min experiments and metrics; 10 min decisions with recorded owner/deadline. Publish action list within 24 hours. No meeting ends with an unowned critical task.
+
+37. MONTHLY BOARD-STYLE REVIEW
+One-page dashboard; updated risk heat map; actual versus budget; evidence status; member/guest feedback; permits and insurance; scientific experiment outcomes; priorities to stop; major decisions requiring both founders. Invite independent criticism periodically.
+
+38. 30-DAY EXECUTION BACKLOG
+Week 1: signed founder decision rules (interim if necessary), site shortlist, evidence room, budget template, permit inquiry list.
+Week 2: title/survey quotes, utility inquiries, wastewater consultation, financing term sheets, insurance broker conversations.
+Week 3: compare parcels with stop-factor matrix; refine site master plan and all-in cash requirements; interview prospective guests/members.
+Week 4: go/no-go memo, conditional offer strategy, prototype operations dashboard, emergency plan draft, publish only verified milestones.
+
+39. 60–100 DAY EXECUTION BACKLOG
+If acquisition and permissions clear: inspect RVs, procure compliant temporary infrastructure, train operators, run safe founder field test, record costs and lessons, decide next-phase sauna and hospitality scope.
+If blocked: continue due diligence or change parcel; run off-site educational/community pilots and software prototypes without misrepresenting site readiness.
+
+40. OWNER ACTIONS REQUIRED NOW
+[ ] Confirm actual parcel address/legal description.
+[ ] Set maximum land purchase price and all-in capital ceiling.
+[ ] Agree minimum cash reserve and personal guarantee limits.
+[ ] Choose acquisition/legal counsel and accountant.
+[ ] Allocate founder workstream ownership.
+[ ] Approve launch gate checklist.
+[ ] Schedule first weekly decision meeting.
+[ ] Define what would cause cancellation of Dec 15 and Jan 15 targets.
+
+41. UNRESOLVED STRATEGIC QUESTIONS
+Will Agora-01 primarily be a private founder homestead, a hospitality property, a research campus, or a mixed-use site? Which legal model can actually support the intended mix? Who owns improvements built with community labor? What exactly does membership purchase or confer? Which revenue stream pays debt before growth spending? What is the founders' maximum acceptable personal downside? What evidence is sufficient to claim the model is replicable?
+
+42. ACCEPTANCE CRITERIA FOR THIS DOCUMENT
+The register is operational only when every Class A decision has a named owner, every launch gate has an evidence source, the top ten risks have mitigations, all acquisition assumptions are labeled, and both founders can retrieve the current cash forecast and critical path within five minutes.
+
+43. RELATION TO DOCUMENT 39
+Document 39 should be the final integrated executive package: concise investor/partner narrative, founder execution charter, 100-day action plan, critical path, budgets, due diligence checklist, KPI dashboard and explicit go/no-go decision memo. It must inherit evidence statuses from this register, not transform assumptions into facts.
+
+44. FINAL PRINCIPLE
+Agora's credibility will come from honest tests, careful stewardship, sound economics and human dignity. A documented decision to delay a risky launch is progress. A failed experiment that teaches a replicable lesson is progress. A beautiful concept without safe, lawful execution is not.
+
+END OF DOCUMENT 38

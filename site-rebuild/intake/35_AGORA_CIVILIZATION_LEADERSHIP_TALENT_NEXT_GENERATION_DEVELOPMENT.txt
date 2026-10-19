@@ -1,0 +1,178 @@
+AGORA CIVILIZATION BLUEPRINT 1.0
+DOCUMENT 35 — LEADERSHIP, TALENT & NEXT-GENERATION DEVELOPMENT
+Status: Strategic working draft | October 2026
+Founders: Eugene and Gennady Fokin | Agora-01: Central Texas pilot
+
+01. PURPOSE
+Build a repeatable, ethical system for finding, developing, retaining and eventually succeeding the people who create and operate Agora settlements. Leadership is a practiced responsibility, not a social rank. This document is a proposal, not a claim that programs or legal entities already exist.
+
+02. NORTH STAR
+Agora should enable capable, independent people to solve real problems together. In the first year, success means a few trained people can safely operate the site when a founder is away. In the long term, success means each settlement develops leaders without relying on charismatic personalities.
+
+03. FIRST PRINCIPLES
+Competence before title; service before status; evidence before charisma; transparent responsibility; voluntary participation; inclusion and equal opportunity; safe dissent; accountable authority; succession by demonstrated capability. No compelled beliefs, unpaid labor disguised as mandatory membership, or ideological tests.
+
+04. FOUNDERS AND DELEGATION
+Eugene and Gennady Fokin are intended equal founding partners (50/50), subject to signed governing agreements. Founders retain specifically documented reserved powers over land, financing, brand and strategic direction. Delegation of operations must be real: leaders receive written scopes, budgets and authority limits. Community voice and grievance rights must not depend on founder approval.
+
+05. FIVE LEADERSHIP TRACKS
+A. Site operations: facilities, utilities, sanitation, maintenance.
+B. Hospitality and community: guests, events, conflict prevention.
+C. Land and food: gardens, ecological monitoring, animal care if approved.
+D. Technology and research: Agora OS, data, experiments.
+E. Enterprise and partnerships: sales, finances, compliance, external relations.
+One person may cover multiple tracks in the pilot, but conflicts of interest must be disclosed.
+
+06. ROLE LADDER
+Observer -> contributor -> task owner -> shift lead -> domain steward -> site operator -> network mentor. Advancement requires evidence of safe execution, peer feedback, reliable documentation and appropriate training, not time served alone. Titles are revocable through fair documented processes.
+
+07. LEADERSHIP COMPETENCY MATRIX
+Score each role from 0 to 4 on: safety judgment; technical skill; reliability; communication; financial stewardship; conflict handling; teaching; documentation; ethics; and ability to ask for help. Publish role-specific thresholds. Never use an opaque AI-generated personality score to make high-stakes personnel decisions.
+
+08. TALENT SOURCES
+Local tradespeople, universities, community colleges, makerspaces, hospitality professionals, farmers, artists, researchers, nonprofit networks and existing friends. Recruit locally first for tasks needing continuity. Partners must be vetted for safety, competence and fit with specific roles, not ideological conformity.
+
+09. RECRUITMENT FUNNEL
+Clear role description -> transparent compensation or volunteer terms -> application -> structured interview -> reference/credential checks where appropriate -> supervised trial -> documented onboarding -> 30-day review. Do not solicit sensitive personal information unnecessarily.
+
+10. VOLUNTEERS, EMPLOYEES AND CONTRACTORS
+Classify work correctly under applicable labor and tax rules. Do not promise room, meals or 'community credits' as a substitute for wages when employment law requires pay. Use written contracts, insurance and safety training. A nonprofit volunteer role must serve a genuine charitable purpose, not subsidize private commercial operations.
+
+11. RESIDENT LEADERSHIP
+Residents can coordinate shared meals, gardens, cleanup, events and welcome activities. Participation should be opt-in or based on a clearly disclosed and lawful agreement. Resident councils advise on community life and can exercise explicitly delegated authority; they do not automatically control land-owning entities.
+
+12. OPERATING CADENCE
+Daily: 10-minute safety/operations check when active.
+Weekly: site priorities, maintenance, incidents and guest feedback.
+Monthly: financial and KPI review, learning circle, resident forum.
+Quarterly: leadership evaluations, risk review, succession drill.
+Annually: governance review and independent feedback.
+
+13. ONBOARDING: FIRST 72 HOURS
+Orientation to site boundaries, water, sanitation, fire risk, lake safety, first aid contacts, severe weather shelter, emergency exits, consent and privacy rules. Confirm understanding with a short checklist. Never permit untrained newcomers to work on electrical systems, heavy equipment or elevated structures.
+
+14. 30/60/90-DAY DEVELOPMENT
+Days 1–30: shadow a qualified lead, complete safety basics, own one low-risk task.
+Days 31–60: deliver a measurable small project with budget and documentation.
+Days 61–90: lead a supervised team task, teach one skill, receive 360-degree feedback.
+Progression is based on readiness, not an automatic timeline.
+
+15. TEACHING MODEL
+Learn -> demonstrate -> practice under supervision -> perform independently -> teach another person. Record checklists, diagrams, failure modes and maintenance procedures in Knowledge Ark. Hands-on training never replaces required professional licensing.
+
+16. AGORA ACADEMY: PILOT CURRICULUM
+Module 1: mission, rights, boundaries and governance.
+Module 2: safety, emergency response and first aid.
+Module 3: utilities and resource literacy.
+Module 4: project planning, purchasing and budget control.
+Module 5: conflict resolution and hospitality.
+Module 6: practical ecology and food systems.
+Module 7: data literacy, AI limitations and privacy.
+Module 8: mentoring and knowledge transfer.
+
+17. PRACTICAL CAPSTONE PROJECTS
+Examples: build a safe inventory system; implement labeled waste sorting; map emergency assembly points; establish a documented garden irrigation test; create a guest check-in workflow; develop an offline emergency contact binder. Every capstone needs a supervisor, success metric, cost ceiling and safety review.
+
+18. MENTORSHIP
+Pair each novice with a skilled mentor for a defined project and period. Mentors should model humility, encourage questions and avoid dependency. Cross-train across domains to reduce single points of failure.
+
+19. FEEDBACK AND PERFORMANCE
+Use specific observable examples, written expectations and opportunities to improve. Separate coaching from disciplinary action. Provide a documented appeal route outside the direct supervisor for serious disputes. Protect whistleblowers from retaliation.
+
+20. CONFLICT AND POWER IMBALANCES
+Prohibit harassment, intimidation, coercion, discrimination and retaliation. Relationships between supervisors and direct reports create conflicts that must be disclosed and managed. Provide confidential reporting routes and independent escalation for allegations against founders or senior leaders.
+
+21. HEALTHY COMMUNITY BOUNDARIES
+No leader may control another person's housing, social relationships, medical choices or access to outside communication as leverage. Residents may leave freely, subject to ordinary contractual obligations. Never make personal development or spiritual practices compulsory.
+
+22. YOUTH AND NEXT-GENERATION PROGRAMS
+Offer age-appropriate learning in gardening, science, making, art and civic responsibility only with parental consent, supervision and applicable safeguarding measures. Children do not perform hazardous construction, electrical, climbing or equipment tasks. Background screening and mandatory reporting requirements must be reviewed before launching youth programs.
+
+23. FAMILY-FRIENDLY DESIGN
+Consider accessible gathering areas, quiet hours, safe pedestrian routes, shaded learning spaces and clear separation between public events and private family zones. Youth programming must not be launched until staffing, insurance and facility requirements are verified.
+
+24. ACCESSIBILITY AND INCLUSION
+Design reasonable accommodations for disabilities and differing ages, skills and resources. Publish expectations in plain language. Offer multiple ways to contribute beyond physical labor. Avoid conflating healthy living aspirations with judgments about a person's worth.
+
+25. TALENT RETENTION
+Provide meaningful autonomy, recognition, fair compensation where applicable, skill growth, clear advancement paths and honest communication. Track turnover and exit reasons. Do not rely on grand mission rhetoric to excuse burnout or unsafe working conditions.
+
+26. COMPENSATION AND INCENTIVES
+Separate wages, contractor fees, reimbursements, grants, membership benefits and any equity arrangements. Equity, profit-sharing or investment participation requires appropriate legal documentation and securities review. Avoid informal promises of future ownership.
+
+27. NETWORK LEADERSHIP
+Future Agora-25/100/500/5000 sites should have certified operational readiness, documented governance, local legal compliance and independent incident reporting. A network mentor supports rather than overrides local legal responsibilities. Brand licensing is conditional on audited standards.
+
+28. SUCCESSION: TWO DIFFERENT PROBLEMS
+Operational succession: who runs the site tomorrow if a leader is unavailable?
+Ownership succession: who controls shares, land, IP and entities after death, incapacity, exit or dispute?
+These require different documents and legal review. Training successors does not automatically transfer ownership.
+
+29. FOUNDER CONTINUITY PLAN
+Create a sealed but accessible emergency authority register; list bank/insurance/utility contacts; identify temporary operators; document spending limits and dual-approval thresholds. Counsel should draft buy-sell, incapacity, estate and deadlock provisions compatible with 50/50 ownership.
+
+30. EMERGENCY LEADERSHIP HANDOFF
+If both founders are unavailable, a predesignated interim operator may authorize only essential safety, maintenance and contractual continuity actions within a capped budget. No sale of land, transfer of IP, major borrowing or constitutional change without proper legal authority.
+
+31. LEADERSHIP ETHICS REVIEW
+Annual disclosure of conflicts, related-party transactions, gifts from vendors and hiring of relatives. Transactions with founders or affiliates should be documented at fair value and approved under relevant entity rules. Nonprofit board independence must be genuine.
+
+32. AGORA OS TALENT MODULE
+Maintain opt-in role directories, training completion, certifications and project histories. Apply role-based access, retention limits, correction rights and audit logs. AI may suggest learning resources but cannot autonomously discipline, rank worthiness or decide residency eligibility.
+
+33. KNOWLEDGE ARK CONNECTION
+Every essential function needs a one-page runbook, a detailed procedure, named primary and backup operators, and an offline copy where needed. Use version control, dates and review owners. Practice handovers rather than merely archiving documents.
+
+34. FIRST 100 DAYS: EXECUTION
+Days 1–15: founders approve role map, authority limits and safety prerequisites.
+Days 16–30: recruit 2–4 pilot contributors and identify licensed specialists.
+Days 31–45: complete onboarding and baseline competency assessments.
+Days 46–60: run two supervised capstone projects.
+Days 61–75: implement operating meetings, documentation and feedback.
+Days 76–90: test founder-absence coverage and incident escalation.
+Days 91–100: publish lessons, revised role descriptions and next-quarter needs.
+Dates are relative to actual site access; do not assume land closing or permits.
+
+35. DECEMBER 15, 2026 FIELD TEST
+Conditional goal: a small gathering or overnight pilot only if the site, sanitation, access, fire safety, insurance and applicable permissions allow it. Test check-in, task assignment, volunteer coordination, emergency briefing and shift handoff. Do not market an unpermitted residential or hospitality operation.
+
+36. JANUARY 15, 2027 MINIMUM VIABLE SETTLEMENT
+Conditional goal: founders can manage basic daily operations with documented responsibilities and backup coverage if lawful occupancy and infrastructure are ready. Readiness is a safety and compliance gate, not merely a calendar date.
+
+37. PILOT BUDGET GUIDANCE
+With approximately $25,000 proposed first-year site development funds beyond land acquisition, prioritize inexpensive leadership systems: checklists, printed manuals, basic training, first aid, signage and limited paid specialist instruction. Proposed leadership/training envelope: $500–$2,000 initially, subject to the integrated cash-flow plan. Never reduce safety-critical infrastructure spending to fund branding or programs.
+
+38. METRICS
+Leading: onboarding completion; required training coverage; percentage of critical roles with backup; documented SOP coverage; unresolved safety actions; mentor hours; attendance reliability.
+Lagging: preventable incidents; guest complaints; task rework; turnover; project delivery on time/budget; retention of qualified leaders; resident trust measured anonymously.
+
+39. RED-TEAM QUESTIONS
+Could a founder override safety objections without review? Is a 'volunteer' actually an employee? Can a resident complain without losing housing? Are children being exposed to unsafe activities? Are leadership criteria objective? Is the site overly dependent on one expert? Does an AI tool create hidden bias? Is expansion faster than training capacity?
+
+40. GATES BEFORE SCALING
+No new site without: lawful operating model; named accountable operator; emergency and safeguarding procedures; sustainable cash flow; minimum training coverage; documented maintenance; independent grievance channel; demonstrated transfer of operational knowledge. Pilot success must be verified, not self-declared.
+
+41. OWNERS AND DELIVERABLES
+Founders: approve authority charter and legal counsel scope.
+Site operator: role roster, SOPs and safety drill.
+Community steward: onboarding, resident forum and feedback.
+Finance lead: contracts, budgets and compensation classifications.
+Technology lead: secure training records and Knowledge Ark sync.
+All roles may initially be performed by founders, but ownership and review must be explicit.
+
+42. OPEN DECISIONS
+Which entity employs site staff? What are exact founder reserved powers? Who is independent grievance reviewer? What site activities are permitted? Which certifications and insurance are required? What compensation can the pilot afford? How will child safeguarding be handled if families visit? Which succession instruments are executed?
+
+43. DOCUMENT INTERFACES
+05 Founder Charter; 06 Legal Architecture; 10 First 100 Days; 17 Community Membership; 18 Education; 19 Operations & Safety; 21 Governance; 22 Economic System; 23 Agora OS; 29 Capital Strategy; 33 Ethics & Rights; 34 Culture. Where inconsistent, signed legal agreements and applicable law control; update the blueprint accordingly.
+
+44. LONG-HORIZON VISION
+2030: tested leadership curriculum and cross-trained site teams.
+2040: network academy and regional mentors, subject to demand and financing.
+2050: intergenerational knowledge transfer with robust rights safeguards.
+2100: institutions capable of self-correction without dependence on their founders' personalities. These are aspirations, not forecasts.
+
+45. FINAL RULE
+Think 100 years. Build in 100 days. Test every week. Develop leaders who can be trusted with real responsibility, questioned without fear, and replaced without collapse.
+
+NEXT DOCUMENT 36 — to be defined in the approved Agora document index.

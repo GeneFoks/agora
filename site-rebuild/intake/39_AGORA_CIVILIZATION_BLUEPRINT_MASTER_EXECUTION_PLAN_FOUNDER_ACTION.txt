@@ -1,0 +1,168 @@
+AGORA CIVILIZATION BLUEPRINT 1.0
+DOCUMENT 39 / 39 — FINAL FOUNDER EXECUTION PACKAGE
+MASTER EXECUTION PLAN & FOUNDER ACTION PACKAGE
+Version: 1.0 | October 2026 | Status: strategic working draft, not a permit, investment offering, or legal opinion
+Founders: Eugene and Gennady Fokin | Intended founder economics: 50/50, subject to executed agreements
+
+EXECUTIVE DIRECTIVE
+Think 100 years. Build in 100 days. Test every week.
+The purpose of Agora-01 is to validate a humane, financially viable, lawful, replicable settlement operating model on a prospective ~18-acre Central Texas parcel. No purchase, utility connection, habitation, construction, excavation, paid event, or hospitality operation is presumed authorized. The 2026–2027 dates are targets, not promises. This document translates Blueprint 00–38 into founder decisions, execution gates, budgets, accountabilities, evidence, and immediate actions. It does not override the underlying specialist documents.
+
+01. DEFINITION OF SUCCESS
+First success: founders acquire or control a suitable parcel under acceptable risk, can legally and safely occupy or operate it, and demonstrate reliable sanitation, drinking water, power, emergency access, basic shelter, and a functioning community protocol. Second success: repeatable, positive unit economics for at least one permitted offering. Third success: documented learning that another team could reproduce. Neither a lake nor an attractive marketing story is a substitute for these tests.
+
+02. NON-NEGOTIABLE PRINCIPLES
+Legality; human dignity; informed consent; freedom of belief and departure; nonviolence; safety; truthful representations; financial transparency; environmental stewardship; accountability; no coercive labor; no discriminatory exclusion; no misleading claims of autonomy, medical benefit, or financial return. Founder control applies only where validly granted by law and contract and does not erase member, employee, tenant, guest, or nonprofit rights.
+
+03. DECISION HIERARCHY
+Life safety and law > executed contracts and rights > verified physical constraints > solvency > approved budgets > timeline > aesthetic preferences. A failed safety, legal, or funding gate pauses work even if a launch date is near. Emergency response authority rests with the responsible on-site person; report and document promptly.
+
+04. SINGLE SOURCE OF TRUTH
+Folder structure: 00 master context; 01 index; 02–37 domain strategies; 38 assumption/idea/decision register; 39 execution package. Maintain one shared decision log, issue tracker, evidence folder, current budget, parcel diligence matrix, weekly dashboard, and version history. Documents are proposals until verified and approved. Link decisions to evidence and dated approvals.
+
+05. FOUNDERS' RESPONSIBILITY MATRIX — INITIAL PROPOSAL
+Eugene: strategic integration, land screening, construction/infrastructure technical planning, vendor quotations, financial dashboard, software and media direction. Gennady: community activation, hospitality pilots, local relationships, program calendar, guest experience, operations coordination. BOTH: land contract, financing, debt, equity, entity formation, strategic partnerships, significant spending, safety gate sign-off. Reassign duties only by mutual agreement; each workstream needs one accountable owner and a backup.
+
+06. FOUNDERS' LEGAL PACKAGE — MUST COMPLETE BEFORE MATERIAL COMMITMENTS
+Obtain Texas-qualified legal and tax counsel. Execute the appropriate entity operating agreement, contribution schedule, 50/50 economics if agreed, manager powers, approval thresholds, treatment of contributed labor/materials, expense reimbursement, vesting if relevant, capital calls, debt guarantees, deadlock and buy-sell procedures, departure/death/disability terms, dispute resolution, and IP assignment/licensing. Keep land-owning, operating, and genuinely independent nonprofit activities legally distinct as advised. Never promise tax deductions or nonprofit status before approval.
+
+07. APPROVAL CLASSES
+A: unanimous written approval — land purchase, secured debt, personal guarantees, equity changes, founder IP transfer, leases, long-term contracts, high-risk construction, changes to constitutional rights. B: written approval under a pre-agreed dollar threshold — vendor commitments, hires, public events, product launches. C: delegated, reversible experiments within budget. D: emergency actions needed to prevent imminent harm. Define dollar thresholds in the signed authority matrix; none are approved by this draft.
+
+08. CAPITAL BASELINE — PLANNING ONLY
+Illustrative parcel price: $250,000. Illustrative down payment: $30,000. Implied financed principal: $220,000 before closing costs, fees, and reserves. Assumed 10-year financing has NOT been verified; interest rate, amortization, balloon, collateral, guarantees, insurance, and payment schedule are unknown. Initial site-development target: $25,000 IN ADDITION to acquisition costs. A $30,000 down payment is 12% of $250,000; seller/lender acceptance is unknown. Do not conflate cash to close with development cash or working capital.
+
+09. CASH-TO-CLOSE TEST
+Cash required = down payment + earnest money not credited + title/escrow + legal review + survey + lender fees + insurance + taxes/adjustments + immediate remediation + contingency. Require written loan term sheet and settlement estimate. Test debt service under multiple interest rates and vacancy scenarios. If available liquidity cannot cover acquisition, minimum safety works, and a reserve, renegotiate, delay, or reject the parcel.
+
+10. DEVELOPMENT BUDGET — ILLUSTRATIVE $25,000 ENVELOPE
+Site access, drainage and basic grading: $2,000; sanitary/wastewater planning and temporary permitted service: $4,000; water testing/storage/connection: $3,000; electrical safety/temporary power: $3,500; used RV/shelter and essential repairs: $5,000; shared area and basic furnishing: $1,000; fire/first aid/signage/lighting: $1,000; design, inspections and permits: $2,000; contingency: $3,500. Total $25,000. These are allocation targets, NOT market quotes; a single well, septic, electrical extension, or access project may exceed the entire envelope. Rebaseline after vendor estimates and regulatory review. No purchase of unsafe RVs to hit a target price.
+
+11. FINANCIAL STOP RULES
+No unbudgeted debt or personal guarantee. No spending on decorative amenities while sanitation, water, emergency access, and fire protection are unresolved. No paid reservations before legal occupancy/operation, insurance and capacity are confirmed. Maintain a 13-week cash forecast; track committed versus paid versus forecast costs. Escalate projected cash shortfall immediately.
+
+12. PARCEL DUE DILIGENCE — GO/NO-GO
+Verify legal ownership and title exceptions; recorded access and road maintenance; survey and boundaries; zoning/city limits/ETJ; county development and subdivision rules; deed restrictions/HOA/POA; RV and temporary dwelling rules; glamping, lodging, events and sauna use; floodplain and drainage; wetlands; slope/soil; wildfire; mineral and pipeline easements; Edwards Aquifer restrictions if applicable; septic feasibility; water source/rights; utility distance/capacity; lake alteration constraints; taxes and insurance. Identify the competent authority for each item; request written answers or primary records, not broker assurances.
+
+13. LAKE DECISION GATE
+Before dredging, deepening, filling, excavation, diversion or shoreline work, determine whether the feature is regulated, whether floodplain/wetlands/waters permits are needed, whether easements or conservation restrictions apply, and whether the lake affects septic or building setbacks. Obtain qualified site-specific review. No physical modification until written permissions and design are secured.
+
+14. UTILITIES — ACCEPTANCE EVIDENCE
+Electricity: utility provider, meter status, service capacity, tariff, extension cost, licensed electrician inspection. Water: provider or well rights, potability tests, year-round yield, connection cost, storage and backflow requirements. Wastewater: permitted septic/sewer/approved servicing solution, capacity, setbacks, licensed design as required. Internet: tested coverage and backup option. Each utility needs a costed design, owner, timeline and evidence artifact.
+
+15. INSURANCE AND RISK TRANSFER
+Broker and attorney to assess general liability, premises, property, builders risk, workers compensation as applicable, auto, hospitality/events, water feature, sauna, cyber/privacy, directors/officers for relevant entities, and umbrella coverage. Require certificates and contractual risk allocation from vendors. Insurance does not legalize prohibited uses.
+
+16. PHASE 0 — FIRST 7 DAYS
+(1) Confirm shared founder priorities and sign a one-page decision charter. (2) List available cash and borrowing capacity. (3) Create parcel shortlist and evidence matrix. (4) Call county/city/ETJ offices for use permissions. (5) Get lender/seller-finance term indications. (6) Contact title company, surveyor, septic designer, utility providers and insurance broker. (7) Create issue log, budget and weekly meeting. Deliverable: a written proceed/pause/reject decision on each parcel, with named unknowns.
+
+17. PHASE 1 — DAYS 8–30
+Obtain survey/title documents, zoning and use confirmations, site walk, flood/wetland screening, wastewater feasibility, utility estimates, insurance indications, and at least two quotes for critical works. Review entity/financing structure. Build a 12-month base/downside cash model. Do not waive meaningful diligence merely to accelerate closing. Deliverable: founder-approved acquisition memo with quantified risks and exit conditions.
+
+18. PHASE 2 — DAYS 31–60
+If and only if acquisition and approvals permit: secure site, establish legal access, arrange compliant sanitation and potable water, make electrical work safe, clear emergency routes, establish fire protection and communications, inspect any RVs or temporary structures, and implement operating rules. Photograph inspections and retain receipts. Deliverable: documented minimum safe site, not necessarily open to public.
+
+19. PHASE 3 — DAYS 61–100
+Pilot founder occupancy where lawful; run controlled community workdays; test meal and gathering logistics; collect utility, maintenance, safety and cost data; prepare small hospitality or sauna trials ONLY if specifically permitted and insured. Publish an honest progress report. Deliverable: evidence-based go/no-go for regular operation and a prioritized next-quarter capital plan.
+
+20. DECEMBER 15, 2026 — CONDITIONAL FIELD TEST
+Aspirational milestone: a small founder/friends gathering using one or two safe used RVs, up to three deck-supported tents only where permitted, toilets, grill and shared space; rented sauna only if lawful and safely installed/operated. If land closing, approvals or utilities are incomplete, conduct a planning/demo event at a lawful alternative venue. Never call an unsafe or unpermitted site 'open'.
+
+21. JANUARY 15, 2027 — CONDITIONAL MINIMUM VIABLE SETTLEMENT
+Aspirational milestone: two founders can lawfully stay on site with functioning potable water, sanitation, electrical safety, weather protection, communications and emergency procedures. A simple owned sauna is optional and conditional on code/permit/insurance. If conditions are not met, publish the blockers and revise the schedule.
+
+22. MINIMUM SAFE SITE CHECKLIST
+Written land use clearance; legal access and emergency vehicle approach; approved sanitation; tested drinking water; safe electrical service; shelter/egress/fire protection; smoke/CO detectors as applicable; first-aid kits; emergency contact sheet and location markers; storm and heat/cold protocols; site lighting; safe storage of fuel/chemicals; water feature barriers/signage appropriate to exposure; insurance; documented on-site lead. Every line is PASS, FAIL or NOT APPLICABLE with evidence.
+
+23. HUMAN SYSTEM AND CULTURE — FIRST OPERATING STANDARD
+Publish a concise guest/resident handbook: welcome, consent, privacy, quiet hours, shared chores, substance and impairment safety, nondiscrimination, nonviolence, child safeguarding, complaint channels, emergency procedures, fee/refund terms, and rights to leave. Participation in cultural rituals is voluntary. No required ideological conformity, coercive work exchange, or unqualified health treatment.
+
+24. LABOR AND VOLUNTEER SAFETY
+Classify workers, contractors and volunteers properly with counsel. Do not replace paid labor unlawfully with 'community participation'. Require PPE, training, competent supervision, task risk assessments and licensed trades where required. Track donated construction materials by provenance, condition, specifications and suitability; reject damaged or non-code-compliant items.
+
+25. LAUNCH PRODUCT LADDER
+First: founder-led private prototype, no public revenue claims. Second: small permitted day events/workshops if authorized. Third: sauna/wellness, glamping or RV stays only after separate use approvals, health/fire review, insurance and operating procedures. Fourth: retreats, education and memberships once repeatable economics and staffing are demonstrated. Do not sell speculative future access as guaranteed service.
+
+26. UNIT ECONOMICS — REQUIRED TEMPLATE
+For each offering record price, occupancy/utilization, direct labor, cleaning, utilities, supplies, transaction fees, marketing, maintenance, insurance allocation, taxes, depreciation/replacement reserve, and refund/cancellation exposure. Contribution margin = revenue minus directly attributable variable costs. Cash profit additionally deducts fixed operating costs and debt service. Never use gross bookings as proof of profitability.
+
+27. PILOT EXPERIMENT CARD
+Every experiment must state hypothesis; owner; maximum spend; legal/safety prerequisites; start/end date; baseline; measurable outcome; stopping threshold; evidence storage; decision: scale, revise or stop. Start with water use, energy use, sanitation service costs, meal cost per participant, workday productivity, visitor satisfaction, and incident response drill. Avoid human-subject medical research without applicable ethics and regulatory oversight.
+
+28. AGORA OS — MINIMUM VIABLE VERSION
+Begin with a secure spreadsheet/database and simple dashboard: asset inventory, maintenance tasks, utility meter readings, cash forecast, permit register, incident log, guest bookings where lawful, and decision ledger. Role-based access, backups, MFA, exportable records and privacy notices are mandatory. Do not automate high-risk physical controls without engineering review and manual override.
+
+29. DATA AND PRIVACY RULES
+Collect only necessary data; publish purpose, retention and access rules; obtain consent where required; protect minors; do not expose medical, financial, identity or sensitive community information in AI prompts. Record AI outputs as recommendations, not verified facts. Maintain an incident response and deletion process.
+
+30. AI COUNCIL / RED TEAM PROTOCOL
+For irreversible decisions: independent engineering, legal, finance, community-rights and red-team critiques; explicit counterarguments; source verification; founder sign-off. Ask multiple models to challenge assumptions independently, not endorse the preferred outcome. Human licensed experts verify domain-specific claims. Record dissent and unresolved risk in the decision log.
+
+31. TOP TEN EXECUTION RISKS
+R1 Unpermitted occupancy/hospitality; R2 inadequate wastewater/water; R3 underestimated infrastructure cost; R4 financing mismatch or balloon risk; R5 flood/wetland/lake constraints; R6 founder deadlock; R7 uninsured incident; R8 weak demand or poor unit economics; R9 volunteer/contractor injury; R10 scope creep into expensive technology before core systems work. Each risk gets probability, impact, early-warning signal, mitigation, owner and review date.
+
+32. TRIGGER-BASED RESPONSE
+If permit use is denied: change operating model or parcel. If utilities exceed cash capacity: reduce scope, secure committed financing, or pause. If 13-week cash falls below minimum reserve: freeze nonessential commitments. If safety incident: stop affected operation, protect people, document, notify as required and conduct corrective review. If founders disagree on Class A: status quo/no irreversible action until agreed dispute mechanism resolves it.
+
+33. WEEKLY FOUNDER OPERATING RHYTHM
+Monday 45-minute decision meeting: safety, cash, blockers, last-week promises, this-week deliverables. Midweek field/permit/vendor check. Friday evidence review and public progress only where accurate. Monthly budget reforecast, risk register refresh, guest/community feedback and independent critique. Keep meetings short; publish owners and deadlines.
+
+34. DASHBOARD — 15 CORE METRICS
+1 cash on hand; 2 13-week projected low cash; 3 acquisition readiness; 4 permit gate completion; 5 utility readiness; 6 safe occupancy status; 7 incident/near-miss count; 8 open high-risk items; 9 committed development cost; 10 schedule slippage; 11 guest satisfaction when applicable; 12 net operating cash flow; 13 water consumption; 14 energy consumption; 15 experiment completion and evidence quality. Baselines are blank until measured; never fabricate percentages.
+
+35. PROCUREMENT RULES
+Three competitive quotes when practical for significant works; documented single-source exception; written scope, exclusions, change orders, warranty, insurance, license verification, schedule and payment milestones. Never pay large unsecured deposits without diligence. Prefer durable, repairable, safe equipment; used materials must pass inspection.
+
+36. EXTERNAL RELATIONSHIP MAP
+Parcel broker/seller; county development/planning; relevant municipality/ETJ; floodplain administrator; health/wastewater authority; water utility or well professionals; electric utility; fire marshal; surveyor; civil engineer; septic designer; title/escrow; lender; insurance broker; attorney/CPA; neighboring landowners; potential pilot guests; university/community partners. Confirm exact jurisdictions and contacts per parcel rather than assuming one office controls everything.
+
+37. COMMUNICATION POLICY
+Say 'proposed', 'under evaluation', 'subject to approval', or 'pilot' as applicable. Disclose that initial financial figures and opening dates are preliminary. Do not imply university/government partnerships or nonprofit recognition without signed proof. Obtain image/recording consent and respect privacy. Report failures as learning, not concealment.
+
+38. FUNDRAISING AND OWNERSHIP SAFEGUARDS
+No investment solicitation or return promises without securities counsel and compliant documentation. Separate donations, commercial sales, member dues, loans and equity; each has distinct legal and accounting treatment. Nonprofit assets and grants must serve lawful charitable purposes, not founder private benefit. IP, trademarks, software and parcel assets need documented ownership and inter-entity licensing if applicable.
+
+39. SCALING GATES — AGORA NETWORK
+Do not launch Agora-25/100/500/5000 merely because the brand attracts interest. Require a full seasonal operating record where practical, verified legal replicability, credible cash economics, safety record, documented SOPs, trained site leader, repeatable procurement, independent review, and capital adequate for the next site. Replicate verified processes, not unresolved assumptions.
+
+40. RESEARCH, ROBOTICS AND LONG HORIZONS
+Maintain a separate research backlog for autonomous irrigation, solar monitoring, sensors, robotics, digital twins, knowledge preservation, extreme environments and eventual off-world applications. Allocate resources only after the core settlement's safety and solvency gates. Distinguish 2026 field prototypes from 2050–2100 scenarios; the latter are research visions, not committed deliverables.
+
+41. EVIDENCE ROOM — MINIMUM FILES
+A01 deed/title and survey; A02 zoning/ETJ/use determinations; A03 flood/wetland/environment; A04 lake/water rights; A05 septic/water tests; A06 power/internet quotes; A07 lender term sheet and closing estimate; A08 insurance; A09 permits/inspections; A10 founder agreements; A11 vendor contracts; A12 cash ledger and receipts; A13 safety plan and drills; A14 guest policies; A15 experiments/data; A16 decision log. Date every document, note expiration and responsible reviewer.
+
+42. DECISION MEMO — ONE-PAGE TEMPLATE
+Decision ID / date / owner / requested action / alternatives including do nothing / cash impact / recurring cost / legal authority / safety impact / evidence links / unknowns / downside scenario / reversibility / red-team objection / founder approvals / deadline / follow-up metric. No major decision without this memo.
+
+43. FOUNDER TASK BOARD — IMMEDIATE 20 ACTIONS
+01 Agree scope and decision rights. 02 Inventory cash and liabilities. 03 Select 3–5 candidate parcels. 04 Verify title and legal access. 05 Map jurisdiction/ETJ. 06 Ask written RV/habitation questions. 07 Ask written glamping/event questions. 08 Review floodplain and lake restrictions. 09 Obtain septic feasibility. 10 Verify water supply. 11 Verify electric service. 12 Request survey. 13 Get financing term sheet. 14 Get closing estimate. 15 Get insurance indication. 16 Draft founder operating agreement. 17 Build 13-week cash model. 18 Prepare minimum safety plan. 19 Obtain two infrastructure quotes. 20 Hold go/no-go meeting and record decision. Each item needs an owner and date assigned at kickoff.
+
+44. FIRST 30-DAY DELIVERABLES
+D1 Signed founder decision charter. D2 Parcel comparison and rejection reasons. D3 Written use/permit issue matrix. D4 Utility and wastewater feasibility notes. D5 Preliminary financing/closing model. D6 Risk register with top blockers. D7 Development budget with sourced quotes. D8 Draft founder legal structure. D9 100-day board with owners. D10 Public narrative accurately describing status. If any D2–D7 remains unknown, acquisition approval is not automatic.
+
+45. FIRST 100-DAY GO/NO-GO REVIEW
+Answer with evidence: Can founders legally occupy? Is the site safe? Are water/wastewater/power reliable? Is the project solvent for the next quarter? Is there a permitted revenue product? Are guests satisfied? Is operational responsibility clear? Are the rights of participants protected? Can the model be reproduced at lower risk? Record PASS, FAIL, or UNKNOWN; UNKNOWN is not PASS.
+
+46. WHAT NOT TO DO
+Do not buy land solely on visual appeal. Do not assume an existing meter means usable capacity. Do not assume a lake can be dredged. Do not treat RVs as automatically legal dwellings. Do not equate a 'community' with exemption from building, health, labor, lodging or tax rules. Do not fund nonprofit activities through opaque related-party transactions. Do not launch unsafe events to hit a birthday milestone. Do not build AI/robotics before basic water and sanitation.
+
+47. FOUNDER AGREEMENT — KICKOFF QUESTIONS
+What cash can each founder actually commit, by date? How is noncash labor valued, if at all? Who owns the land and improvements? Who signs guarantees? What is the minimum reserve? What are unanimous approval thresholds? What happens on a deadlock? What are the personal housing rights of each founder? What may be promised to community members? What constitutes a successful first year? What is the maximum acceptable loss? Answers must be written and reviewed by counsel.
+
+48. AGORA 1.0 COMPLETION CRITERIA
+Blueprint 1.0 is complete as a STRATEGIC DOCUMENT SET when files 00–39 are present and indexed. It is NOT a certified engineering design, regulatory approval, legal agreement, secured financing, or validated business model. Completion of documentation starts the verification and implementation stage; it does not mean Agora-01 is operational.
+
+49. BLUEPRINT 2.0 INPUTS
+Real parcel address and survey; written land-use rulings; approved site layout; utility and septic designs; binding finance terms; executed founder agreements; contractor bids; insured operating model; community handbook; field measurements; customer demand data; revised budget and timeline. Version 2.0 should replace assumptions with primary evidence, archive superseded text, and expose remaining uncertainty.
+
+50. FINAL MISSION
+Build a place where people can live with dignity, freedom, safety, curiosity, mutual respect, and growing practical independence. Prove the concept through real operations before promoting global replication. The long-term vision includes Agora Network, Agora OS, education, research, resilience and Knowledge Ark; the next action is a verified, financially responsible decision about the first piece of land.
+
+FINAL FOUNDER SIGN-OFF — TO BE COMPLETED, NOT IMPLIED
+Eugene: __________________ Date: __________
+Gennady Fokin: ____________ Date: __________
+Approved parcel: ___________ Evidence folder: ___________
+Maximum committed capital: ___________ Minimum reserve: ___________
+Next formal review date: ___________
+
+END OF AGORA CIVILIZATION BLUEPRINT 1.0 — DOCUMENT 39 / 39
