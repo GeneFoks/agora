@@ -23,9 +23,6 @@
           links.map(function(l) {
             return '<a href="' + l.href + '" class="' + (p === l.slug ? 'active' : '') + '" data-i18n="' + l.key + '">' + t(l.key) + '</a>';
           }).join('') +
-          '<a href="/app" class="nav-login"><span class="nav-login-icon">' +
-            '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>' +
-          '</span><span>' + (lang === 'ru' ? 'Кабинет' : 'Account') + '</span></a>' +
           '<a href="/join" class="nav-cta" data-i18n="nav.cta">' + t('nav.cta') + '</a>' +
           '<div class="lang-switcher">' +
             '<button class="lang-btn' + (lang === 'ru' ? ' active' : '') + '" data-lang="ru" onclick="window.AgoraI18n.setLang(\'ru\')">RU</button>' +
