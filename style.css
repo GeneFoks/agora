@@ -887,3 +887,31 @@ footer {
   .lang-switcher { margin: 14px 0 0; align-self: flex-start; }
   .theme-toggle { margin: 10px 0 0; align-self: flex-start; }
 }
+
+/* ════════════════════════════════════
+   BLUEPRINT MOTIF (чертёжная сетка)
+════════════════════════════════════ */
+.status-panel {
+  background-image:
+    linear-gradient(rgba(196,137,74,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(196,137,74,.045) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+html[data-theme="light"] .status-panel {
+  background-image:
+    linear-gradient(rgba(168,112,47,.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168,112,47,.07) 1px, transparent 1px);
+}
+.cta-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(196,137,74,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(196,137,74,.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 80% at 50% 50%, black 0%, transparent 72%);
+  mask-image: radial-gradient(ellipse 70% 80% at 50% 50%, black 0%, transparent 72%);
+  pointer-events: none;
+}
+.cta-section .container { position: relative; z-index: 1; }
