@@ -1,0 +1,19 @@
+# Free-plan Supabase projects pause after 7 days without API traffic.
+# One tiny read a day keeps the AGORA database awake. Uses the public
+# (publishable) key that already ships in supabaseClient.js.
+name: Keep Supabase awake
+
+on:
+  schedule:
+    - cron: '17 9 * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping AGORA database
+        run: |
+          curl -sS -o /dev/null -w "HTTP %{http_code}\n" \
+            "https://coohrbdmzfysnenoclbs.supabase.co/rest/v1/map_objects?select=parcel&limit=1" \
+            -H "apikey: sb_publishable_nJoq76v_sMb1h5KH_B-TVw_A3kWYSox"
