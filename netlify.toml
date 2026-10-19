@@ -17,9 +17,24 @@
   from = "/manifesto.html"
   to = "/manifesto"
   status = 301
+# Land page superseded by Agora-01.
 [[redirects]]
   from = "/land.html"
-  to = "/land"
+  to = "/agora-01"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/land"
+  to = "/agora-01"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/agora-01.html"
+  to = "/agora-01"
+  status = 301
+[[redirects]]
+  from = "/journal.html"
+  to = "/journal"
   status = 301
 # Money/offer pages retired — old links land on the join page.
 [[redirects]]

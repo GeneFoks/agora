@@ -4,9 +4,10 @@
 
   var links = [
     { href: '/',      slug: 'home',  key: 'nav.home' },
-    { href: '/about', slug: 'about', key: 'nav.about' },
     { href: '/manifesto', slug: 'manifesto', key: 'nav.manifesto' },
-    { href: '/land',  slug: 'land',  key: 'nav.land' },
+    { href: '/agora-01', slug: 'agora-01', key: 'nav.agora01' },
+    { href: '/journal', slug: 'journal', key: 'nav.journal' },
+    { href: '/about', slug: 'about', key: 'nav.about' },
     { href: '/join',  slug: 'join',  key: 'nav.join' },
   ];
 
@@ -59,7 +60,6 @@
             '<a href="https://gofund.me/41a2c4cc1" target="_blank">GoFundMe</a>' +
             '<a href="https://bestiehere.com/signup?ref=D46EB3DC" target="_blank" data-i18n="nav.app">' + t('nav.app') + '</a>' +
             '<a href="/join" data-i18n="nav.cta">' + t('nav.cta') + '</a>' +
-            '<a href="/land" data-i18n="nav.land">' + t('nav.land') + '</a>' +
           '</div>' +
         '</div>' +
         '<div class="footer-bottom">' +
