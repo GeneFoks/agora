@@ -22,8 +22,8 @@
       'footer.quote': '«Думай на сто лет. Строй за сто дней. Проверяй каждую неделю.»',
 
       /* ── index ── */
-      'index.title': 'AGORA Foundation — Место, где создатели строят свой мир',
-      'index.meta': 'Мы строим современную Долину Голта — свободное, самодостаточное сообщество строителей, мыслителей и создателей. 10 акров в Техасе.',
+      'index.title': 'AGORA — Цивилизация не закончена. Мы строим её дальше',
+      'index.meta': 'AGORA — лаборатория нового формата человеческих поселений. Первая земля: Agora-01, Техас. Думай на сто лет. Строй за сто дней. Проверяй каждую неделю.',
       'index.hero.label': 'Texas, USA · 10 акров · Проект в реализации',
       'index.hero.h1': 'Место, где<br>создатели<br><em>строят свой мир</em>',
       'index.hero.sub': 'Мы строим современную Долину Голта — свободное, самодостаточное сообщество строителей, мыслителей и создателей.',
@@ -111,8 +111,8 @@
       'index.cta.tg': 'Присоединиться к сообществу → t.me/agorausa',
 
       /* ── about ── */
-      'about.title': 'О нас — AGORA Foundation',
-      'about.meta': 'Кто мы такие и почему строим Агору. Ценности, видение, принципы сообщества.',
+      'about.title': 'О нас — AGORA',
+      'about.meta': 'Кто строит AGORA: основатели Евгений Сейгер Рич и Геннадий Фокин. Мы не просим веры. Мы просим внимания.',
       'about.breadcrumb': 'Главная',
       'about.breadcrumb2': 'О нас',
       'about.hero.title': 'Долина Голта<br><em style="color:var(--earth);">в реальном мире</em>',
@@ -203,8 +203,8 @@
       'land.cta.btn2': 'Присоединиться в Telegram',
 
       /* ── join ── */
-      'join.title': 'Вступить — AGORA Foundation',
-      'join.meta': 'Подай заявку на участие в AGORA Foundation. Техас, США.',
+      'join.title': 'Участвовать — AGORA',
+      'join.meta': 'Как присоединиться к AGORA, где бы вы ни были. Четыре круга участия. Идея не требует визы.',
       'join.breadcrumb': 'Главная',
       'join.breadcrumb2': 'Вступить',
       'join.hero.title': 'Стать частью<br><em style="color:var(--earth);">Агоры</em>',
@@ -361,8 +361,8 @@
       'footer.quote': '"Think in centuries. Build in a hundred days. Verify every week."',
 
       /* ── index ── */
-      'index.title': 'AGORA Foundation — Where Creators Build Their World',
-      'index.meta': 'We are building a modern Galt\'s Gulch — a free, self-sufficient community of builders, thinkers, and creators. 10 acres in Texas.',
+      'index.title': 'AGORA — Civilization Is Not Finished. We Are Building It Further',
+      'index.meta': 'AGORA is a laboratory for a new format of human settlements. First land: Agora-01, Texas. Think in centuries. Build in a hundred days. Verify every week.',
       'index.hero.label': 'Texas, USA · 10 acres · Project in progress',
       'index.hero.h1': 'The place where<br>creators<br><em>build their world</em>',
       'index.hero.sub': 'We are building a modern Galt\'s Gulch — a free, self-sufficient community of builders, thinkers, and creators.',
@@ -450,8 +450,8 @@
       'index.cta.tg': 'Join the community → t.me/agorausa',
 
       /* ── about ── */
-      'about.title': 'About — AGORA Foundation',
-      'about.meta': 'Who we are and why we\'re building Agora. Values, vision, community principles.',
+      'about.title': 'About — AGORA',
+      'about.meta': 'Who is building AGORA: founders Eugene Sager Rich and Gennadii Fokin. We don\'t ask for faith. We ask for attention.',
       'about.breadcrumb': 'Home',
       'about.breadcrumb2': 'About',
       'about.hero.title': 'Galt\'s Gulch<br><em style="color:var(--earth);">in the real world</em>',
@@ -542,8 +542,8 @@
       'land.cta.btn2': 'Join us on Telegram',
 
       /* ── join ── */
-      'join.title': 'Join — AGORA Foundation',
-      'join.meta': 'Apply to join AGORA Foundation. Texas, USA.',
+      'join.title': 'Participate — AGORA',
+      'join.meta': 'How to join AGORA wherever you are. Four circles of participation. An idea needs no visa.',
       'join.breadcrumb': 'Home',
       'join.breadcrumb2': 'Join',
       'join.hero.title': 'Become part of<br><em style="color:var(--earth);">Agora</em>',
