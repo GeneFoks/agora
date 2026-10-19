@@ -7,6 +7,7 @@
     { href: '/manifesto', slug: 'manifesto', key: 'nav.manifesto' },
     { href: '/agora-01', slug: 'agora-01', key: 'nav.agora01' },
     { href: '/journal', slug: 'journal', key: 'nav.journal' },
+    { href: '/people', slug: 'people', key: 'nav.people' },
     { href: '/about', slug: 'about', key: 'nav.about' },
     { href: '/join',  slug: 'join',  key: 'nav.join' },
   ];

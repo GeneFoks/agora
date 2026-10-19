@@ -36,6 +36,10 @@
   from = "/journal.html"
   to = "/journal"
   status = 301
+[[redirects]]
+  from = "/people.html"
+  to = "/people"
+  status = 301
 # Money/offer pages retired — old links land on the join page.
 [[redirects]]
   from = "/own"
