@@ -12,6 +12,7 @@
   <script src="i18n.js"></script>
   <script src="account-i18n.js"></script>
   <script src="anketa-config.js"></script>
+  <script src="ipip-config.js"></script>
 </head>
 <body>
 
@@ -60,6 +61,13 @@
           '<a class="btn btn-earth" href="/anketa">' + esc(t(completed ? 'acc.cab.anketa_edit' : (filled ? 'acc.cab.anketa_continue' : 'acc.cab.anketa_start'))) + '</a>' +
         '</div>' +
       '</div>' +
+      '<div class="cab-next">' +
+        '<h2>' + esc(t('ip.cab.title')) + '</h2>' +
+        '<p>' + (ipip ? esc(ipipLine(ipip)) : esc(t('ip.cab.none'))) + '</p>' +
+        '<div class="cab-anketa">' +
+          '<a class="btn ' + (ipip ? 'btn-outline' : 'btn-earth') + '" href="/test">' + esc(t(ipip ? 'ip.cab.view' : 'ip.cab.take')) + '</a>' +
+        '</div>' +
+      '</div>' +
       '<div style="margin-top:28px;">' +
         '<button type="button" class="btn btn-outline" id="logoutBtn">' + esc(t('acc.cab.logout')) + '</button>' +
       '</div>';
@@ -69,16 +77,26 @@
     });
   }
 
-  let filled = 0, completed = false;
+  let filled = 0, completed = false, ipip = null;
   const total = window.AGORA_ANKETA.blocks.length;
+  const IP = window.AGORA_IPIP;
+
+  // "Экстраверсия: высокий · Доброжелательность: средний · …"
+  function ipipLine(row) {
+    const en = lang() === 'en';
+    return IP.factors.map((f) => (en ? f.en : f.ru) + ': ' + t('ip.level.' + IP.level(f.id, IP.displayScore(row, f)))).join(' · ');
+  }
 
   try {
     me = await requireMember();
     if (me) {
-      const [ans, prof] = await Promise.all([
+      const [ans, prof, ip] = await Promise.all([
         supabase.from('answers').select('block_id').eq('user_id', me.id),
         supabase.from('profiles').select('anketa_progress').eq('id', me.id).single(),
+        supabase.from('ipip_results').select('extraversion,agreeableness,conscientiousness,emotional_stability,openness,taken_at')
+          .eq('user_id', me.id).order('taken_at', { ascending: false }).limit(1),
       ]);
+      ipip = ip.data && ip.data[0] ? ip.data[0] : null;
       filled = (ans.data || []).length;
       completed = !!(prof.data && prof.data.anketa_progress && prof.data.anketa_progress.completed_at);
     }

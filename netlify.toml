@@ -109,3 +109,7 @@
   from = "/anketa.html"
   to = "/anketa"
   status = 301
+[[redirects]]
+  from = "/test.html"
+  to = "/test"
+  status = 301

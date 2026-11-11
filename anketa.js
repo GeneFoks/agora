@@ -199,7 +199,10 @@ function renderDone() {
     '<div class="an-top"><div class="an-bar"><i style="width:100%"></i></div></div>' +
     '<h1>' + esc(t('an.done.title')) + '</h1>' +
     '<p class="auth-lead">' + esc(t('an.done.text')) + '</p>' +
-    '<a class="btn btn-earth" href="/cabinet">' + esc(t('an.done.cabinet')) + '</a>';
+    '<div class="cab-anketa">' +
+      '<a class="btn btn-earth" href="/test">' + esc(t('an.done.test')) + '</a>' +
+      '<a class="btn btn-outline" href="/cabinet">' + esc(t('an.done.cabinet')) + '</a>' +
+    '</div>';
 }
 
 // ─── State ──────────────────────────────────────────────────────────────────

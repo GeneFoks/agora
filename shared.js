@@ -23,7 +23,7 @@
     var signed = hasSession();
     var accHref = signed ? '/cabinet' : '/login';
     var accKey = signed ? 'nav.cabinet' : 'nav.login';
-    var accActive = ['cabinet', 'login', 'register', 'consent', 'reset', 'anketa'].indexOf(p) !== -1;
+    var accActive = ['cabinet', 'login', 'register', 'consent', 'reset', 'anketa', 'test'].indexOf(p) !== -1;
 
     document.getElementById('nav-placeholder').innerHTML =
       '<nav>' +
