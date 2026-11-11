@@ -1,7 +1,9 @@
 -- ============================================================
--- AGORA — Supabase schema
--- Run once in Supabase Dashboard → SQL Editor → New query → Run.
--- Safe to re-run (idempotent): uses IF NOT EXISTS / CREATE OR REPLACE.
+-- AGORA — Supabase schema (ORIGINAL, June 2026)
+-- !! DO NOT RE-RUN. It is superseded by the migrations in db/
+-- !! (db/001_accounts.sql rebuilds profiles security and the signup
+-- !! trigger; re-running this file would undo those fixes).
+-- Kept for history only.
 -- ============================================================
 
 -- ----------------------------------------------------------------

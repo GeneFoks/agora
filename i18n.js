@@ -15,6 +15,8 @@
       'nav.join': 'Участвовать',
       'nav.app': 'Войти в Bestie',
       'nav.cta': 'Подать заявку',
+      'nav.login': 'Войти',
+      'nav.cabinet': 'Кабинет',
       'footer.desc': 'AGORA — лаборатория человеческого будущего. Первая земля: Agora-01, Техас. Мы не просим веры. Мы просим внимания.',
       'footer.nav': 'Навигация',
       'footer.contact': 'Контакт',
@@ -354,6 +356,8 @@
       'nav.join': 'Participate',
       'nav.app': 'Join Bestie',
       'nav.cta': 'Apply Now',
+      'nav.login': 'Sign in',
+      'nav.cabinet': 'My profile',
       'footer.desc': 'AGORA is a laboratory of the human future. First land: Agora-01, Texas. We don\'t ask for faith. We ask for attention.',
       'footer.nav': 'Navigation',
       'footer.contact': 'Contact',
@@ -691,6 +695,17 @@
     localStorage.setItem(STORAGE_KEY, lang);
     applyLang(lang);
     updateSwitcher(lang);
+    // Pages that build text in JS re-render on this event.
+    document.dispatchEvent(new CustomEvent('agora:lang', { detail: lang }));
+  }
+
+  // Add more keys from page-specific dictionaries (e.g. account-i18n.js).
+  function extend(dicts) {
+    Object.keys(dicts).forEach(function (lang) {
+      T[lang] = T[lang] || {};
+      Object.keys(dicts[lang]).forEach(function (k) { T[lang][k] = dicts[lang][k]; });
+    });
+    applyLang(getLang());
   }
 
   function t(key) {
@@ -749,7 +764,7 @@
   }
 
   // ─── Expose globally ──────────────────────────────────────────────────────
-  window.AgoraI18n = { getLang: getLang, setLang: setLang, t: t, applyLang: applyLang };
+  window.AgoraI18n = { getLang: getLang, setLang: setLang, t: t, applyLang: applyLang, extend: extend };
 
   // Auto-apply on DOM ready
   if (document.readyState === 'loading') {

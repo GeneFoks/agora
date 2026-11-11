@@ -73,7 +73,35 @@
   from = "/platform.html"
   to = "/platform"
   status = 301
+# Old gamified app (XP/points) retired — sign-in now lives at /login.
 [[redirects]]
   from = "/app.html"
-  to = "/app"
+  to = "/login"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/app"
+  to = "/login"
+  status = 301
+  force = true
+# Account pages: clean URLs.
+[[redirects]]
+  from = "/register.html"
+  to = "/register"
+  status = 301
+[[redirects]]
+  from = "/login.html"
+  to = "/login"
+  status = 301
+[[redirects]]
+  from = "/reset.html"
+  to = "/reset"
+  status = 301
+[[redirects]]
+  from = "/consent.html"
+  to = "/consent"
+  status = 301
+[[redirects]]
+  from = "/cabinet.html"
+  to = "/cabinet"
   status = 301

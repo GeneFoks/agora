@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Кабинет · AGORA</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="account.css">
+  <script src="i18n.js"></script>
+  <script src="account-i18n.js"></script>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<main class="auth-page">
+  <div class="auth-wrap wide">
+    <div class="auth-card" id="cab">
+      <p class="auth-lead" data-i18n="acc.loading">Загрузка…</p>
+    </div>
+  </div>
+</main>
+
+<div id="footer-placeholder"></div>
+<script src="shared.js"></script>
+<script type="module">
+  import { supabase, t, lang, esc, pageTitle, requireMember, authErrorText } from './account.js';
+
+  pageTitle('acc.cab.title');
+  const box = document.getElementById('cab');
+  let me = null;
+
+  function render() {
+    if (!me) return;
+    const since = me.created_at
+      ? new Date(me.created_at).toLocaleDateString(lang() === 'en' ? 'en-US' : 'ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })
+      : '';
+    const initial = (me.name || me.email || '?').trim().charAt(0).toUpperCase();
+    box.innerHTML =
+      '<div class="section-label">' + esc(t('acc.cab.label')) + '</div>' +
+      '<div class="cab-head">' +
+        '<div class="cab-avatar">' + esc(initial) + '</div>' +
+        '<div>' +
+          '<h1 style="margin:0 0 6px;">' + esc(t('acc.cab.hello')) + ', ' + esc(me.name || '') + '</h1>' +
+          '<span class="cab-badge">' + esc(t('role.' + (me.role || 'member'))) + '</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cab-meta">' +
+        esc(me.email || '') + '<br>' +
+        esc(t('acc.cab.since')) + ' ' + esc(since) +
+      '</div>' +
+      '<div class="cab-next">' +
+        '<h2>' + esc(t('acc.cab.next_title')) + '</h2>' +
+        '<p>' + esc(t('acc.cab.next_text')) + '</p>' +
+      '</div>' +
+      '<div style="margin-top:28px;">' +
+        '<button type="button" class="btn btn-outline" id="logoutBtn">' + esc(t('acc.cab.logout')) + '</button>' +
+      '</div>';
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      await supabase.auth.signOut();
+      location.replace('/');
+    });
+  }
+
+  try {
+    me = await requireMember();
+    render();
+  } catch (err) {
+    box.innerHTML = '<div class="auth-msg show error">' + esc(authErrorText(err)) + '</div>';
+  }
+  document.addEventListener('agora:lang', render);
+</script>
+</body>
+</html>

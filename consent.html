@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Согласие · AGORA</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="account.css">
+  <script src="i18n.js"></script>
+  <script src="account-i18n.js"></script>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<main class="auth-page">
+  <div class="auth-wrap wide">
+    <div class="auth-card">
+      <div class="section-label" data-i18n="acc.consent.label">Твои данные</div>
+      <h1 data-i18n="acc.consent.title">Согласие</h1>
+      <p class="auth-lead" data-i18n="acc.consent.lead"></p>
+      <div class="consent-box consent-text" data-i18n-html="acc.consent.text"></div>
+      <div class="auth-msg" id="msg" role="alert" style="margin-bottom:14px;"></div>
+      <div class="auth-actions">
+        <button type="button" class="btn btn-earth auth-btn" id="acceptBtn" data-i18n="acc.consent.accept" disabled>Согласен(на), продолжить →</button>
+        <button type="button" class="auth-link" id="declineBtn" style="font-size:14px;" data-i18n="acc.consent.decline">Не согласен(на) — выйти</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div id="footer-placeholder"></div>
+<script src="shared.js"></script>
+<script type="module">
+  import { supabase, pageTitle, nextPath, authErrorText, showMsg, currentUser,
+           loadMe, CONSENT_VERSION } from './account.js';
+
+  pageTitle('acc.consent.title');
+  const next = nextPath('/cabinet');
+  const msg = document.getElementById('msg');
+  const accept = document.getElementById('acceptBtn');
+
+  if (!(await currentUser())) {
+    location.replace('/login?next=' + encodeURIComponent(location.pathname + location.search));
+  } else {
+    try {
+      const me = await loadMe();
+      if (me && me.consent_at) location.replace(next);
+      else accept.disabled = false;
+    } catch (err) {
+      showMsg(msg, authErrorText(err));
+    }
+  }
+
+  accept.addEventListener('click', async () => {
+    accept.disabled = true;
+    const { error } = await supabase.rpc('agora_accept_consent', { p_version: CONSENT_VERSION });
+    if (error) { showMsg(msg, authErrorText(error)); accept.disabled = false; return; }
+    location.replace(next);
+  });
+
+  document.getElementById('declineBtn').addEventListener('click', async () => {
+    await supabase.auth.signOut();
+    location.replace('/');
+  });
+</script>
+</body>
+</html>

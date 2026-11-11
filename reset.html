@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Новый пароль · AGORA</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="account.css">
+  <script src="i18n.js"></script>
+  <script src="account-i18n.js"></script>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<main class="auth-page">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="section-label" data-i18n="acc.reset.label">Восстановление</div>
+      <h1 data-i18n="acc.reset.title">Новый пароль</h1>
+
+      <div class="auth-msg" id="msg" role="alert"></div>
+      <form class="auth-form" id="resetForm" hidden novalidate>
+        <div class="auth-field">
+          <label for="password" data-i18n="acc.reset.new">Новый пароль</label>
+          <input id="password" type="password" autocomplete="new-password" minlength="8" required>
+          <div class="auth-hint" data-i18n="acc.register.pw_hint">Минимум 8 символов</div>
+        </div>
+        <button type="submit" class="btn btn-earth auth-btn" id="submitBtn" data-i18n="acc.reset.submit">Сохранить пароль →</button>
+      </form>
+      <div class="auth-foot"><a href="/login" data-i18n="acc.register.login">Войти</a></div>
+    </div>
+  </div>
+</main>
+
+<div id="footer-placeholder"></div>
+<script src="shared.js"></script>
+<script type="module">
+  import { supabase, t, pageTitle, authErrorText, showMsg, currentUser } from './account.js';
+
+  pageTitle('acc.reset.title');
+  const msg = document.getElementById('msg');
+  const form = document.getElementById('resetForm');
+
+  // The recovery link signs the person in; supabase-js reads it from the URL.
+  if (await currentUser()) form.hidden = false;
+  else showMsg(msg, t('acc.reset.bad_link'));
+
+  const btn = document.getElementById('submitBtn');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const password = document.getElementById('password').value;
+    if (password.length < 8) { showMsg(msg, t('acc.err.weak')); return; }
+    btn.disabled = true;
+    const { error } = await supabase.auth.updateUser({ password });
+    btn.disabled = false;
+    if (error) { showMsg(msg, authErrorText(error)); return; }
+    location.replace('/cabinet');
+  });
+</script>
+</body>
+</html>

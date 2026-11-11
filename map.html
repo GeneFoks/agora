@@ -638,8 +638,9 @@
     sb.auth.getUser().then(function (u) {
       var user = u && u.data ? u.data.user : null;
       if (!user) return;
-      sb.from('profiles').select('is_admin').eq('id', user.id).single().then(function (pr) {
-        isAdmin = !!(pr.data && pr.data.is_admin);
+      // Admin role lives in user_roles (db/001_accounts.sql); the database also enforces it on writes.
+      sb.rpc('agora_is_admin').then(function (pr) {
+        isAdmin = pr.data === true;
         if (isAdmin) showAdminBadge();
       });
     });

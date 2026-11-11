@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вход · AGORA</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="account.css">
+  <script src="i18n.js"></script>
+  <script src="account-i18n.js"></script>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<main class="auth-page">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="section-label" data-i18n="acc.login.label">С возвращением</div>
+      <h1 data-i18n="acc.login.title">Вход</h1>
+
+      <button type="button" class="auth-google" id="googleBtn" hidden>
+        <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        <span data-i18n="acc.google">Продолжить с Google</span>
+      </button>
+      <div class="auth-or" id="googleOr" hidden><span data-i18n="acc.or">или</span></div>
+
+      <form class="auth-form" id="loginForm" novalidate>
+        <div class="auth-field">
+          <label for="email" data-i18n="acc.email">Email</label>
+          <input id="email" type="email" autocomplete="email" inputmode="email" required>
+        </div>
+        <div class="auth-field">
+          <label for="password" data-i18n="acc.password">Пароль</label>
+          <input id="password" type="password" autocomplete="current-password" required>
+          <div style="text-align:right;margin-top:8px;">
+            <button type="button" class="auth-link" id="forgotBtn" data-i18n="acc.login.forgot">Забыл пароль?</button>
+          </div>
+        </div>
+        <div class="auth-msg" id="msg" role="alert"></div>
+        <button type="submit" class="btn btn-earth auth-btn" id="submitBtn" data-i18n="acc.login.submit">Войти →</button>
+      </form>
+
+      <div class="auth-foot">
+        <span data-i18n="acc.login.no_account">Ещё нет аккаунта?</span>
+        <a href="/register" id="registerLink" data-i18n="acc.login.register">Зарегистрироваться</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div id="footer-placeholder"></div>
+<script src="shared.js"></script>
+<script type="module">
+  import { supabase, t, pageTitle, nextPath, authErrorText, showMsg,
+           setupGoogle, currentUser } from './account.js';
+
+  pageTitle('acc.login.title');
+  const next = nextPath('/cabinet');
+  const msg = document.getElementById('msg');
+  document.getElementById('registerLink').href = '/register' + location.search;
+
+  if (await currentUser()) location.replace(next);
+
+  setupGoogle(document.getElementById('googleBtn'), document.getElementById('googleOr'), msg, next);
+
+  const btn = document.getElementById('submitBtn');
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    showMsg(msg, '');
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    if (!email || !password) { showMsg(msg, t('acc.err.invalid')); return; }
+    btn.disabled = true;
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    btn.disabled = false;
+    if (error) { showMsg(msg, authErrorText(error)); return; }
+    location.replace(next);
+  });
+
+  document.getElementById('forgotBtn').addEventListener('click', async () => {
+    const email = document.getElementById('email').value.trim();
+    if (!email) { showMsg(msg, t('acc.login.need_email')); document.getElementById('email').focus(); return; }
+    const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: location.origin + '/reset' });
+    // Same answer whether or not the email exists (no account probing).
+    if (error && (error.status === 429 || /rate/i.test(error.message))) { showMsg(msg, t('acc.err.rate')); return; }
+    showMsg(msg, t('acc.login.reset_sent'), 'ok');
+  });
+</script>
+</body>
+</html>

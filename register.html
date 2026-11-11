@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Регистрация · AGORA</title>
+  <meta name="description" content="Стать агорцем: аккаунт, анкета агорца и тест Big Five.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="account.css">
+  <script src="i18n.js"></script>
+  <script src="account-i18n.js"></script>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<main class="auth-page">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="section-label" data-i18n="acc.register.label">Стать агорцем</div>
+      <h1 data-i18n="acc.register.title">Регистрация</h1>
+      <p class="auth-lead" data-i18n="acc.register.lead"></p>
+
+      <button type="button" class="auth-google" id="googleBtn" hidden>
+        <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        <span data-i18n="acc.google">Продолжить с Google</span>
+      </button>
+      <div class="auth-or" id="googleOr" hidden><span data-i18n="acc.or">или</span></div>
+
+      <form class="auth-form" id="registerForm" novalidate>
+        <div class="auth-field">
+          <label for="name" data-i18n="acc.name">Как тебя зовут</label>
+          <input id="name" type="text" autocomplete="name" maxlength="120" required data-i18n-ph="acc.name.ph">
+        </div>
+        <div class="auth-field">
+          <label for="email" data-i18n="acc.email">Email</label>
+          <input id="email" type="email" autocomplete="email" inputmode="email" required>
+        </div>
+        <div class="auth-field">
+          <label for="password" data-i18n="acc.password">Пароль</label>
+          <input id="password" type="password" autocomplete="new-password" minlength="8" required>
+          <div class="auth-hint" data-i18n="acc.register.pw_hint">Минимум 8 символов</div>
+        </div>
+
+        <div>
+          <label class="auth-check">
+            <input type="checkbox" id="consent">
+            <span data-i18n="acc.register.consent"></span>
+          </label>
+          <details class="consent-more">
+            <summary data-i18n="acc.register.consent_more">Что мы собираем и зачем</summary>
+            <div class="consent-text" data-i18n-html="acc.consent.text"></div>
+          </details>
+        </div>
+
+        <div class="auth-msg" id="msg" role="alert"></div>
+        <button type="submit" class="btn btn-earth auth-btn" id="submitBtn" data-i18n="acc.register.submit">Создать аккаунт →</button>
+      </form>
+
+      <div class="auth-foot">
+        <span data-i18n="acc.register.have">Уже есть аккаунт?</span>
+        <a href="/login" id="loginLink" data-i18n="acc.register.login">Войти</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div id="footer-placeholder"></div>
+<script src="shared.js"></script>
+<script type="module">
+  import { supabase, t, lang, pageTitle, nextPath, authErrorText, showMsg,
+           setupGoogle, currentUser, CONSENT_VERSION } from './account.js';
+
+  pageTitle('acc.register.title');
+  const next = nextPath('/cabinet');
+  const msg = document.getElementById('msg');
+  document.getElementById('loginLink').href = '/login' + location.search;
+
+  // Already signed in → straight to the profile.
+  if (await currentUser()) location.replace(next);
+
+  // Google: consent is asked on /consent after the first Google sign-in.
+  setupGoogle(document.getElementById('googleBtn'), document.getElementById('googleOr'), msg, next);
+
+  const form = document.getElementById('registerForm');
+  const btn = document.getElementById('submitBtn');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    showMsg(msg, '');
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+
+    if (!name) { document.getElementById('name').focus(); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showMsg(msg, t('acc.err.email')); return; }
+    if (password.length < 8) { showMsg(msg, t('acc.err.weak')); return; }
+    if (!document.getElementById('consent').checked) { showMsg(msg, t('acc.register.need_consent')); return; }
+
+    btn.disabled = true;
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { name, lang: lang(), consent_version: CONSENT_VERSION },
+        emailRedirectTo: location.origin + next,
+      },
+    });
+    btn.disabled = false;
+
+    if (error) { showMsg(msg, authErrorText(error)); return; }
+    // Supabase hides "already registered" when email confirmation is on:
+    // it returns a user with no identities.
+    if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
+      showMsg(msg, t('acc.err.exists')); return;
+    }
+    if (data.session) { location.replace(next); return; }
+    form.hidden = true;
+    showMsg(msg, t('acc.register.check_email'), 'ok');
+    form.parentNode.insertBefore(msg, form);
+  });
+</script>
+</body>
+</html>

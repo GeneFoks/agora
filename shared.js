@@ -12,9 +12,18 @@
     { href: '/join',  slug: 'join',  key: 'nav.join' },
   ];
 
+  // Signed in? supabase-js keeps the session under this localStorage key.
+  function hasSession() {
+    try { return !!localStorage.getItem('sb-coohrbdmzfysnenoclbs-auth-token'); } catch (e) { return false; }
+  }
+
   function renderNav() {
     var lang = window.AgoraI18n ? window.AgoraI18n.getLang() : 'ru';
     var t = function(k) { return window.AgoraI18n ? window.AgoraI18n.t(k) : k; };
+    var signed = hasSession();
+    var accHref = signed ? '/cabinet' : '/login';
+    var accKey = signed ? 'nav.cabinet' : 'nav.login';
+    var accActive = ['cabinet', 'login', 'register', 'consent', 'reset'].indexOf(p) !== -1;
 
     document.getElementById('nav-placeholder').innerHTML =
       '<nav>' +
@@ -23,6 +32,7 @@
           links.map(function(l) {
             return '<a href="' + l.href + '" class="' + (p === l.slug ? 'active' : '') + '" data-i18n="' + l.key + '">' + t(l.key) + '</a>';
           }).join('') +
+          '<a href="' + accHref + '" class="' + (accActive ? 'active' : '') + '" data-i18n="' + accKey + '">' + t(accKey) + '</a>' +
           '<a href="/join" class="nav-cta" data-i18n="nav.cta">' + t('nav.cta') + '</a>' +
           '<div class="lang-switcher">' +
             '<button class="lang-btn' + (lang === 'ru' ? ' active' : '') + '" data-lang="ru" onclick="window.AgoraI18n.setLang(\'ru\')">RU</button>' +
