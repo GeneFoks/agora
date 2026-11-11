@@ -213,7 +213,24 @@
       'mem.empty': 'Никого не найдено. Попробуй изменить фильтры.',
       'mem.no_visible': 'Ничего не открыто',
       'mem.bf.extraversion': 'Экс', 'mem.bf.agreeableness': 'Дбж', 'mem.bf.conscientiousness': 'Дсв',
-      'mem.bf.neuroticism': 'Нейр', 'mem.bf.openness': 'Отк'
+      'mem.bf.neuroticism': 'Нейр', 'mem.bf.openness': 'Отк',
+
+      'mem.tab.members': 'Участники ({n})',
+      'mem.tab.apps': 'Заявки ({n} новых)',
+      'app.empty': 'Заявок пока нет.',
+      'app.status.new': 'Новая', 'app.status.in_progress': 'В работе',
+      'app.status.done': 'Готово', 'app.status.rejected': 'Отклонена',
+      'app.format': 'Как хочет участвовать',
+      'app.format.visit': 'Приехать и строить', 'app.format.remote': 'Помогать дистанционно',
+      'app.format.local': 'Собрать агору рядом с собой', 'app.format.project': 'Предложить проект или идею',
+      'app.format.other': 'Другое',
+      'app.about': 'О себе',
+      'app.give': 'Что может привнести',
+      'app.note_ph': 'Заметка координатора: кто связался, о чём договорились…',
+      'app.save_note': 'Сохранить заметку',
+      'app.saved': 'Сохранено',
+      'app.has_account': 'есть аккаунт',
+      'app.filter_all': 'Все статусы'
     },
     en: {
       'acc.or': 'or',
@@ -396,7 +413,24 @@
       'mem.empty': 'Nobody found. Try changing the filters.',
       'mem.no_visible': 'Nothing shared',
       'mem.bf.extraversion': 'Ext', 'mem.bf.agreeableness': 'Agr', 'mem.bf.conscientiousness': 'Con',
-      'mem.bf.neuroticism': 'Neu', 'mem.bf.openness': 'Opn'
+      'mem.bf.neuroticism': 'Neu', 'mem.bf.openness': 'Opn',
+
+      'mem.tab.members': 'Members ({n})',
+      'mem.tab.apps': 'Applications ({n} new)',
+      'app.empty': 'No applications yet.',
+      'app.status.new': 'New', 'app.status.in_progress': 'In progress',
+      'app.status.done': 'Done', 'app.status.rejected': 'Declined',
+      'app.format': 'How they want to take part',
+      'app.format.visit': 'Come and build', 'app.format.remote': 'Help remotely',
+      'app.format.local': 'Start an agora nearby', 'app.format.project': 'Propose a project or idea',
+      'app.format.other': 'Other',
+      'app.about': 'About',
+      'app.give': 'What they can bring',
+      'app.note_ph': 'Coordinator note: who reached out, what was agreed…',
+      'app.save_note': 'Save note',
+      'app.saved': 'Saved',
+      'app.has_account': 'has an account',
+      'app.filter_all': 'All statuses'
     }
   });
 })();

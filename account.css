@@ -196,6 +196,18 @@ html[data-theme="light"] .an-chip.on { color: #fff; }
 .mem-bf.high { border-color: var(--earth); color: var(--earth); }
 .mem-bf.low { border-color: var(--sage); color: var(--sage); }
 .mem-role { padding: 6px 8px; font-size: 13px; min-width: 130px; }
+.mem-tabs { margin: 0 0 18px; max-width: 520px; }
+.app-card { border: 1px solid var(--border); border-left: 3px solid var(--border); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 14px; max-width: 860px; }
+.app-card.new { border-left-color: var(--earth); }
+.app-card.in_progress { border-left-color: var(--sage); }
+.app-card.done, .app-card.rejected { opacity: .7; }
+.app-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 8px; }
+.app-head b { font-size: 16px; }
+.app-status { width: auto; padding: 7px 10px; font-size: 13px; }
+.app-contacts { font-size: 14px; margin-bottom: 10px; }
+.app-contacts a { color: var(--earth); }
+.app-note { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; margin-top: 12px; }
+.app-note .btn { padding: 8px 14px; font-size: 12px; }
 
 /* ── Портрет агорца ─────────────────────────────────────────────────────── */
 img.cab-avatar { object-fit: cover; padding: 0; width: 84px; height: 84px; }

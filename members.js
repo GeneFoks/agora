@@ -13,6 +13,9 @@ let me = null;
 let members = [];          // [{ id, profile, answers: {b1: row}, ipip, sysRole }]
 let open = new Set();      // expanded rows
 let msg = '', note = '';
+let view = new URLSearchParams(location.search).get('tab') === 'apps' ? 'apps' : 'members';
+let apps = [];             // applications from /join, newest first
+let appStatus = '';        // status filter on the applications tab
 const F = { q: '', role: '', skill: '', skillLevel: 'can', value: '', factor: '', level: '', land: '', hours: '', day: '' };
 
 const tf = (key, vars) => t(key).replace(/\{(\w+)\}/g, (_, k) => (vars && vars[k] != null ? vars[k] : ''));
@@ -129,9 +132,23 @@ function render() {
   const list = members.filter(matches);
   const y = window.scrollY;
   const head = ['mem.col.name', 'mem.col.role', 'mem.col.values', 'mem.col.skills', 'mem.col.bf', 'mem.col.avail', 'mem.col.sys'];
+  const newApps = apps.filter((a) => a.status === 'new').length;
+  const tabs = '<div class="an-segs mem-tabs">' +
+    '<button type="button" class="an-seg' + (view === 'members' ? ' on' : '') + '" data-act="tab" data-v="members">' + esc(tf('mem.tab.members', { n: members.length })) + '</button>' +
+    '<button type="button" class="an-seg' + (view === 'apps' ? ' on' : '') + '" data-act="tab" data-v="apps">' + esc(tf('mem.tab.apps', { n: newApps })) + '</button>' +
+  '</div>';
+  if (view === 'apps') {
+    root.innerHTML =
+      '<div class="section-label">' + esc(t('mem.label')) + '</div>' +
+      '<h1>' + esc(t('mem.title')) + '</h1>' + tabs +
+      (msg ? '<div class="auth-msg show error">' + esc(msg) + '</div>' : '') +
+      appsHTML();
+    window.scrollTo({ top: y, behavior: 'instant' });
+    return;
+  }
   root.innerHTML =
     '<div class="section-label">' + esc(t('mem.label')) + '</div>' +
-    '<h1>' + esc(t('mem.title')) + '</h1>' +
+    '<h1>' + esc(t('mem.title')) + '</h1>' + tabs +
     '<p class="auth-lead">' + esc(t('mem.lead')) + '</p>' +
     filtersHTML() +
     '<div class="mem-bar"><span class="an-note">' + esc(tf('mem.count', { n: list.length, total: members.length })) + '</span>' +
@@ -161,6 +178,49 @@ function render() {
       }).join('') + '</tbody></table></div>'
       : '<p class="an-note">' + esc(t('mem.empty')) + '</p>');
   window.scrollTo({ top: y, behavior: 'instant' });
+}
+
+// ─── Applications from /join ────────────────────────────────────────────────
+function tgLink(raw) {
+  const s = String(raw || '').trim();
+  const h = s.replace(/^https?:\/\/t\.me\//i, '').replace(/^@/, '');
+  return /^[A-Za-z0-9_]{3,64}$/.test(h)
+    ? '<a href="https://t.me/' + h + '" target="_blank" rel="noopener">@' + esc(h) + '</a>' : esc(s);
+}
+
+function appsHTML() {
+  const list = apps.filter((a) => !appStatus || a.status === appStatus);
+  const statuses = ['new', 'in_progress', 'done', 'rejected'];
+  const filter = '<label class="mem-f" style="max-width:240px;margin:6px 0 16px"><select class="an-input" data-act="app-filter">' +
+    '<option value="">' + esc(t('app.filter_all')) + '</option>' +
+    statuses.map((s) => '<option value="' + s + '"' + (appStatus === s ? ' selected' : '') + '>' + esc(t('app.status.' + s)) + '</option>').join('') +
+    '</select></label>';
+  if (!list.length) return filter + '<p class="an-note">' + esc(t('app.empty')) + '</p>';
+  return filter + list.map((a) =>
+    '<div class="app-card ' + a.status + '">' +
+      '<div class="app-head">' +
+        '<div><b>' + esc(a.name) + '</b>' + (a.user_id ? ' <span class="cab-badge sys">' + esc(t('app.has_account')) + '</span>' : '') +
+          '<div class="an-note">' + esc(new Date(a.created_at).toLocaleString(lang() === 'en' ? 'en-US' : 'ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })) + '</div></div>' +
+        '<select class="an-input app-status" data-act="app-status" data-id="' + a.id + '">' +
+          statuses.map((s) => '<option value="' + s + '"' + (a.status === s ? ' selected' : '') + '>' + esc(t('app.status.' + s)) + '</option>').join('') +
+        '</select>' +
+      '</div>' +
+      '<div class="app-contacts">' + tgLink(a.telegram) +
+        (a.email ? ' · <a href="mailto:' + esc(a.email) + '">' + esc(a.email) + '</a>' : '') + '</div>' +
+      '<div class="cab-ans"><span>' + esc(t('app.format')) + '</span><div>' + esc(t('app.format.' + a.format)) + '</div></div>' +
+      '<div class="cab-ans"><span>' + esc(t('app.about')) + '</span><div>' + esc(a.about).replace(/\n/g, '<br>') + '</div></div>' +
+      (a.contribution ? '<div class="cab-ans"><span>' + esc(t('app.give')) + '</span><div>' + esc(a.contribution).replace(/\n/g, '<br>') + '</div></div>' : '') +
+      '<div class="app-note"><textarea class="an-input" rows="2" maxlength="2000" data-note="' + a.id + '" placeholder="' + esc(t('app.note_ph')) + '">' + esc(a.note || '') + '</textarea>' +
+        '<button type="button" class="btn btn-outline" data-act="app-note" data-id="' + a.id + '">' + esc(t('app.save_note')) + '</button>' +
+        '<span class="an-note app-saved" data-saved="' + a.id + '"></span></div>' +
+    '</div>').join('');
+}
+
+async function updateApp(id, patch) {
+  const { error } = await supabase.from('applications').update(patch).eq('id', id);
+  if (error) { msg = authErrorText(error); render(); return false; }
+  Object.assign(apps.find((a) => a.id === id), patch);
+  return true;
 }
 
 // ─── Export ─────────────────────────────────────────────────────────────────
@@ -224,6 +284,12 @@ root.addEventListener('input', (e) => {
 });
 
 root.addEventListener('change', async (e) => {
+  if (e.target.dataset.act === 'app-status') {
+    msg = '';
+    if (await updateApp(e.target.dataset.id, { status: e.target.value })) render();
+    return;
+  }
+  if (e.target.dataset.act === 'app-filter') { appStatus = e.target.value; render(); return; }
   if (e.target.dataset.act !== 'setrole') return;
   const id = e.target.dataset.id, role = e.target.value;
   msg = ''; note = '';
@@ -237,6 +303,23 @@ root.addEventListener('click', (e) => {
   const el = e.target.closest('[data-act]');
   if (!el) return;
   const act = el.dataset.act;
+  if (act === 'tab') {
+    view = el.dataset.v; msg = ''; note = '';
+    const u = new URL(location.href);
+    if (view === 'apps') u.searchParams.set('tab', 'apps'); else u.searchParams.delete('tab');
+    history.replaceState(null, '', u);
+    render();
+    return;
+  }
+  if (act === 'app-note') {
+    const id = el.dataset.id;
+    const text = root.querySelector('[data-note="' + id + '"]').value.trim();
+    updateApp(id, { note: text || null }).then((ok) => {
+      const s = root.querySelector('[data-saved="' + id + '"]');
+      if (ok && s) s.textContent = t('app.saved');
+    });
+    return;
+  }
   if (act === 'toggle') { const id = el.dataset.id; if (open.has(id)) open.delete(id); else open.add(id); render(); }
   else if (act === 'reset') { Object.assign(F, { q: '', role: '', skill: '', skillLevel: 'can', value: '', factor: '', level: '', land: '', hours: '', day: '' }); render(); }
   else if (act === 'csv') exportCSV();
@@ -254,6 +337,10 @@ try {
       '<a class="btn btn-outline" href="/cabinet">' + esc(t('ip.to_cabinet')) + '</a>';
     me = null;
   } else if (me) {
+    const appsRes = await supabase.from('applications')
+      .select('id,name,telegram,email,format,about,contribution,lang,user_id,status,note,created_at')
+      .order('created_at', { ascending: false });
+    apps = appsRes.error ? [] : (appsRes.data || []);
     const [pr, an, ip, ro] = await Promise.all([
       supabase.from('profiles').select('id,name,city,languages,links,header_visibility,created_at'),
       supabase.from('answers').select('user_id,block_id,data,visibility,version,updated_at'),

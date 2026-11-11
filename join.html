@@ -88,21 +88,25 @@
       <p style="font-size:16px;color:var(--muted);font-weight:300;">В AGORA нужны самые разные люди: строители, инженеры, фермеры, программисты, учёные, учителя, художники, врачи, предприниматели. Мы читаем каждую заявку лично и отвечаем в течение 48 часов.</p>
     </div>
 
-    <form id="joinForm" onsubmit="handleSubmit(event)" style="display:flex;flex-direction:column;gap:20px;">
+    <form id="joinForm" novalidate style="display:flex;flex-direction:column;gap:20px;">
+      <!-- honeypot: people never see or fill this; bots often do -->
+      <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">
+        <label>Website <input type="text" id="jWebsite" tabindex="-1" autocomplete="off"></label>
+      </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
         <div>
           <label style="display:block;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Имя *</label>
-          <input type="text" required placeholder="Александр" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;font-size:15px;color:var(--text);font-family:'Jost',sans-serif;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='#c4894a'" onblur="this.style.borderColor='rgba(240,235,224,0.08)'">
+          <input type="text" id="jName" maxlength="120" autocomplete="name" required placeholder="Александр" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;font-size:15px;color:var(--text);font-family:'Jost',sans-serif;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='#c4894a'" onblur="this.style.borderColor='rgba(240,235,224,0.08)'">
         </div>
         <div>
           <label style="display:block;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Telegram *</label>
-          <input type="text" required placeholder="@username" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;font-size:15px;color:var(--text);font-family:'Jost',sans-serif;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='#c4894a'" onblur="this.style.borderColor='rgba(240,235,224,0.08)'">
+          <input type="text" id="jTelegram" maxlength="64" required placeholder="@username" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;font-size:15px;color:var(--text);font-family:'Jost',sans-serif;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='#c4894a'" onblur="this.style.borderColor='rgba(240,235,224,0.08)'">
         </div>
       </div>
 
       <div>
         <label style="display:block;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Email</label>
-        <input type="email" placeholder="alex@example.com" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;font-size:15px;color:var(--text);font-family:'Jost',sans-serif;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='#c4894a'" onblur="this.style.borderColor='rgba(240,235,224,0.08)'">
+        <input type="email" id="jEmail" maxlength="200" autocomplete="email" inputmode="email" placeholder="alex@example.com" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;font-size:15px;color:var(--text);font-family:'Jost',sans-serif;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='#c4894a'" onblur="this.style.borderColor='rgba(240,235,224,0.08)'">
       </div>
 
       <div>
@@ -119,25 +123,30 @@
 
       <div>
         <label style="display:block;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Кто ты и чем занимаешься? *</label>
-        <textarea required rows="4" placeholder="Расскажи о себе — чем занимаешься, что создаёшь, почему тебя привлекает AGORA..." style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;font-size:15px;color:var(--text);font-family:'Jost',sans-serif;outline:none;resize:vertical;transition:border-color .2s;line-height:1.6;" onfocus="this.style.borderColor='#c4894a'" onblur="this.style.borderColor='rgba(240,235,224,0.08)'"></textarea>
+        <textarea id="jAbout" maxlength="3000" required rows="4" placeholder="Расскажи о себе — чем занимаешься, что создаёшь, почему тебя привлекает AGORA..." style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;font-size:15px;color:var(--text);font-family:'Jost',sans-serif;outline:none;resize:vertical;transition:border-color .2s;line-height:1.6;" onfocus="this.style.borderColor='#c4894a'" onblur="this.style.borderColor='rgba(240,235,224,0.08)'"></textarea>
       </div>
 
       <div>
         <label style="display:block;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Что ты можешь привнести?</label>
-        <textarea rows="3" placeholder="Навыки, проекты, идеи — что ты можешь дать AGORA?" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;font-size:15px;color:var(--text);font-family:'Jost',sans-serif;outline:none;resize:vertical;transition:border-color .2s;line-height:1.6;" onfocus="this.style.borderColor='#c4894a'" onblur="this.style.borderColor='rgba(240,235,224,0.08)'"></textarea>
+        <textarea id="jGive" maxlength="3000" rows="3" placeholder="Навыки, проекты, идеи — что ты можешь дать AGORA?" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;font-size:15px;color:var(--text);font-family:'Jost',sans-serif;outline:none;resize:vertical;transition:border-color .2s;line-height:1.6;" onfocus="this.style.borderColor='#c4894a'" onblur="this.style.borderColor='rgba(240,235,224,0.08)'"></textarea>
       </div>
 
-      <button type="submit" class="btn btn-earth" style="width:100%;justify-content:center;font-size:16px;padding:15px;">
+      <div id="joinMsg" role="alert" style="display:none;font-size:14px;line-height:1.55;padding:12px 14px;border-radius:var(--radius);background:rgba(196,74,74,.1);border:1px solid rgba(196,74,74,.35);color:var(--text);"></div>
+
+      <button type="submit" id="joinBtn" class="btn btn-earth" style="width:100%;justify-content:center;font-size:16px;padding:15px;">
         Отправить заявку →
       </button>
-      <p style="font-size:12px;color:var(--muted);text-align:center;font-weight:300;">Мы отвечаем в течение 48 часов. Или напиши напрямую: <a href="https://t.me/agorausa" target="_blank" style="color:var(--earth);">t.me/agorausa</a></p>
+      <p style="font-size:12px;color:var(--muted);text-align:center;font-weight:300;line-height:1.7;">Отправляя заявку, ты соглашаешься, что мы сохраним эти данные, чтобы связаться с тобой. Их видят только координаторы AGORA. Мы отвечаем в течение 48 часов. Или напиши напрямую: <a href="https://t.me/agorausa" target="_blank" style="color:var(--earth);">t.me/agorausa</a></p>
     </form>
 
     <div id="successMsg" style="display:none;text-align:center;padding:40px;">
       <div style="font-family:'Cormorant Garamond',serif;font-size:48px;color:var(--earth);margin-bottom:16px;">✓</div>
       <h3 style="font-size:28px;font-weight:300;margin-bottom:12px;">Заявка отправлена</h3>
       <p style="font-size:15px;color:var(--muted);font-weight:300;">Мы свяжемся с тобой в течение 48 часов. Пока — присоединяйся к нам в Telegram.</p>
-      <a href="https://t.me/agorausa" target="_blank" class="btn btn-outline" style="margin-top:24px;">t.me/agorausa →</a>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:24px;">
+        <a href="/register" class="btn btn-earth">Создать аккаунт и заполнить анкету →</a>
+        <a href="https://t.me/agorausa" target="_blank" class="btn btn-outline">t.me/agorausa →</a>
+      </div>
     </div>
   </div>
 </section>
@@ -156,12 +165,48 @@
 
 <div id="footer-placeholder"></div>
 <script src="shared.js"></script>
-<script>
-function handleSubmit(e) {
-  e.preventDefault();
-  document.getElementById('joinForm').style.display = 'none';
-  document.getElementById('successMsg').style.display = 'block';
-}
+<script type="module">
+  // Заявка сохраняется в базе (таблица applications, db/006_applications.sql).
+  // Читать заявки могут только координаторы и админы (/members → «Заявки»).
+  import { supabase } from './supabaseClient.js';
+
+  const form = document.getElementById('joinForm');
+  const msgEl = document.getElementById('joinMsg');
+  const btn = document.getElementById('joinBtn');
+  const val = (id) => document.getElementById(id).value.trim();
+  const showErr = (text) => { msgEl.textContent = text; msgEl.style.display = text ? 'block' : 'none'; };
+  const done = () => {
+    form.style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+    document.getElementById('form').scrollIntoView({ block: 'start', behavior: 'instant' });
+  };
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    showErr('');
+    if (val('jWebsite')) { done(); return; } // bot: pretend success, store nothing
+
+    const name = val('jName'), tg = val('jTelegram'), email = val('jEmail');
+    const format = document.getElementById('formatSelect').value, about = val('jAbout'), give = val('jGive');
+    if (!name || !tg || !format || !about) { showErr('Заполни поля со звёздочкой: имя, Telegram, как хочешь участвовать и кто ты.'); return; }
+    if (tg.length < 2) { showErr('Проверь Telegram — например, @username.'); return; }
+    if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { showErr('Проверь email — или оставь поле пустым.'); return; }
+
+    btn.disabled = true;
+    const lang = (window.AgoraI18n && window.AgoraI18n.getLang() === 'en') ? 'en' : 'ru';
+    const { error } = await supabase.from('applications').insert({
+      name: name.slice(0, 120), telegram: tg.slice(0, 64), email: email || null,
+      format, about: about.slice(0, 3000), contribution: give ? give.slice(0, 3000) : null, lang,
+    });
+    btn.disabled = false;
+    if (error) {
+      showErr(/too_many/.test(error.message)
+        ? 'Сейчас приходит слишком много заявок. Попробуй через час или напиши нам в Telegram: t.me/agorausa.'
+        : 'Не получилось отправить. Проверь интернет и попробуй ещё раз — или напиши нам в Telegram: t.me/agorausa.');
+      return;
+    }
+    done();
+  });
 </script>
 <style>
 .circle-num { font-family:'Cormorant Garamond',serif; font-size:34px; color:var(--earth); line-height:1; margin-bottom:12px; }
