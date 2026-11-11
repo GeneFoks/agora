@@ -6,6 +6,8 @@ const CFG = window.AGORA_ANKETA;
 const BLOCKS = CFG.blocks;
 const TOTAL = BLOCKS.length;
 const root = document.getElementById('anketa');
+// Opened from the cabinet to edit one block: save → back to the cabinet.
+const RETURN = new URLSearchParams(location.search).get('return') === 'cabinet';
 
 let me = null;
 let answers = {};          // block_id → { data, visibility }
@@ -185,13 +187,18 @@ function render(msg) {
     '<div class="an-fields">' + b.fields.map(fieldHTML).join('') + '</div>' +
     '<div class="an-vis"><div class="an-label">' + esc(t('an.vis.label')) + '</div><div class="an-segs">' + visBtns + '</div></div>' +
     '<div class="auth-msg' + (msg ? ' show error' : '') + '" id="anMsg" role="alert">' + esc(msg || '') + '</div>' +
-    '<div class="an-nav">' +
-      (idx > 0 ? '<button type="button" class="btn btn-outline" data-act="back">' + esc(t('an.back')) + '</button>' : '<span></span>') +
-      '<div class="an-nav-right">' +
-        (!b.required ? '<button type="button" class="auth-link" data-act="skip">' + esc(t('an.skip')) + '</button>' : '') +
-        '<button type="button" class="btn btn-earth" data-act="next">' + esc(t(idx === TOTAL - 1 ? 'an.finish' : 'an.next')) + '</button>' +
-      '</div>' +
-    '</div>';
+    (RETURN
+      ? '<div class="an-nav">' +
+          '<a class="btn btn-outline" href="/cabinet#' + b.id + '">' + esc(t('an.cancel')) + '</a>' +
+          '<button type="button" class="btn btn-earth" data-act="next">' + esc(t('an.save_return')) + '</button>' +
+        '</div>'
+      : '<div class="an-nav">' +
+          (idx > 0 ? '<button type="button" class="btn btn-outline" data-act="back">' + esc(t('an.back')) + '</button>' : '<span></span>') +
+          '<div class="an-nav-right">' +
+            (!b.required ? '<button type="button" class="auth-link" data-act="skip">' + esc(t('an.skip')) + '</button>' : '') +
+            '<button type="button" class="btn btn-earth" data-act="next">' + esc(t(idx === TOTAL - 1 ? 'an.finish' : 'an.next')) + '</button>' +
+          '</div>' +
+        '</div>');
 }
 
 function renderDone() {
@@ -322,6 +329,10 @@ async function go(direction) {
     // going back saves only if the block is valid (otherwise edits are dropped).
     const shouldSave = !skipping && ((hasData && (changed || !saved)) || (saved && changed));
     if (shouldSave && (direction !== 'back' || validate(b, data))) await saveBlock(b, data);
+    if (RETURN && direction === 'next') {
+      location.href = '/cabinet#' + b.id;
+      return;
+    }
     if (direction === 'back') {
       loadBlock(idx - 1);
     } else if (idx === TOTAL - 1) {
@@ -446,7 +457,7 @@ try {
     let start = wantIdx !== -1 ? wantIdx : (progress.completed_at ? 0 : (progress.step || 0));
     // Required blocks first: can't land past them while they're empty.
     const firstMissingRequired = BLOCKS.findIndex((b) => b.required && !answers[b.id]);
-    if (firstMissingRequired !== -1 && start > firstMissingRequired) start = firstMissingRequired;
+    if (!RETURN && firstMissingRequired !== -1 && start > firstMissingRequired) start = firstMissingRequired;
     loadBlock(start);
   }
 } catch (err) {

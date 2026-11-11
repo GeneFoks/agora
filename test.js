@@ -1,6 +1,7 @@
 // Тест Big Five (IPIP-50): 5 страниц по 10 утверждений в перемешанном
 // порядке, черновик держится в браузере, итог считает база.
 import { supabase, t, lang, esc, pageTitle, requireMember, authErrorText } from './account.js';
+import { ipipBars } from './ipip-view.js';
 
 const IP = window.AGORA_IPIP;
 const root = document.getElementById('ipip');
@@ -90,22 +91,7 @@ function renderTest() {
     '</div>';
 }
 
-function bars(row) {
-  return IP.factors.map((f) => {
-    const score = IP.displayScore(row, f);
-    const lvl = IP.level(f.id, score);
-    const pct = Math.round(((score - 10) / 40) * 100);
-    const th = IP.thresholds[f.id];
-    const lo = ((th.low_max + 0.5 - 10) / 40) * 100, hi = ((th.high_min - 0.5 - 10) / 40) * 100;
-    const en = lang() === 'en';
-    return '<div class="ip-factor">' +
-      '<div class="ip-fhead"><b>' + esc(en ? f.en : f.ru) + '</b><span class="ip-lvl ' + lvl + '">' + esc(t('ip.level.' + lvl)) + ' · ' + score + '</span></div>' +
-      '<div class="ip-track"><i class="ip-band" style="left:' + lo + '%;width:' + (hi - lo) + '%"></i><i class="ip-fill" style="width:' + pct + '%"></i></div>' +
-      '<div class="ip-poles"><span>' + esc(en ? f.low_en : f.low_ru) + '</span><span>' + esc(en ? f.high_en : f.high_ru) + '</span></div>' +
-      '<p class="ip-explain">' + esc(IP.texts[f.id][lvl][en ? 'en' : 'ru']) + '</p>' +
-    '</div>';
-  }).join('');
-}
+const bars = (row) => ipipBars(row);
 
 function renderResult() {
   const row = shown;

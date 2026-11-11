@@ -173,6 +173,57 @@ html[data-theme="light"] .an-chip.on { color: #fff; }
 
 .cab-anketa { margin-top: 18px; display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
 
+/* ── Портрет агорца ─────────────────────────────────────────────────────── */
+img.cab-avatar { object-fit: cover; padding: 0; width: 84px; height: 84px; }
+.cab-photo .cab-avatar { width: 84px; height: 84px; font-size: 38px; }
+.cab-badges { display: flex; flex-wrap: wrap; gap: 6px; }
+.cab-badge.ghost { background: transparent; }
+.cab-badge.sys { background: var(--sage-light); color: var(--sage); border-color: var(--sage); }
+.cab-photo-actions { display: flex; gap: 18px; margin: -10px 0 14px; font-size: 13px; }
+.cab-photo-actions label { cursor: pointer; font-size: 13px; }
+.cab-links { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.cab-links .an-chip { text-decoration: none; }
+
+.cab-section { margin-top: 34px; padding-top: 26px; border-top: 1px solid var(--border); }
+.cab-section h2 { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: 30px; margin: 0 0 16px; }
+.cab-row { display: grid; grid-template-columns: 150px 1fr; gap: 12px; padding: 8px 0; font-size: 14px; border-bottom: 1px solid var(--border); }
+.cab-row span { color: var(--muted); }
+.cab-row b { font-weight: 500; color: var(--text); line-height: 1.5; }
+
+.cab-block { padding: 18px 0; border-bottom: 1px solid var(--border); scroll-margin-top: 90px; }
+.cab-bhead { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+.cab-bhead h3 { font-family: 'Jost', sans-serif; font-size: 17px; font-weight: 600; margin: 2px 0 0; }
+.cab-edit { padding: 8px 14px; font-size: 12px; flex: none; }
+.cab-ans { display: grid; grid-template-columns: 200px 1fr; gap: 12px; padding: 6px 0; font-size: 14px; line-height: 1.55; }
+.cab-ans > span { color: var(--muted); }
+.cab-ans a { color: var(--earth); }
+.cab-vis { margin-top: 12px; }
+.cab-vis .an-seg { padding: 7px 10px; font-size: 12px; }
+.cab-slider { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13px; color: var(--text-soft); }
+.cab-sdots { display: inline-flex; gap: 4px; }
+.cab-sdots i { width: 9px; height: 9px; border-radius: 50%; border: 1px solid var(--earth-dark); display: inline-block; }
+.cab-sdots i.on { background: var(--earth); border-color: var(--earth); }
+
+.cab-note-form { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; margin-bottom: 18px; }
+.cab-growth { list-style: none; margin: 0; padding: 0; }
+.cab-growth li { display: grid; grid-template-columns: 130px 1fr auto; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; line-height: 1.55; align-items: start; }
+.cab-growth li.note .cab-gtext { font-style: italic; }
+.cab-gdate { color: var(--muted); font-size: 12px; padding-top: 2px; }
+.cab-gdel { width: 30px; height: 30px; font-size: 16px; }
+
+.cab-danger { color: #d27a6a !important; font-size: 14px; }
+.cab-del { margin-top: 18px; padding: 18px; border: 1px solid rgba(210, 122, 106, .45); border-radius: var(--radius); background: rgba(210, 122, 106, .06); }
+.cab-del h3 { margin: 0 0 8px; font-size: 17px; font-family: 'Jost', sans-serif; }
+.cab-del p { font-size: 14px; color: var(--text-soft); line-height: 1.6; margin: 0 0 12px; }
+.cab-danger-btn { background: #b4513f; color: #fff; border: 0; }
+.cab-danger-btn[disabled] { opacity: .4; cursor: not-allowed; }
+
+@media (max-width: 560px) {
+  .cab-row, .cab-ans { grid-template-columns: 1fr; gap: 2px; }
+  .cab-growth li { grid-template-columns: 1fr auto; }
+  .cab-gdate { grid-column: 1 / -1; }
+}
+
 /* ── Тест Big Five ──────────────────────────────────────────────────────── */
 .ip-hint { font-size: 13px; color: var(--muted); margin: -6px 0 14px; }
 .ip-items { display: flex; flex-direction: column; margin-bottom: 22px; }
