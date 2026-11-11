@@ -23,6 +23,15 @@ create extension if not exists http with schema extensions; -- sync HTTP (setup 
 -- ------------------------------------------------------------
 -- Trigger: send the application to Telegram
 -- ------------------------------------------------------------
+-- Small private log so a failed notification is visible instead of silent.
+create table if not exists public.agora_notify_log (
+  id   bigserial primary key,
+  at   timestamptz not null default now(),
+  info text
+);
+alter table public.agora_notify_log enable row level security; -- no policies: owner only
+revoke all on public.agora_notify_log from anon, authenticated;
+
 create or replace function public.agora_notify_application()
 returns trigger
 language plpgsql security definer set search_path = public
@@ -32,11 +41,13 @@ declare
   chat text;
   fmt  text;
   msg  text;
+  req  bigint;
 begin
   select decrypted_secret into tok  from vault.decrypted_secrets where name = 'agora_tg_bot_token';
   select decrypted_secret into chat from vault.decrypted_secrets where name = 'agora_tg_chat_id';
   if tok is null or chat is null then
-    return null; -- not configured yet
+    insert into public.agora_notify_log (info) values ('skipped: bot not configured');
+    return null;
   end if;
 
   fmt := case new.format
@@ -56,14 +67,18 @@ begin
          coalesce(E'\n\nЧто может привнести: ' || left(new.contribution, 800), '') || E'\n\n' ||
          'Все заявки: https://agorafundation.com/members?tab=apps';
 
-  perform net.http_post(
+  select net.http_post(
     url     := 'https://api.telegram.org/bot' || tok || '/sendMessage',
     body    := jsonb_build_object('chat_id', chat, 'text', msg, 'disable_web_page_preview', true),
-    headers := '{"Content-Type": "application/json"}'::jsonb
-  );
+    headers := '{"Content-Type": "application/json"}'::jsonb,
+    timeout_milliseconds := 20000 -- the default 5 s was not always enough for Telegram
+  ) into req;
+  insert into public.agora_notify_log (info) values ('queued request ' || req || ' for application ' || new.id);
   return null;
 exception when others then
-  return null; -- never block saving an application because of Telegram
+  -- never block saving an application because of Telegram; just record why
+  insert into public.agora_notify_log (info) values ('error: ' || sqlstate || ' ' || sqlerrm);
+  return null;
 end;
 $$;
 revoke all on function public.agora_notify_application() from public, anon, authenticated;
