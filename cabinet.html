@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="account.css">
   <script src="i18n.js"></script>
   <script src="account-i18n.js"></script>
+  <script src="anketa-config.js"></script>
 </head>
 <body>
 
@@ -53,8 +54,11 @@
         esc(t('acc.cab.since')) + ' ' + esc(since) +
       '</div>' +
       '<div class="cab-next">' +
-        '<h2>' + esc(t('acc.cab.next_title')) + '</h2>' +
-        '<p>' + esc(t('acc.cab.next_text')) + '</p>' +
+        '<h2>' + esc(t('an.title')) + '</h2>' +
+        '<p>' + esc(t('acc.cab.anketa_progress').replace('{k}', filled).replace('{total}', total)) + '</p>' +
+        '<div class="cab-anketa">' +
+          '<a class="btn btn-earth" href="/anketa">' + esc(t(completed ? 'acc.cab.anketa_edit' : (filled ? 'acc.cab.anketa_continue' : 'acc.cab.anketa_start'))) + '</a>' +
+        '</div>' +
       '</div>' +
       '<div style="margin-top:28px;">' +
         '<button type="button" class="btn btn-outline" id="logoutBtn">' + esc(t('acc.cab.logout')) + '</button>' +
@@ -65,8 +69,19 @@
     });
   }
 
+  let filled = 0, completed = false;
+  const total = window.AGORA_ANKETA.blocks.length;
+
   try {
     me = await requireMember();
+    if (me) {
+      const [ans, prof] = await Promise.all([
+        supabase.from('answers').select('block_id').eq('user_id', me.id),
+        supabase.from('profiles').select('anketa_progress').eq('id', me.id).single(),
+      ]);
+      filled = (ans.data || []).length;
+      completed = !!(prof.data && prof.data.anketa_progress && prof.data.anketa_progress.completed_at);
+    }
     render();
   } catch (err) {
     box.innerHTML = '<div class="auth-msg show error">' + esc(authErrorText(err)) + '</div>';
