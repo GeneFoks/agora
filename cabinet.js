@@ -76,8 +76,11 @@ function summaryHTML() {
 
 function blocksHTML() {
   const filled = CFG.blocks.filter((b) => answers[b.id]).length;
+  const done = !!progress.completed_at;
   return '<section class="cab-section"><h2>' + esc(t('cab.answers')) + '</h2>' +
     '<p class="an-note" style="margin:-6px 0 16px">' + esc(tf('acc.cab.anketa_progress', { k: filled, total: CFG.blocks.length })) + '</p>' +
+    (done ? '' : '<div class="cab-anketa" style="margin:0 0 18px"><a class="btn btn-earth" href="/anketa">' +
+      esc(t(filled ? 'acc.cab.anketa_continue' : 'acc.cab.anketa_start')) + '</a></div>') +
     CFG.blocks.map((b) => {
       const saved = answers[b.id];
       const data = saved ? saved.data || {} : {};
