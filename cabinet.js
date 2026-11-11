@@ -2,6 +2,7 @@
 // редактированием, Big Five, история развития, мои данные (экспорт/удаление).
 import { supabase, t, lang, esc, pageTitle, requireMember, authErrorText } from './account.js';
 import { ipipBars, ipipLine } from './ipip-view.js';
+import { L, optName, roleName, skillName, safeUrl, fmtField } from './anketa-view.js';
 
 const CFG = window.AGORA_ANKETA;
 const IP = window.AGORA_IPIP;
@@ -17,60 +18,8 @@ let msg = '';
 let delOpen = false;
 let busy = false;
 
-const L = (o) => (o ? (o[lang()] || o.ru || '') : '');
 const tf = (key, vars) => t(key).replace(/\{(\w+)\}/g, (_, k) => (vars && vars[k] != null ? vars[k] : ''));
 const fmtDate = (d) => new Date(d).toLocaleDateString(lang() === 'en' ? 'en-US' : 'ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
-const roleName = (v) => { const r = CFG.roles.find((x) => x.v === v); return r ? L(r) : v; };
-const optName = (opts, v) => { const o = (opts || []).find((x) => x.v === v); return o ? L(o) : v; };
-const skillName = (v) => {
-  const f = CFG.blocks.find((b) => b.id === 'b7').fields.find((x) => x.id === 'skills');
-  return optName(f.rows, v);
-};
-const safeUrl = (u) => (/^https?:\/\/[^\s"'<>]+$/i.test(String(u || '')) ? u : null);
-
-// ─── Formatting answers ─────────────────────────────────────────────────────
-function fmtField(f, data) {
-  const v = data[f.id];
-  switch (f.type) {
-    case 'text': case 'textarea': case 'number':
-      return v == null || v === '' ? null : esc(String(v)).replace(/\n/g, '<br>');
-    case 'single': case 'select':
-      return v ? esc(optName(f.options, v)) : null;
-    case 'multi': {
-      const arr = (Array.isArray(v) ? v : []).map((x) => optName(f.options, x));
-      if (data[f.id + '_other']) arr.push(data[f.id + '_other']);
-      return arr.length ? esc(arr.join(', ')) : null;
-    }
-    case 'role':
-      return v ? esc(roleName(v)) : null;
-    case 'roles':
-      return Array.isArray(v) && v.length ? esc(v.map(roleName).join(', ')) : null;
-    case 'list':
-      return Array.isArray(v) && v.length ? esc(v.join(' · ')) : null;
-    case 'links':
-      return Array.isArray(v) && v.length ? v.map((l) => {
-        const u = safeUrl(l.url);
-        const name = optName(f.options, l.type);
-        return u ? '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + esc(name) + '</a>' : esc(name + ': ' + l.url);
-      }).join(' · ') : null;
-    case 'pick':
-      return Array.isArray(v) && v.length ? esc(v.map((x) => optName(CFG.values, x)).join(', ')) : null;
-    case 'slider':
-      if (!v) return null;
-      return '<span class="cab-slider"><span>' + esc(L(f.left)) + '</span><span class="cab-sdots">' +
-        [1, 2, 3, 4, 5].map((i) => '<i class="' + (i === v ? 'on' : '') + '"></i>').join('') +
-        '</span><span>' + esc(L(f.right)) + '</span></span>';
-    case 'matrix': {
-      const m = v && typeof v === 'object' ? v : {};
-      const lines = f.cols.map((c) => {
-        const rows = f.rows.filter((r) => m[r.v] === c.v).map((r) => L(r));
-        return rows.length ? '<b>' + esc(L(c)) + ':</b> ' + esc(rows.join(', ')) : null;
-      }).filter(Boolean);
-      return lines.length ? lines.join('<br>') : null;
-    }
-  }
-  return null;
-}
 
 function visSwitch(scope, current) {
   return '<div class="an-segs cab-vis">' + ['all', 'coordinators', 'self'].map((v) =>
@@ -108,7 +57,9 @@ function headerHTML() {
       const f = CFG.blocks[0].fields.find((x) => x.id === 'links');
       return u ? '<a class="an-chip" href="' + esc(u) + '" target="_blank" rel="noopener">' + esc(optName(f.options, l.type)) + '</a>' : '';
     }).join('') + '</div>' : '') +
-    '<div class="cab-meta">' + esc(me.email || '') + ' · ' + esc(t('acc.cab.since')) + ' ' + esc(since) + '</div>';
+    '<div class="cab-meta">' + esc(me.email || '') + ' · ' + esc(t('acc.cab.since')) + ' ' + esc(since) + '</div>' +
+    (me.role === 'coordinator' || me.role === 'admin'
+      ? '<div class="cab-anketa"><a class="btn btn-earth" href="/members">' + esc(t('mem.open')) + '</a></div>' : '');
 }
 
 function summaryHTML() {

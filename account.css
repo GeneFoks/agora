@@ -173,6 +173,30 @@ html[data-theme="light"] .an-chip.on { color: #fff; }
 
 .cab-anketa { margin-top: 18px; display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
 
+/* ── Участники ──────────────────────────────────────────────────────────── */
+.mem-wrap { max-width: 1240px; margin: 0 auto; padding: 0 20px; }
+.mem-filters { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px 14px; align-items: end; margin-bottom: 18px; }
+.mem-f { display: flex; flex-direction: column; gap: 6px; font-size: 12px; color: var(--muted); letter-spacing: .04em; }
+.mem-f .an-input { padding: 9px 11px; font-size: 14px; }
+.mem-pair { display: grid; grid-template-columns: 1.4fr 1fr; gap: 6px; }
+.mem-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+.mem-exp { display: flex; gap: 8px; flex-wrap: wrap; }
+.mem-exp .btn { padding: 8px 14px; font-size: 12px; }
+.mem-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--border); border-radius: var(--radius); }
+.mem-table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 980px; }
+.mem-table th { text-align: left; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 500; padding: 10px 12px; border-bottom: 1px solid var(--border); background: var(--bg); position: sticky; top: 0; }
+.mem-table td { padding: 11px 12px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.45; color: var(--text-soft); }
+.mem-table td b { color: var(--text); font-weight: 600; }
+.mem-table tr.open td { background: var(--earth-light); }
+.mem-drow td { background: var(--bg); padding: 16px 18px 20px; }
+.mem-dblock { margin-bottom: 16px; }
+.mem-dblock h4 { font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 600; margin: 0 0 6px; color: var(--text); }
+.mem-bfcell { white-space: nowrap; }
+.mem-bf { display: inline-block; font-size: 11px; padding: 2px 6px; margin: 0 3px 3px 0; border-radius: 6px; border: 1px solid var(--border); color: var(--muted); }
+.mem-bf.high { border-color: var(--earth); color: var(--earth); }
+.mem-bf.low { border-color: var(--sage); color: var(--sage); }
+.mem-role { padding: 6px 8px; font-size: 13px; min-width: 130px; }
+
 /* ── Портрет агорца ─────────────────────────────────────────────────────── */
 img.cab-avatar { object-fit: cover; padding: 0; width: 84px; height: 84px; }
 .cab-photo .cab-avatar { width: 84px; height: 84px; font-size: 38px; }
