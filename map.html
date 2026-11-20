@@ -3,716 +3,338 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Карта территории — AGORA Foundation</title>
-  <meta name="description" content="Интерактивная карта 10 акров AGORA: выбери делянку, открой клетки и размести дерево, куст, курицу или улей.">
+  <title>Карта земли · AGORA</title>
+  <meta name="description" content="Карта первой земли AGORA: Lot 7, Arroyo Farms, Техас. Участок разделён на сотки 10×10 м и клетки 1×1 м.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <script src="theme.js"></script>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
   <script src="i18n.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="land/lot7.js"></script>
   <style>
-    .estate { position: relative; width: 100%; min-height: 100vh; padding: 92px 0 60px; overflow: hidden;
-      background:
-        radial-gradient(130% 80% at 50% -10%, rgba(150,175,120,.16), transparent 60%),
-        linear-gradient(165deg, #11150f 0%, #0c100b 55%, #100d08 100%); }
-    html[data-theme="light"] .estate { background: radial-gradient(130% 80% at 50% -10%, rgba(150,180,130,.4), transparent 60%), linear-gradient(165deg,#eef2e6,#f4efe3); }
-    .estate-inner { max-width: 1320px; margin: 0 auto; padding: 0 24px; }
-
-    .estate-head { text-align: center; margin-bottom: 26px; }
-    .estate-head .breadcrumb { justify-content: center; margin-bottom: 10px; }
-    .estate-head h1 { font-size: clamp(28px,4vw,46px); font-weight: 300; margin: 0 0 10px; }
-    .estate-head p { font-size: 15px; color: var(--muted); font-weight: 300; max-width: 560px; margin: 0 auto; line-height: 1.7; }
-
-    /* ── OVERVIEW: 10 acres → 0.25-acre parcels ── */
-    .ov-board { position: relative; width: 100%; aspect-ratio: 9 / 5; margin: 0 auto; border-radius: 18px; overflow: hidden;
-      box-shadow: 0 30px 70px rgba(0,0,0,.45), inset 0 0 0 1px var(--border); background: #11150f; }
-    #ovMap { position: absolute; inset: 0; z-index: 0; pointer-events: none; background: #11150f no-repeat center/100% 100%; }
-    #ovObjects { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
-    .ovtile { position: absolute; border-radius: 1px; }
-    .ovobj { position: absolute; transform: translate(-50%,-50%); aspect-ratio: 1; }
-    .ovobj svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 1px 1px rgba(0,0,0,.55)); }
-    /* roaming animals on the big map (wander within their own parcel) */
-    .ovanim { position: absolute; transform: translate(-50%,-50%); aspect-ratio: 1; transition: left 2.6s ease-in-out, top 2.6s ease-in-out; }
-    .ovanim svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 1px 1px rgba(0,0,0,.55)); }
-    .ovanim .bob { width: 100%; height: 100%; animation: fbob 1.7s ease-in-out infinite; }
-    @media (prefers-reduced-motion: reduce) { .ovanim { transition: none; } .ovanim .bob { animation: none; } }
-    .ov-grid { position: absolute; inset: 0; z-index: 1; display: grid; grid-template-columns: repeat(9, 1fr); grid-template-rows: repeat(5, 1fr); }
-    .parcel { position: relative; border-right: 1px solid rgba(255,255,255,.22); border-bottom: 1px solid rgba(255,255,255,.22); cursor: pointer; transition: background .18s, box-shadow .18s; }
-    .parcel:hover { background: rgba(196,137,74,.30); box-shadow: inset 0 0 0 2px rgba(244,239,226,.7); z-index: 2; }
-    .parcel-id { position: absolute; top: 7px; left: 9px; font-size: 11px; letter-spacing: .08em; color: #fff; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,.85); }
-    .parcel-count { position: absolute; bottom: 7px; right: 9px; font-size: 10px; padding: 2px 7px; border-radius: 20px; background: rgba(196,137,74,.85); color: #1a1308; font-weight: 600; display: none; }
-    .parcel.has-items .parcel-count { display: block; }
-    /* sellable plots (top rows) */
-    .parcel.plot { box-shadow: inset 0 0 0 1px rgba(196,137,74,.5); }
-    .parcel.plot.st-prepaid { background: rgba(196,137,74,.42); }
-    .parcel.plot.st-booking { background: rgba(196,137,74,.24); }
-    .parcel.plot.st-bought  { background: var(--earth); }
-    .parcel-tag { position: absolute; top: 6px; right: 6px; font-size: 8px; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; padding: 1px 5px; border-radius: 20px; background: rgba(8,7,5,.55); color: #f4efe2; }
-    .parcel-owner { position: absolute; bottom: 6px; left: 7px; right: 7px; font-size: 10px; color: #fff; font-weight: 500; text-shadow: 0 1px 3px rgba(0,0,0,.9); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .ov-hint { text-align: center; font-size: 12.5px; color: var(--muted); margin-top: 16px; letter-spacing: .03em; }
-
-    /* ── DETAIL modal ── */
-    .detail { position: fixed; inset: 0; z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px;
-      background: rgba(8,7,5,.72); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-    .detail.open { display: flex; }
-    .detail-card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; width: 100%; max-width: 720px;
-      max-height: 92vh; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 40px 90px rgba(0,0,0,.6); }
-    .detail-top { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid var(--border); }
-    .detail-top h2 { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 400; margin: 0; }
-    .detail-top .sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
-    .detail-close { width: 34px; height: 34px; border-radius: 9px; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); display: flex; align-items: center; justify-content: center; cursor: pointer; }
-    .detail-close:hover { color: var(--earth); border-color: var(--border-earth); }
-    .detail-body { padding: 20px 22px; overflow: auto; }
-    .fine-wrap { position: relative; width: min(560px, 100%); margin: 0 auto;
-      background: #11150f; border-radius: 12px; padding: 8px;
-      box-shadow: inset 0 0 0 1px rgba(0,0,0,.18); }
-    .fine-grid { display: grid; gap: 0; aspect-ratio: 1; position: relative; }
-    .fcell { border-right: 1px solid rgba(255,255,255,.05); border-bottom: 1px solid rgba(0,0,0,.06); cursor: pointer; position: relative; transition: background .12s; }
-    .fcell:hover { background: rgba(244,239,226,.16); }
-    .fcell.occupied { cursor: pointer; }
-    .fcell.blocked-preview { background: rgba(220,80,60,.18); }
-    .fcell svg { position: absolute; inset: 8%; width: 84%; height: 84%; pointer-events: none; filter: drop-shadow(0 1px 1.5px rgba(0,0,0,.4)); }
-    /* roaming animals layer */
-    .fine-animals { position: absolute; inset: 0; pointer-events: none; z-index: 4; }
-    .fanim { position: absolute; aspect-ratio: 1; transform: translate(-50%,-50%); transition: left 2.5s ease-in-out, top 2.5s ease-in-out; pointer-events: auto; cursor: pointer; filter: drop-shadow(0 1px 2px rgba(0,0,0,.55)); }
-    .fanim svg { width: 100%; height: 100%; display: block; }
-    .fanim .bob { width: 100%; height: 100%; animation: fbob 1.7s ease-in-out infinite; }
-    @keyframes fbob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10%); } }
-    @media (prefers-reduced-motion: reduce) { .fanim { transition: none; } .fanim .bob { animation: none; } }
-    .detail-foot { padding: 14px 22px; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; font-size: 13px; }
-    .foot-tally { display: flex; flex-wrap: wrap; gap: 12px; color: var(--muted); }
-    .foot-tally b { color: var(--text); }
-    .foot-total { font-weight: 600; color: var(--earth); }
-
-    /* ── cell purchase menu ── */
-    .cellmenu { position: fixed; z-index: 300; width: 220px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
-      box-shadow: 0 24px 60px rgba(0,0,0,.55); padding: 8px; display: none; }
-    .cellmenu.open { display: block; }
-    .cellmenu-h { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding: 6px 8px 8px; }
-    .ci { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 9px; cursor: pointer; transition: background .14s; }
-    .ci:hover { background: var(--surface2); }
-    .ci[aria-disabled="true"] { opacity: .38; cursor: not-allowed; }
-    .ci-ico { width: 28px; height: 28px; flex-shrink: 0; }
-    .ci-name { flex: 1; font-size: 13.5px; color: var(--text); }
-    .ci-price { font-size: 12.5px; color: var(--earth); font-weight: 600; }
-    .ci-rule { font-size: 10.5px; color: #d98; margin-top: 2px; }
-    .cellmenu-rm { color: #e08a7a; }
-
-    /* ── how-it-works + catalog ── */
-    .how { padding: 18px 0 40px; }
-    .how-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-    .how h2 { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: clamp(24px,3vw,34px); text-align: center; margin: 0 0 28px; }
-    .how-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 40px; }
-    .how-step { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 22px; }
-    .how-step-n { width: 30px; height: 30px; border-radius: 50%; background: var(--earth); color: #1a1308; font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 12px; }
-    .how-step h4 { margin: 0 0 6px; font-size: 16px; font-weight: 500; }
-    .how-step p { margin: 0; font-size: 13.5px; color: var(--muted); line-height: 1.65; font-weight: 300; }
-    .how h3 { text-align: center; font-size: 18px; font-weight: 500; margin: 0 0 18px; }
-    .cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap: 12px; }
-    .cat-card { display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
-    .cat-card svg { width: 38px; height: 38px; flex-shrink: 0; }
-    .cat-card .nm { font-size: 14px; color: var(--text); }
-    .cat-card .pr { font-size: 13px; color: var(--earth); font-weight: 600; margin-top: 2px; }
-    .cat-note { margin: 22px auto 0; max-width: 720px; text-align: center; font-size: 13px; color: var(--muted); line-height: 1.7; font-weight: 300; }
-    .cat-note.soon { color: var(--earth); opacity: .85; }
-    @media (max-width: 700px) { .how-steps { grid-template-columns: 1fr; } }
-
+    .lm-page { padding: 96px 0 64px; }
+    .lm-wrap { max-width: 1240px; margin: 0 auto; padding: 0 20px; }
+    .lm-head h1 { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(34px, 5vw, 52px); margin: 6px 0 8px; }
+    .lm-lead { color: var(--muted); font-weight: 300; font-size: 15px; line-height: 1.7; max-width: 760px; margin: 0 0 18px; }
+    .lm-stats { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13px; color: var(--text-soft); margin-bottom: 14px; }
+    .lm-stats b { color: var(--earth); font-weight: 600; }
+    .lm-grid { display: grid; grid-template-columns: 1fr 320px; gap: 16px; align-items: start; }
+    .lm-mapbox { position: relative; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; height: min(72vh, 680px); background: #1b1e17; }
+    #lmMap { position: absolute; inset: 0; }
+    #lmCanvas { position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; z-index: 450; }
+    .lm-tools { position: absolute; z-index: 600; top: 10px; right: 10px; display: flex; gap: 6px; }
+    .lm-tools button { background: rgba(10, 9, 6, .78); color: #f0ebe0; border: 1px solid rgba(240, 235, 224, .18); border-radius: 8px; padding: 7px 11px; font: 500 12px 'Jost', sans-serif; cursor: pointer; }
+    .lm-tools button.on { border-color: var(--earth); color: #e2a868; }
+    .lm-hint { position: absolute; z-index: 600; left: 10px; bottom: 10px; max-width: 70%; background: rgba(10, 9, 6, .78); color: #f0ebe0; border-radius: 8px; padding: 7px 11px; font-size: 12px; line-height: 1.4; pointer-events: none; }
+    .lm-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+    .lm-panel h2 { font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--earth); margin: 0 0 10px; }
+    .lm-panel .big { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 400; margin: 0 0 6px; color: var(--text); }
+    .lm-row { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; padding: 6px 0; border-bottom: 1px solid var(--border); color: var(--text-soft); }
+    .lm-row span:first-child { color: var(--muted); }
+    .lm-soon { margin-top: 14px; font-size: 13px; line-height: 1.6; color: var(--muted); }
+    .lm-panel .btn { margin-top: 14px; padding: 9px 14px; font-size: 12px; }
+    .lm-note { font-size: 12px; color: var(--muted); line-height: 1.6; margin-top: 14px; }
+    .leaflet-container { font-family: 'Jost', sans-serif; }
+    .leaflet-control-attribution { font-size: 10px; }
+    @media (max-width: 900px) {
+      .lm-grid { grid-template-columns: 1fr; }
+      .lm-mapbox { height: 62vh; }
+      .lm-page { padding-top: 84px; }
+    }
   </style>
 </head>
 <body>
 
 <div id="nav-placeholder"></div>
 
-<!-- shared icon gradients -->
-<svg width="0" height="0" aria-hidden="true" style="position:absolute">
-  <defs>
-    <linearGradient id="iLeaf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9cc083"/><stop offset="1" stop-color="#5d8350"/></linearGradient>
-    <linearGradient id="iLeafD" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#74a05f"/><stop offset="1" stop-color="#436236"/></linearGradient>
-    <linearGradient id="iTrunk" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8a5f38"/><stop offset="1" stop-color="#5e3f22"/></linearGradient>
-    <linearGradient id="iHen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6ead0"/><stop offset="1" stop-color="#dccba0"/></linearGradient>
-    <radialGradient id="iHay" cx="50%" cy="30%" r="75%"><stop offset="0" stop-color="#e7c976"/><stop offset="1" stop-color="#b58e3c"/></radialGradient>
-    <linearGradient id="iRab" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9cdbe"/><stop offset="1" stop-color="#a89782"/></linearGradient>
-  </defs>
-</svg>
-
-<section class="estate">
-  <div class="estate-inner">
-    <div class="estate-head">
-      <div class="breadcrumb"><a href="/" data-i18n="map.breadcrumb">Главная</a> · <span data-i18n="map.breadcrumb2">Карта</span></div>
-      <h1 data-i18n="map.hero.title">Карта территории</h1>
-      <p id="estateSub"></p>
+<main class="lm-page">
+  <div class="lm-wrap">
+    <div class="lm-head">
+      <div class="section-label" data-i18n="lm.label">Agora-01 · Техас</div>
+      <h1 data-i18n="lm.title">Карта земли</h1>
+      <p class="lm-lead" data-i18n="lm.lead">Первая земля AGORA. Граница — по межевому плану, сетка — настоящие метры: сотка 10×10 м и внутри неё клетки 1×1 м. Нажми на сотку, чтобы её выбрать, и приблизь, чтобы увидеть клетки.</p>
+      <div class="lm-stats" id="lmStats"></div>
     </div>
 
-    <div class="ov-board"><div id="ovMap"></div><div class="ov-grid" id="ovGrid"></div><div id="ovObjects"></div></div>
-    <div class="ov-hint" id="ovHint"></div>
-  </div>
-
-  <!-- detail modal -->
-  <div class="detail" id="detail">
-    <div class="detail-card">
-      <div class="detail-top">
-        <div>
-          <h2 id="dTitle">—</h2>
-          <div class="sub" id="dSub"></div>
+    <div class="lm-grid">
+      <div class="lm-mapbox">
+        <div id="lmMap"></div>
+        <canvas id="lmCanvas"></canvas>
+        <div class="lm-tools">
+          <button type="button" id="lmSat" class="on" data-i18n="lm.sat">Спутник</button>
+          <button type="button" id="lmScheme" data-i18n="lm.scheme">Схема</button>
+          <button type="button" id="lmFit" data-i18n="lm.fit">Весь участок</button>
         </div>
-        <div class="detail-close" onclick="window.closeDetail()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
-        </div>
+        <div class="lm-hint" id="lmHint"></div>
       </div>
-      <div class="detail-body">
-        <div class="fine-wrap"><div class="fine-grid" id="fineGrid"></div></div>
-      </div>
-      <div class="detail-foot">
-        <div class="foot-tally" id="dTally"></div>
-        <div class="foot-total" id="dTotal"></div>
-      </div>
+      <aside class="lm-panel" id="lmPanel"></aside>
     </div>
   </div>
-
-  <!-- cell purchase / info menu -->
-  <div class="cellmenu" id="cellMenu"></div>
-</section>
-
-<section class="how"><div class="how-inner" id="howInner"></div></section>
-
-<section class="cta-section">
-  <div class="container">
-    <h2 data-i18n-html="map.cta.title">Хочешь свой участок<br><em style="color:var(--earth);">на карте?</em></h2>
-    <p style="color:var(--muted);font-size:17px;max-width:460px;margin:20px auto 40px;font-weight:300;" data-i18n="map.cta.sub">Выбери место, которое чувствуешь своим, — и подай заявку.</p>
-    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
-      <a href="/join" class="btn btn-earth" data-i18n="map.cta.btn">Подать заявку</a>
-    </div>
-  </div>
-</section>
+</main>
 
 <div id="footer-placeholder"></div>
 <script src="shared.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
 (function () {
-  function lang() { return window.AgoraI18n ? window.AgoraI18n.getLang() : 'ru'; }
-  var RU = lang() !== 'en';
-  function L(ru, en) { return RU ? ru : en; }
-
-  // ── Supabase: everyone reads the map; only admins can edit ──
-  var SUPA_URL = 'https://coohrbdmzfysnenoclbs.supabase.co';
-  var SUPA_KEY = 'sb_publishable_nJoq76v_sMb1h5KH_B-TVw_A3kWYSox';
-  var sb = (window.supabase && window.supabase.createClient) ? window.supabase.createClient(SUPA_URL, SUPA_KEY) : null;
-  var isAdmin = false;
-  var animTimers = [];
-  var ovAnimTimers = [];
-  var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // animals may only live in the D–E columns (pasture zone)
-  function animalAllowedHere() { var c = (curParcel || '').charAt(0); return c === 'D' || c === 'E'; }
-
-  // ── Land model ──
-  var OV_COLS = 9, OV_ROWS = 5;          // 45 parcels over the horizontal aerial (image ~1.79:1)
-  var FINE = 20;                          // 20×20 fine grid inside a parcel
-  var COL_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-  // ── Catalog (visual prototype prices) ──
-  // kind 'tree' items reserve `radius` cells from OTHER trees; animals/bush/etc only need an empty cell.
-  var ITEMS = [
-    { id:'apple',   ru:'Яблоня',   en:'Apple tree',  price:150, kind:'tree', radius:1 },
-    { id:'orange',  ru:'Апельсин', en:'Orange tree', price:150, kind:'tree', radius:1 },
-    { id:'tree',    ru:'Деревце',  en:'Sapling',     price:80,  kind:'tree', radius:0 },
-    { id:'bush',    ru:'Куст',     en:'Shrub',       price:40,  kind:'plant' },
-    { id:'flower',  ru:'Клумба',   en:'Flower bed',  price:20,  kind:'plant' },
-    { id:'chicken', ru:'Курица',   en:'Hen',         price:30,  kind:'animal' },
-    { id:'rabbit',  ru:'Заяц',     en:'Rabbit',      price:25,  kind:'animal' },
-    { id:'bee',     ru:'Улей',     en:'Beehive',     price:80,  kind:'bee' },
-    { id:'road',       ru:'Дорога',  en:'Road',       price:0, kind:'road' },
-    { id:'house',      ru:'Дом',     en:'House',      price:0, kind:'building' },
-    { id:'banya',      ru:'Баня',    en:'Banya',      price:0, kind:'building' },
-    { id:'barn',       ru:'Амбар',   en:'Barn',       price:0, kind:'building' },
-    { id:'greenhouse', ru:'Теплица', en:'Greenhouse', price:0, kind:'building' },
-    { id:'gazebo',     ru:'Беседка', en:'Gazebo',     price:0, kind:'building' }
-  ];
-  function item(id) { for (var i=0;i<ITEMS.length;i++) if (ITEMS[i].id===id) return ITEMS[i]; return null; }
-
-  // ── Realistic-ish icons ──
-  var ICON = {
-    apple:'<svg viewBox="0 0 48 48"><rect x="22" y="30" width="4" height="13" rx="2" fill="url(#iTrunk)"/><circle cx="24" cy="22" r="16" fill="url(#iLeafD)"/><circle cx="16" cy="24" r="11" fill="url(#iLeaf)"/><circle cx="32" cy="24" r="11" fill="url(#iLeaf)"/><circle cx="24" cy="16" r="12" fill="url(#iLeaf)"/><circle cx="18" cy="18" r="2.3" fill="#d8463a"/><circle cx="30" cy="20" r="2.3" fill="#d8463a"/><circle cx="24" cy="27" r="2.3" fill="#d8463a"/><circle cx="20" cy="12" r="3" fill="#bcd9a6" opacity=".6"/></svg>',
-    orange:'<svg viewBox="0 0 48 48"><rect x="22" y="30" width="4" height="13" rx="2" fill="url(#iTrunk)"/><circle cx="24" cy="22" r="16" fill="url(#iLeafD)"/><circle cx="16" cy="24" r="11" fill="url(#iLeaf)"/><circle cx="32" cy="24" r="11" fill="url(#iLeaf)"/><circle cx="24" cy="16" r="12" fill="url(#iLeaf)"/><circle cx="18" cy="18" r="2.4" fill="#ef9d32"/><circle cx="30" cy="20" r="2.4" fill="#ef9d32"/><circle cx="24" cy="27" r="2.4" fill="#ef9d32"/></svg>',
-    tree:'<svg viewBox="0 0 48 48"><rect x="22" y="28" width="4" height="15" rx="2" fill="url(#iTrunk)"/><circle cx="24" cy="20" r="14" fill="url(#iLeafD)"/><circle cx="17" cy="22" r="9" fill="url(#iLeaf)"/><circle cx="31" cy="22" r="9" fill="url(#iLeaf)"/><circle cx="24" cy="14" r="10" fill="url(#iLeaf)"/><ellipse cx="20" cy="12" rx="4" ry="3" fill="#bcd9a6" opacity=".6"/></svg>',
-    bush:'<svg viewBox="0 0 48 48"><circle cx="16" cy="32" r="11" fill="url(#iLeafD)"/><circle cx="32" cy="32" r="11" fill="url(#iLeafD)"/><circle cx="24" cy="26" r="13" fill="url(#iLeaf)"/><ellipse cx="20" cy="22" rx="5" ry="3.5" fill="#bcd9a6" opacity=".6"/></svg>',
-    flower:'<svg viewBox="0 0 48 48"><rect x="10" y="32" width="28" height="8" rx="3" fill="#6b4f2e"/><g><circle cx="16" cy="28" r="3.5" fill="#e85d7a"/><circle cx="24" cy="26" r="3.5" fill="#f4c93c"/><circle cx="32" cy="28" r="3.5" fill="#9b7ce0"/><circle cx="16" cy="28" r="1.4" fill="#fff"/><circle cx="24" cy="26" r="1.4" fill="#fff"/><circle cx="32" cy="28" r="1.4" fill="#fff"/></g><path d="M16 31v-3M24 29v-3M32 31v-3" stroke="#5d8350" stroke-width="1.6"/></svg>',
-    chicken:'<svg viewBox="0 0 48 48"><path d="M30 40l-2-7M22 40l-2-7" stroke="#e0902f" stroke-width="2.4" stroke-linecap="round"/><ellipse cx="23" cy="26" rx="13" ry="11" fill="#f6ead0"/><path d="M11 24c-6-2-9 1-9 1 2 3 6 4 10 3z" fill="#ead9b6"/><ellipse cx="23" cy="27" rx="13" ry="9" fill="#efdcb6" opacity=".5"/><path d="M33 19c7-3 11 1 11 1-2 4-7 6-11 5z" fill="#e6d0a4"/><circle cx="34" cy="18" r="8" fill="#f6ead0"/><path d="M34 10c2-4 6-3 5 1-3-1-4 0-5 2z" fill="#d8463a"/><path d="M34 11c1-2 4-2 4 1-2-1-3 0-4 1z" fill="#d8463a"/><path d="M41 19l6-1-6 3z" fill="#ef9d32"/><circle cx="36" cy="17" r="1.5" fill="#2e2113"/><path d="M35 22c1 2 3 2 4 1" stroke="#cf3a2e" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>',
-    rabbit:'<svg viewBox="0 0 48 48"><ellipse cx="22" cy="34" rx="13" ry="10" fill="#cabeb0"/><ellipse cx="22" cy="35" rx="13" ry="7" fill="#b6a892" opacity=".5"/><circle cx="29" cy="24" r="8" fill="#d3c7b8"/><path d="M25 19C23 5 18 5 20 19zM31 19C30 6 35 5 34 19z" fill="#cabeb0"/><path d="M24 18c-1-9 1-9 2 0zM32 18c0-9 2-8 2 0z" fill="#e7d9c7"/><circle cx="10" cy="36" r="5" fill="#efe7da"/><circle cx="32" cy="23" r="1.5" fill="#2e2113"/><path d="M34 26l5-1M34 28l5 1" stroke="#9a8773" stroke-width="1" stroke-linecap="round"/></svg>',
-    bee:'<svg viewBox="0 0 48 48"><ellipse cx="24" cy="40" rx="15" ry="4" fill="#000" opacity=".15"/><path d="M14 38c0-3 2-5 10-5s10 2 10 5z" fill="url(#iHay)"/><path d="M15 33c0-3 2-4 9-4s9 1 9 4z" fill="url(#iHay)"/><path d="M16 28c0-3 2-4 8-4s8 1 8 4z" fill="url(#iHay)"/><path d="M18 23c0-3 2-4 6-4s6 1 6 4z" fill="url(#iHay)"/><ellipse cx="24" cy="18" rx="4" ry="3" fill="#caa24a"/><path d="M14 38h20M15 33h18M16 28h16" stroke="#9a7730" stroke-width="1" opacity=".5"/><rect x="21" y="34" width="6" height="6" rx="2" fill="#3a2c16"/><g><ellipse cx="36" cy="20" rx="3" ry="2.2" fill="#f4c93c"/><path d="M34 20h4" stroke="#3a2c16" stroke-width="1.4"/><ellipse cx="35" cy="17.5" rx="2" ry="1.2" fill="#fff" opacity=".7"/></g></svg>',
-    house:'<svg viewBox="0 0 48 48"><path d="M8 22 24 9 40 22z" fill="#9a5a2c"/><rect x="13" y="22" width="22" height="17" fill="#cdae84"/><rect x="21" y="29" width="7" height="10" fill="#5a3f22"/><rect x="15" y="25" width="5" height="5" fill="#bfe2e6"/><rect x="28" y="25" width="5" height="5" fill="#bfe2e6"/></svg>',
-    banya:'<svg viewBox="0 0 48 48"><path d="M9 23 24 12 39 23z" fill="#6f4d28"/><rect x="14" y="23" width="20" height="16" fill="#8a6a3e"/><rect x="30" y="9" width="4" height="9" fill="#4a3420"/><circle cx="32" cy="6" r="2.2" fill="#ddd" opacity=".7"/><rect x="20" y="28" width="8" height="11" fill="#5a3f22"/></svg>',
-    barn:'<svg viewBox="0 0 48 48"><path d="M9 21 24 11 39 21z" fill="#7a2f26"/><rect x="12" y="21" width="24" height="18" fill="#b14a3a"/><rect x="20" y="27" width="8" height="12" fill="#e2c690"/><path d="M20 27 28 39M28 27 20 39" stroke="#7a2f26" stroke-width="2"/></svg>',
-    greenhouse:'<svg viewBox="0 0 48 48"><path d="M10 22 24 12 38 22z" fill="#a7d2d8" opacity=".85"/><rect x="13" y="22" width="22" height="17" fill="#bfe2e6" opacity=".7"/><path d="M19 22V39M24 14V39M29 22V39" stroke="#7fb3bb" stroke-width="1"/></svg>',
-    road:'<svg viewBox="0 0 48 48"><rect x="6" y="6" width="36" height="36" rx="6" fill="#5a7d4f" opacity=".15"/><path d="M24 5V43" stroke="#c6a86a" stroke-width="13" stroke-linecap="round"/><path d="M24 10v6M24 22v6M24 34v4" stroke="#efe0c0" stroke-width="2" stroke-linecap="round"/></svg>',
-    gazebo:'<svg viewBox="0 0 48 48"><path d="M9 20 24 9 39 20z" fill="#9a6f3e"/><rect x="14" y="20" width="2.5" height="18" fill="#6f5230"/><rect x="31.5" y="20" width="2.5" height="18" fill="#6f5230"/><rect x="13" y="36" width="22" height="3" fill="#6f5230"/></svg>'
+  // ─── Тексты RU/EN ────────────────────────────────────────────────────────
+  window.AgoraI18n && window.AgoraI18n.extend({
+    ru: {
+      'lm.label': 'Agora-01 · Техас', 'lm.title': 'Карта земли',
+      'lm.lead': 'Первая земля AGORA. Граница — по межевому плану, сетка — настоящие метры: сотка 10×10 м и внутри неё клетки 1×1 м. Нажми на сотку, чтобы её выбрать, и приблизь, чтобы увидеть клетки.',
+      'lm.sat': 'Спутник', 'lm.scheme': 'Схема', 'lm.fit': 'Весь участок',
+      'lm.stat.area': '{a} акра', 'lm.stat.ha': '≈ {h} га', 'lm.stat.sotki': '{n} соток', 'lm.stat.cells': '≈ {n} клеток 1×1 м',
+      'lm.hint.far': 'Нажми на сотку, чтобы выбрать её',
+      'lm.hint.mid': 'Приблизь ещё, чтобы увидеть клетки 1×1 м',
+      'lm.hint.near': 'Нажми на клетку 1×1 м',
+      'lm.p.land': 'Участок', 'lm.p.block': 'Сотка', 'lm.p.cell': 'Клетка 1×1 м',
+      'lm.p.idle': 'Выбери сотку на карте.',
+      'lm.p.area': 'Площадь', 'lm.p.inside': 'внутри границы', 'lm.p.full': 'целая сотка', 'lm.p.edge': 'краевая сотка',
+      'lm.p.where': 'Где', 'lm.p.coords': 'Координаты', 'lm.p.inblock': 'В сотке',
+      'lm.p.zoom': 'Приблизить к сотке →', 'lm.p.back': '← К сотке',
+      'lm.p.soon': 'Скоро здесь можно будет выбрать, что появится на этой клетке: дерево, лавочка с твоим именем, курица, улей.',
+      'lm.p.from_w': '{m} м от западного края', 'lm.p.from_s': '{m} м от южного края',
+      'lm.note': 'Форма и размеры — из межевого плана (Cross Texas Land Services, 2026). Положение на карте — по кадастру соседнего участка, точность — несколько метров; спутниковый снимок может быть немного смещён.',
+      'map.title': 'Карта земли · AGORA',
+      'map.meta': 'Карта первой земли AGORA: Lot 7, Arroyo Farms, Техас. Участок разделён на сотки 10×10 м и клетки 1×1 м.',
+      'lm.outside': 'Это за границей участка',
+      'lm.m2': 'м²'
+    },
+    en: {
+      'lm.label': 'Agora-01 · Texas', 'lm.title': 'Land map',
+      'lm.lead': 'The first AGORA land. The boundary comes from the survey and the grid is in real metres: a 10×10 m block (a “sotka”) with 1×1 m cells inside. Tap a block to select it and zoom in to see the cells.',
+      'lm.sat': 'Satellite', 'lm.scheme': 'Plan', 'lm.fit': 'Whole lot',
+      'lm.stat.area': '{a} acres', 'lm.stat.ha': '≈ {h} ha', 'lm.stat.sotki': '{n} blocks of 10×10 m', 'lm.stat.cells': '≈ {n} cells of 1×1 m',
+      'lm.hint.far': 'Tap a block to select it',
+      'lm.hint.mid': 'Zoom in more to see the 1×1 m cells',
+      'lm.hint.near': 'Tap a 1×1 m cell',
+      'lm.p.land': 'Lot', 'lm.p.block': 'Block', 'lm.p.cell': 'Cell 1×1 m',
+      'lm.p.idle': 'Pick a block on the map.',
+      'lm.p.area': 'Area', 'lm.p.inside': 'inside the boundary', 'lm.p.full': 'full block', 'lm.p.edge': 'edge block',
+      'lm.p.where': 'Where', 'lm.p.coords': 'Coordinates', 'lm.p.inblock': 'In block',
+      'lm.p.zoom': 'Zoom to block →', 'lm.p.back': '← Back to block',
+      'lm.p.soon': 'Soon you’ll be able to choose what appears on this cell: a tree, a bench with your name, a hen, a beehive.',
+      'lm.p.from_w': '{m} m from the west edge', 'lm.p.from_s': '{m} m from the south edge',
+      'lm.note': 'Shape and size come from the survey (Cross Texas Land Services, 2026). Position on the map is fitted to the neighbouring parcel’s county record, accurate to a few metres; the satellite photo itself may be slightly offset.',
+      'map.title': 'Land map · AGORA',
+      'map.meta': 'Map of the first AGORA land: Lot 7, Arroyo Farms, Texas, divided into 10×10 m blocks and 1×1 m cells.',
+      'lm.outside': 'This is outside the lot',
+      'lm.m2': 'm²'
+    }
+  });
+  var t = function (k, v) {
+    var s = window.AgoraI18n ? window.AgoraI18n.t(k) : k;
+    return s.replace(/\{(\w+)\}/g, function (_, n) { return v && v[n] != null ? v[n] : ''; });
   };
+  var lang = function () { return window.AgoraI18n ? window.AgoraI18n.getLang() : 'ru'; };
+  var nf = function (n, d) { return Number(n).toLocaleString(lang() === 'en' ? 'en-US' : 'ru-RU', { maximumFractionDigits: d || 0 }); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
 
-  // ── State (in-memory; visual prototype) ──
-  var PLACE = {};  // parcelId -> { "cx,cy": itemId }
-  function pData(pid) { if (!PLACE[pid]) PLACE[pid] = {}; return PLACE[pid]; }
-
-  // ── Sellable plots: top PLOT_ROWS rows (4 cols × 3 = 12 участков) ──
-  var PLOT_ROWS = 3;
-  // status: available | booking | prepaid | bought
-  var PLOTS = {
-    'A3': { owner: 'Геннадий',  status: 'prepaid' },
-    'B3': { owner: 'Евгений',   status: 'prepaid' },
-    'C3': { owner: 'Александр', status: 'booking' }
-  };
-  function isPlot(c, r) { return !!PLOTS[parcelId(c, r)]; }
-  function statusLabel(s) {
-    return RU
-      ? ({ available: 'Свободно', booking: 'Бронь', prepaid: 'Предоплата', bought: 'Куплено' }[s] || s)
-      : ({ available: 'Available', booking: 'Booked', prepaid: 'Prepaid', bought: 'Sold' }[s] || s);
+  // ─── Геометрия: метры межевания ↔ широта/долгота ──────────────────────────
+  var LOT = window.AGORA_LOT7, POLY = LOT.local, BLOCK = LOT.block;
+  // Аффинное преобразование по 8 парам точек (метод наименьших квадратов).
+  function fit(k) {
+    var S = [[0, 0, 0], [0, 0, 0], [0, 0, 0]], R = [0, 0, 0];
+    POLY.forEach(function (p, i) {
+      var v = [1, p[0], p[1]], z = LOT.latlng[i][k];
+      for (var a = 0; a < 3; a++) { R[a] += v[a] * z; for (var b = 0; b < 3; b++) S[a][b] += v[a] * v[b]; }
+    });
+    // решение 3×3 методом Гаусса
+    var M = S.map(function (r, i) { return r.concat([R[i]]); });
+    for (var c = 0; c < 3; c++) {
+      var piv = c; for (var r = c + 1; r < 3; r++) if (Math.abs(M[r][c]) > Math.abs(M[piv][c])) piv = r;
+      var tmp = M[c]; M[c] = M[piv]; M[piv] = tmp;
+      for (var r2 = 0; r2 < 3; r2++) if (r2 !== c) { var f = M[r2][c] / M[c][c]; for (var j = c; j < 4; j++) M[r2][j] -= f * M[c][j]; }
+    }
+    return [M[0][3] / M[0][0], M[1][3] / M[1][1], M[2][3] / M[2][2]];
   }
+  var AL = fit(0), AG = fit(1);
+  function toLL(x, y) { return L.latLng(AL[0] + AL[1] * x + AL[2] * y, AG[0] + AG[1] * x + AG[2] * y); }
 
-  // ── Overview ──
-  var ovGrid = document.getElementById('ovGrid');
-  function parcelId(c, r) { return COL_LETTERS[c] + (r + 1); }
+  function inside(x, y) {
+    var c = false;
+    for (var i = 0, j = POLY.length - 1; i < POLY.length; j = i++) {
+      var xi = POLY[i][0], yi = POLY[i][1], xj = POLY[j][0], yj = POLY[j][1];
+      if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) c = !c;
+    }
+    return c;
+  }
+  // Сколько м² сотки лежит внутри границы (по центрам клеток 1×1 м).
+  var areaCache = {};
+  function blockArea(bx, by) {
+    var key = bx + ':' + by;
+    if (areaCache[key] == null) {
+      var n = 0;
+      for (var i = 0; i < BLOCK; i++) for (var j = 0; j < BLOCK; j++) if (inside(bx * BLOCK + i + 0.5, by * BLOCK + j + 0.5)) n++;
+      areaCache[key] = n;
+    }
+    return areaCache[key];
+  }
+  var NBX = Math.ceil(LOT.bbox[0] / BLOCK), NBY = Math.ceil(LOT.bbox[1] / BLOCK);
+  var stats = { blocks: 0, cells: 0 };
+  for (var bx = 0; bx < NBX; bx++) for (var by = 0; by < NBY; by++) { var a = blockArea(bx, by); if (a > 0) { stats.blocks++; stats.cells += a; } }
 
-  function buildOverview() {
-    ovGrid.innerHTML = '';
-    for (var r = 0; r < OV_ROWS; r++) {
-      for (var c = 0; c < OV_COLS; c++) {
-        var id = parcelId(c, r);
-        var count = Object.keys(pData(id)).length;
-        var plot = isPlot(c, r);
-        var data = plot ? (PLOTS[id] || { status: 'available' }) : null;
-        var div = document.createElement('div');
-        var cls = 'parcel' + (count ? ' has-items' : '');
-        if (plot) cls += ' plot st-' + data.status;
-        div.className = cls;
-        var html = '<span class="parcel-id">' + id + '</span>';
-        if (plot) {
-          html += '<span class="parcel-tag">' + statusLabel(data.status) + '</span>';
-          if (data.owner) html += '<span class="parcel-owner">' + data.owner + '</span>';
-        } else {
-          html += '<span class="parcel-count">' + count + '</span>';
-        }
-        div.innerHTML = html;
-        (function (pid) { div.addEventListener('click', function () { openParcel(pid); }); })(id);
-        ovGrid.appendChild(div);
+  // ─── Карта ────────────────────────────────────────────────────────────────
+  var map = L.map('lmMap', { zoomControl: true, maxZoom: 22, minZoom: 14, zoomSnap: 0.25, attributionControl: true });
+  var sat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 22, maxNativeZoom: 19, attribution: 'Imagery © Esri, Maxar, Earthstar Geographics'
+  }).addTo(map);
+  var lotLL = POLY.map(function (p) { return toLL(p[0], p[1]); });
+  var lotBounds = L.latLngBounds(lotLL);
+  map.fitBounds(lotBounds, { padding: [24, 24] });
+
+  // ─── Сетка на холсте (рисуем в метрах, переводим в пиксели) ──────────────
+  var canvas = document.getElementById('lmCanvas'), ctx = canvas.getContext('2d');
+  var sel = null;      // { bx, by, cx?, cy? }
+  var scheme = false;
+  var frame = null;    // текущая проекция: O + x*ex + y*ey (в пикселях контейнера)
+
+  function proj() {
+    var o = map.latLngToContainerPoint(toLL(0, 0)), px = map.latLngToContainerPoint(toLL(100, 0)), py = map.latLngToContainerPoint(toLL(0, 100));
+    return { o: o, ex: { x: (px.x - o.x) / 100, y: (px.y - o.y) / 100 }, ey: { x: (py.x - o.x) / 100, y: (py.y - o.y) / 100 } };
+  }
+  function P(x, y) { return [frame.o.x + x * frame.ex.x + y * frame.ey.x, frame.o.y + x * frame.ex.y + y * frame.ey.y]; }
+  function unP(px, py) { // пиксели → метры
+    var a = frame.ex.x, b = frame.ey.x, c = frame.ex.y, d = frame.ey.y, det = a * d - b * c;
+    var dx = px - frame.o.x, dy = py - frame.o.y;
+    return [(d * dx - b * dy) / det, (-c * dx + a * dy) / det];
+  }
+  function polyPath() { ctx.beginPath(); POLY.forEach(function (p, i) { var q = P(p[0], p[1]); i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); }); ctx.closePath(); }
+  function pxPerMetre() { return Math.hypot(frame.ex.x, frame.ex.y); }
+
+  function draw() {
+    var dpr = window.devicePixelRatio || 1, w = canvas.clientWidth, h = canvas.clientHeight;
+    if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) { canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr); }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    frame = proj();
+    var ppm = pxPerMetre();
+
+    // затемняем всё вокруг участка
+    ctx.save();
+    ctx.beginPath(); ctx.rect(0, 0, w, h);
+    POLY.forEach(function (p, i) { var q = P(p[0], p[1]); i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]); }); ctx.closePath();
+    ctx.fillStyle = scheme ? 'rgba(20,18,14,0.92)' : 'rgba(8,7,5,0.45)';
+    ctx.fill('evenodd');
+    ctx.restore();
+
+    // в схеме — свой фон участка
+    if (scheme) { polyPath(); ctx.fillStyle = '#2b3323'; ctx.fill(); }
+
+    // видимая область в метрах (чтобы рисовать только нужные линии)
+    var cs = [unP(0, 0), unP(w, 0), unP(0, h), unP(w, h)];
+    var x0 = Math.max(0, Math.min.apply(null, cs.map(function (c) { return c[0]; }))), x1 = Math.min(LOT.bbox[0], Math.max.apply(null, cs.map(function (c) { return c[0]; })));
+    var y0 = Math.max(0, Math.min.apply(null, cs.map(function (c) { return c[1]; }))), y1 = Math.min(LOT.bbox[1], Math.max.apply(null, cs.map(function (c) { return c[1]; })));
+
+    ctx.save(); polyPath(); ctx.clip();
+
+    function lines(step, color, width) {
+      ctx.beginPath();
+      for (var x = Math.floor(x0 / step) * step; x <= x1 + step; x += step) { var a = P(x, Math.max(0, y0 - step)), b = P(x, Math.min(LOT.bbox[1], y1 + step)); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); }
+      for (var y = Math.floor(y0 / step) * step; y <= y1 + step; y += step) { var c = P(Math.max(0, x0 - step), y), d = P(Math.min(LOT.bbox[0], x1 + step), y); ctx.moveTo(c[0], c[1]); ctx.lineTo(d[0], d[1]); }
+      ctx.strokeStyle = color; ctx.lineWidth = width; ctx.stroke();
+    }
+    if (ppm * 1 >= 5) lines(1, 'rgba(255,255,255,0.28)', 0.6);          // клетки 1×1 м
+    if (ppm * BLOCK >= 5) lines(BLOCK, ppm * BLOCK >= 40 ? 'rgba(255,214,150,0.85)' : 'rgba(255,214,150,0.45)', ppm * BLOCK >= 40 ? 1.4 : 0.6);
+    lines(100, 'rgba(255,190,110,0.75)', 1.4);                           // каждые 100 м
+
+    // выбранная сотка / клетка
+    if (sel) {
+      var bx = sel.bx * BLOCK, by = sel.by * BLOCK;
+      var q = [P(bx, by), P(bx + BLOCK, by), P(bx + BLOCK, by + BLOCK), P(bx, by + BLOCK)];
+      ctx.beginPath(); q.forEach(function (p, i) { i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }); ctx.closePath();
+      ctx.fillStyle = 'rgba(196,137,74,0.28)'; ctx.fill(); ctx.strokeStyle = '#ffb25c'; ctx.lineWidth = 2; ctx.stroke();
+      if (sel.cx != null) {
+        var cx = bx + sel.cx, cy = by + sel.cy;
+        var r = [P(cx, cy), P(cx + 1, cy), P(cx + 1, cy + 1), P(cx, cy + 1)];
+        ctx.beginPath(); r.forEach(function (p, i) { i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }); ctx.closePath();
+        ctx.fillStyle = 'rgba(255,178,92,0.75)'; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
       }
     }
-    renderOverviewObjects();
+    ctx.restore();
+
+    // граница участка
+    polyPath(); ctx.strokeStyle = '#ff4f8b'; ctx.lineWidth = 2.5; ctx.stroke();
+
+    hint(ppm);
+  }
+  var raf = 0;
+  function redraw() { if (!raf) raf = requestAnimationFrame(function () { raf = 0; draw(); }); }
+  map.on('move zoom resize viewreset zoomend moveend', redraw);
+  window.addEventListener('resize', function () { map.invalidateSize(); redraw(); });
+
+  function hint(ppm) {
+    var key = ppm >= 5 ? 'lm.hint.near' : (ppm * BLOCK >= 5 ? (sel ? 'lm.hint.mid' : 'lm.hint.far') : 'lm.hint.far');
+    document.getElementById('lmHint').textContent = t(key);
   }
 
-  // draw every placed object on the big map (at its real position inside its parcel)
-  function renderOverviewObjects() {
-    var layer = document.getElementById('ovObjects');
-    if (!layer) return;
-    ovAnimTimers.forEach(clearInterval); ovAnimTimers = [];
-    var cw = 100 / (OV_COLS * FINE), ch = 100 / (OV_ROWS * FINE); // one fine cell, % of board
-    var acres = 10 / (OV_COLS * OV_ROWS), cellFt = Math.sqrt(acres * 43560) / FINE;
-    var roamR = Math.max(1, Math.round(30 / cellFt));   // ~30 ft wander, in fine cells
-    function clampC(v) { return Math.max(0, Math.min(FINE - 1, v)); }
-    var html = '', animals = [];
-    Object.keys(PLACE).forEach(function (pid) {
-      var c = COL_LETTERS.indexOf(pid.charAt(0)), r = parseInt(pid.slice(1), 10) - 1;
-      if (c < 0 || r < 0) return;
-      var data = PLACE[pid];
-      Object.keys(data).forEach(function (k) {
-        var kind = data[k], pp = k.split(','), cx = +pp[0], cy = +pp[1], it = item(kind);
-        if (it && it.kind === 'animal') {
-          animals.push({ id: kind, c: c, r: r, cx: cx, cy: cy });   // roams in the layer below
-        } else if (typeof CONNECT !== 'undefined' && CONNECT[kind]) {
-          var col = (kind === 'road') ? '#c6a86a' : ((TILE[kind] && TILE[kind].fill) || '#999');
-          var lx = (c + cx / FINE) / OV_COLS * 100, ly = (r + cy / FINE) / OV_ROWS * 100;
-          html += '<div class="ovtile" style="left:' + lx + '%;top:' + ly + '%;width:' + cw + '%;height:' + ch + '%;background:' + col + '"></div>';
-        } else {
-          var ccx = (c + (cx + 0.5) / FINE) / OV_COLS * 100, ccy = (r + (cy + 0.5) / FINE) / OV_ROWS * 100;
-          html += '<div class="ovobj" style="left:' + ccx + '%;top:' + ccy + '%;width:' + (cw * 2.4) + '%">' + ICON[kind] + '</div>';
-        }
-      });
-    });
-    layer.innerHTML = html;
-    // roaming animals: wander randomly within ~30 ft of home, clamped to their parcel (never leave D/E)
-    animals.forEach(function (a) {
-      var el = document.createElement('div');
-      el.className = 'ovanim';
-      el.style.width = (cw * 2.4) + '%';
-      el.innerHTML = '<div class="bob">' + ICON[a.id] + '</div>';
-      layer.appendChild(el);
-      function pos(nx, ny) {
-        el.style.left = ((a.c + (nx + 0.5) / FINE) / OV_COLS * 100) + '%';
-        el.style.top  = ((a.r + (ny + 0.5) / FINE) / OV_ROWS * 100) + '%';
-      }
-      pos(a.cx, a.cy);
-      if (reducedMotion) return;
-      function step() { pos(clampC(a.cx + Math.round((Math.random()*2 - 1) * roamR)), clampC(a.cy + Math.round((Math.random()*2 - 1) * roamR))); }
-      ovAnimTimers.push(setInterval(step, 2600 + Math.random() * 2400));
-      setTimeout(step, Math.random() * 1600);
-    });
-  }
-
-  // ── Detail (fine grid) ──
-  var detail = document.getElementById('detail');
-  var fineGrid = document.getElementById('fineGrid');
-  var cellMenu = document.getElementById('cellMenu');
-  var curParcel = null;
-
-  function openParcel(pid) {
-    curParcel = pid;
-    var c = COL_LETTERS.indexOf(pid.charAt(0));
-    var r = parseInt(pid.slice(1), 10) - 1;
-    var plot = isPlot(c, r);
-    var pinfo = plot ? (PLOTS[pid] || { status: 'available' }) : null;
-    document.getElementById('dTitle').textContent = (plot ? L('Участок ', 'Plot ') : L('Делянка ', 'Parcel ')) + pid;
-    var acres = 10 / (OV_COLS * OV_ROWS);
-    var side = Math.round(Math.sqrt(acres * 43560));   // ft per side of a square parcel
-    var cellFt = Math.max(1, Math.round(side / FINE));
-    var acreLine = '≈' + acres.toFixed(2) + (RU ? ' акра · ≈' : ' acre · ≈') + side + ' × ' + side + (RU ? ' фт' : ' ft');
-    var sub;
-    if (plot) {
-      sub = (RU ? 'Статус: ' : 'Status: ') + statusLabel(pinfo.status)
-          + (pinfo.owner ? (RU ? ' · Владелец: ' : ' · Owner: ') + pinfo.owner : '')
-          + ' · ' + acreLine;
-    } else {
-      sub = acreLine + (RU ? ' · сетка ' : ' · ') + FINE + '×' + FINE + (RU ? ' (клетка ≈ ' + cellFt + ' фт)' : ' grid (cell ≈ ' + cellFt + ' ft)');
-    }
-    document.getElementById('dSub').textContent = sub;
-    buildFine();
-    // Show the aerial crop of this exact parcel behind the fine grid (zoom keeps the image).
-    fineGrid.style.backgroundImage = "url('land-bg.png')";
-    fineGrid.style.backgroundRepeat = 'no-repeat';
-    fineGrid.style.backgroundSize = (OV_COLS * 100) + '% ' + (OV_ROWS * 100) + '%';
-    fineGrid.style.backgroundPosition =
-      (OV_COLS > 1 ? (c / (OV_COLS - 1) * 100) : 0) + '% ' +
-      (OV_ROWS > 1 ? (r / (OV_ROWS - 1) * 100) : 0) + '%';
-    detail.classList.add('open');
-  }
-  window.closeDetail = function () { animTimers.forEach(clearInterval); animTimers = []; detail.classList.remove('open'); closeMenu(); buildOverview(); };
-  detail.addEventListener('click', function (e) { if (e.target === detail) window.closeDetail(); });
-
-  // ── connectable tiles: roads + buildings merge with same-kind neighbours ──
-  var CONNECT = { road:1, house:1, banya:1, barn:1, greenhouse:1, gazebo:1 };
-  var TILE = {
-    house:      { fill:'#c08a55',             edge:'#8a5a2c' },
-    banya:      { fill:'#8a6a3e',             edge:'#5a4226' },
-    barn:       { fill:'#b14a3a',             edge:'#7a2f26' },
-    greenhouse: { fill:'rgba(160,205,210,.78)', edge:'#6f9aa0' },
-    gazebo:     { fill:'#9a6f3e',             edge:'#6f5230' }
-  };
-  function roadTileHTML(n, e, s, w) {
-    var c = '#c6a86a', p = '<rect x="3.4" y="3.4" width="5.2" height="5.2" rx="1.4" fill="' + c + '"/>';
-    if (n) p += '<rect x="3.4" y="0" width="5.2" height="5" fill="' + c + '"/>';
-    if (s) p += '<rect x="3.4" y="7" width="5.2" height="5" fill="' + c + '"/>';
-    if (e) p += '<rect x="7" y="3.4" width="5" height="5.2" fill="' + c + '"/>';
-    if (w) p += '<rect x="0" y="3.4" width="5" height="5.2" fill="' + c + '"/>';
-    return '<svg viewBox="0 0 12 12" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%">' + p + '</svg>';
-  }
-  function buildTileHTML(kind, n, e, s, w, anchor) {
-    var t = TILE[kind], sh = [];
-    if (!n) sh.push('inset 0 2px 0 ' + t.edge);
-    if (!s) sh.push('inset 0 -2px 0 ' + t.edge);
-    if (!e) sh.push('inset -2px 0 0 ' + t.edge);
-    if (!w) sh.push('inset 2px 0 0 ' + t.edge);
-    var base = 'position:absolute;inset:0;background:' + t.fill + ';' + (sh.length ? 'box-shadow:' + sh.join(',') + ';' : '');
-    var roof = 'position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(0,0,0,.14));';
-    var h = '<div style="' + base + '"></div><div style="' + roof + '"></div>';
-    if (anchor) h += '<div style="position:absolute;inset:12%;pointer-events:none">' + ICON[kind] + '</div>';
-    return h;
-  }
-
-  function buildFine() {
-    animTimers.forEach(clearInterval); animTimers = [];
-    fineGrid.style.gridTemplateColumns = 'repeat(' + FINE + ',1fr)';
-    var data = pData(curParcel);
-    var html = '';
-    for (var y = 0; y < FINE; y++) {
-      for (var x = 0; x < FINE; x++) {
-        var id = data[x + ',' + y], inner = '', it0 = id ? item(id) : null;
-        if (id) {
-          if (CONNECT[id]) {
-            var n = data[x + ',' + (y-1)] === id, s = data[x + ',' + (y+1)] === id,
-                e = data[(x+1) + ',' + y] === id, w = data[(x-1) + ',' + y] === id;
-            inner = (id === 'road') ? roadTileHTML(n, e, s, w) : buildTileHTML(id, n, e, s, w, !n && !w);
-          } else if (it0 && it0.kind === 'animal') {
-            inner = '';   // animals are drawn (and roam) in the overlay layer below
-          } else {
-            inner = ICON[id];
-          }
-        }
-        html += '<div class="fcell' + (id ? ' occupied' : '') + '" data-x="' + x + '" data-y="' + y + '">' + inner + '</div>';
-      }
-    }
-    fineGrid.innerHTML = html;
-    Array.prototype.forEach.call(fineGrid.children, function (cell) {
-      cell.addEventListener('click', function (e) { onCell(this, e); });
-    });
-    buildAnimals(data);
-    updateTally();
-  }
-
-  // roaming animals: wander randomly within ~30 ft, clamped to the parcel (so they never leave D/E)
-  function buildAnimals(data) {
-    var layer = document.createElement('div');
-    layer.className = 'fine-animals';
-    fineGrid.appendChild(layer);
-    var acres = 10 / (OV_COLS * OV_ROWS), cellFt = Math.sqrt(acres * 43560) / FINE;
-    var roamR = Math.max(1, Math.round(30 / cellFt));
-    function clampC(v) { return Math.max(0, Math.min(FINE - 1, v)); }
-    Object.keys(data).forEach(function (k) {
-      var id = data[k], it = item(id);
-      if (!it || it.kind !== 'animal') return;
-      var pp = k.split(','), ax = +pp[0], ay = +pp[1];
-      var el = document.createElement('div');
-      el.className = 'fanim';
-      el.style.width = (160 / FINE) + '%';
-      el.innerHTML = '<div class="bob">' + ICON[id] + '</div>';
-      el.addEventListener('click', function (ev) { ev.stopPropagation(); showInfoMenu(id, ax, ay, ev); });
-      layer.appendChild(el);
-      function pos(cx, cy) { el.style.left = ((cx + 0.5) / FINE * 100) + '%'; el.style.top = ((cy + 0.5) / FINE * 100) + '%'; }
-      pos(ax, ay);
-      if (reducedMotion) return;
-      function step() { pos(clampC(ax + Math.round((Math.random()*2 - 1) * roamR)), clampC(ay + Math.round((Math.random()*2 - 1) * roamR))); }
-      animTimers.push(setInterval(step, 2400 + Math.random() * 2200));
-      setTimeout(step, Math.random() * 1400);
-    });
-  }
-
-  function hasTreeNear(data, x, y, radius) {
-    for (var dy = -radius; dy <= radius; dy++) {
-      for (var dx = -radius; dx <= radius; dx++) {
-        var id = data[(x + dx) + ',' + (y + dy)];
-        if (id && item(id).kind === 'tree') return true;
-      }
-    }
-    return false;
-  }
-
-  function canPlace(data, it, x, y) {
-    if (data[x + ',' + y]) return L('Клетка занята', 'Cell is taken');
-    if (it.kind === 'animal' && !animalAllowedHere()) return L('Животных — только в зоне D–E', 'Animals — only in zone D–E');
-    if (it.kind === 'tree') {
-      // a new tree may not sit next to another tree within max(itsRadius, otherTreeRadius=1)
-      if (hasTreeNear(data, x, y, Math.max(it.radius, 1))) return L('Рядом уже есть дерево', 'A tree is already nearby');
-    }
-    return null; // ok
-  }
-
-  function onCell(cell, e) {
-    var x = +cell.getAttribute('data-x'), y = +cell.getAttribute('data-y');
-    var existing = pData(curParcel)[x + ',' + y];
-    if (existing) { showInfoMenu(existing, x, y, e); }   // anyone can inspect
-    else if (isAdmin) { showBuyMenu(x, y, e); }          // only admin can place
-  }
-
-  // persist a placement / removal to Supabase (admin only; RLS also enforces)
-  function saveObject(parcel, x, y, kind) {
-    if (!sb || !isAdmin) return;
-    sb.from('map_objects').insert({ parcel: parcel, cx: x, cy: y, kind: kind })
-      .then(function (r) { if (r.error) console.warn('save', r.error.message); });
-  }
-  function deleteObject(parcel, x, y) {
-    if (!sb || !isAdmin) return;
-    sb.from('map_objects').delete().match({ parcel: parcel, cx: x, cy: y })
-      .then(function (r) { if (r.error) console.warn('del', r.error.message); });
-  }
-
-  function positionMenu(e) {
-    cellMenu.classList.add('open');
-    var w = cellMenu.offsetWidth, h = cellMenu.offsetHeight;
-    var px = Math.min(e.clientX + 8, window.innerWidth - w - 12);
-    var py = Math.min(e.clientY + 8, window.innerHeight - h - 12);
-    cellMenu.style.left = Math.max(12, px) + 'px';
-    cellMenu.style.top = Math.max(12, py) + 'px';
-  }
-  function closeMenu() { cellMenu.classList.remove('open'); }
-  document.addEventListener('click', function (e) {
-    if (cellMenu.classList.contains('open') && !cellMenu.contains(e.target) && !e.target.closest('.fcell')) closeMenu();
+  // ─── Нажатие ──────────────────────────────────────────────────────────────
+  map.on('click', function (e) {
+    var m = unP(e.containerPoint.x, e.containerPoint.y);
+    var x = m[0], y = m[1];
+    if (!inside(x, y)) { sel = null; panel(t('lm.outside')); redraw(); return; }
+    var bx = Math.floor(x / BLOCK), by = Math.floor(y / BLOCK);
+    if (pxPerMetre() >= 5) sel = { bx: bx, by: by, cx: Math.floor(x - bx * BLOCK), cy: Math.floor(y - by * BLOCK) };
+    else sel = { bx: bx, by: by };
+    panel(); redraw();
   });
 
-  function showBuyMenu(x, y, e) {
-    var data = pData(curParcel);
-    var html = '<div class="cellmenu-h">' + L('Что разместить', 'Place an object') + '</div>';
-    ITEMS.forEach(function (it) {
-      var reason = canPlace(data, it, x, y);
-      html += '<div class="ci" ' + (reason ? 'aria-disabled="true"' : 'data-buy="' + it.id + '"') + '>' +
-        '<span class="ci-ico">' + ICON[it.id] + '</span>' +
-        '<span><span class="ci-name">' + (RU ? it.ru : it.en) + '</span>' + (reason ? '<div class="ci-rule">' + reason + '</div>' : '') + '</span>' +
-        '<span class="ci-price">' + (it.price ? '$' + it.price : '') + '</span></div>';
-    });
-    cellMenu.innerHTML = html;
-    Array.prototype.forEach.call(cellMenu.querySelectorAll('[data-buy]'), function (row) {
-      row.addEventListener('click', function () {
-        var kind = this.getAttribute('data-buy');
-        data[x + ',' + y] = kind;
-        saveObject(curParcel, x, y, kind);
-        closeMenu(); buildFine();
-      });
-    });
-    positionMenu(e);
-  }
+  function blockName(s) { return (s.bx + 1) + '·' + (s.by + 1); }
+  function cellName(s) { return (s.cx + 1) + '·' + (s.cy + 1); }
+  function fmtLL(ll) { return ll.lat.toFixed(6) + ', ' + ll.lng.toFixed(6); }
 
-  function showInfoMenu(id, x, y, e) {
-    var it = item(id);
-    var html = '<div class="cellmenu-h">' + (RU ? it.ru : it.en) + (it.price ? ' · $' + it.price : '') + '</div>';
-    if (isAdmin) {
-      html += '<div class="ci" data-rm="1"><span class="ci-ico">' +
-        '<svg viewBox="0 0 24 24" fill="none" stroke="#e08a7a" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>' +
-        '</span><span class="ci-name cellmenu-rm">' + L('Убрать', 'Remove') + '</span></div>';
+  function panel(msg) {
+    var el = document.getElementById('lmPanel');
+    if (!sel) {
+      el.innerHTML = '<h2>' + esc(t('lm.p.land')) + '</h2><div class="big">Lot 7 · Arroyo Farms</div>' +
+        '<p class="lm-soon">' + esc(msg || t('lm.p.idle')) + '</p>' +
+        '<p class="lm-note">' + esc(t('lm.note')) + '</p>';
+      return;
     }
-    cellMenu.innerHTML = html;
-    var rm = cellMenu.querySelector('[data-rm]');
-    if (rm) rm.addEventListener('click', function () {
-      delete pData(curParcel)[x + ',' + y];
-      deleteObject(curParcel, x, y);
-      closeMenu(); buildFine();
-    });
-    positionMenu(e);
+    var a = blockArea(sel.bx, sel.by);
+    var bx = sel.bx * BLOCK, by = sel.by * BLOCK;
+    var rows = '';
+    if (sel.cx == null) {
+      rows += row(t('lm.p.area'), nf(a) + ' ' + t('lm.m2') + ' · ' + t(a === 100 ? 'lm.p.full' : 'lm.p.edge'));
+      rows += row(t('lm.p.where'), t('lm.p.from_w', { m: nf(bx) }) + ', ' + t('lm.p.from_s', { m: nf(by) }));
+      rows += row(t('lm.p.coords'), fmtLL(toLL(bx + 5, by + 5)));
+      el.innerHTML = '<h2>' + esc(t('lm.p.block')) + '</h2><div class="big">' + esc(blockName(sel)) + '</div>' + rows +
+        '<button type="button" class="btn btn-earth" id="lmZoom">' + esc(t('lm.p.zoom')) + '</button>' +
+        '<p class="lm-note">' + esc(t('lm.note')) + '</p>';
+    } else {
+      var cx = bx + sel.cx, cy = by + sel.cy;
+      rows += row(t('lm.p.inblock'), blockName(sel));
+      rows += row(t('lm.p.where'), t('lm.p.from_w', { m: nf(cx) }) + ', ' + t('lm.p.from_s', { m: nf(cy) }));
+      rows += row(t('lm.p.coords'), fmtLL(toLL(cx + 0.5, cy + 0.5)));
+      el.innerHTML = '<h2>' + esc(t('lm.p.cell')) + '</h2><div class="big">' + esc(blockName(sel) + ' / ' + cellName(sel)) + '</div>' + rows +
+        '<p class="lm-soon">' + esc(t('lm.p.soon')) + '</p>' +
+        '<button type="button" class="btn btn-outline" id="lmBack">' + esc(t('lm.p.back')) + '</button>';
+    }
+    var z = document.getElementById('lmZoom');
+    if (z) z.onclick = function () { map.fitBounds(L.latLngBounds([toLL(bx, by), toLL(bx + BLOCK, by + BLOCK)]), { padding: [60, 60], maxZoom: 21 }); };
+    var b = document.getElementById('lmBack');
+    if (b) b.onclick = function () { sel = { bx: sel.bx, by: sel.by }; panel(); redraw(); };
+  }
+  function row(k, v) { return '<div class="lm-row"><span>' + esc(k) + '</span><span>' + esc(v) + '</span></div>'; }
+
+  function renderStats() {
+    document.getElementById('lmStats').innerHTML =
+      '<span><b>' + esc(t('lm.stat.area', { a: nf(LOT.acres, 3) })) + '</b></span>' +
+      '<span>' + esc(t('lm.stat.ha', { h: nf(stats.cells / 10000, 2) })) + '</span>' +
+      '<span>' + esc(t('lm.stat.sotki', { n: nf(stats.blocks) })) + '</span>' +
+      '<span>' + esc(t('lm.stat.cells', { n: nf(stats.cells) })) + '</span>';
   }
 
-  function updateTally() {
-    var data = pData(curParcel), counts = {}, total = 0;
-    Object.keys(data).forEach(function (k) { var id = data[k]; counts[id] = (counts[id]||0) + 1; total += item(id).price; });
-    var parts = ITEMS.filter(function (it) { return counts[it.id]; })
-      .map(function (it) { return '<span><b>' + counts[it.id] + '</b> ' + (RU ? it.ru : it.en) + '</span>'; });
-    document.getElementById('dTally').innerHTML = parts.length ? parts.join('') : '<span>' + L('Пусто — кликни клетку, чтобы разместить объект', 'Empty — click a cell to place an object') + '</span>';
-    document.getElementById('dTotal').textContent = total ? L('Итого: $', 'Total: $') + total : '';
-  }
+  // ─── Кнопки ───────────────────────────────────────────────────────────────
+  var bSat = document.getElementById('lmSat'), bSch = document.getElementById('lmScheme');
+  bSat.onclick = function () { scheme = false; if (!map.hasLayer(sat)) sat.addTo(map); bSat.classList.add('on'); bSch.classList.remove('on'); redraw(); };
+  bSch.onclick = function () { scheme = true; map.removeLayer(sat); bSch.classList.add('on'); bSat.classList.remove('on'); redraw(); };
+  document.getElementById('lmFit').onclick = function () { map.fitBounds(lotBounds, { padding: [24, 24] }); };
 
-  // ── texts that depend on language ──
-  function renderHow() {
-    var steps = [
-      [L('Выбери делянку', 'Pick a parcel'), L('10 акров поделены на делянки по 0.25 акра. Нажми на любую свободную.', '10 acres are split into 0.25-acre parcels. Click any free one.')],
-      [L('Открой её сетку', 'Open its grid'), L('Внутри делянки — мелкая сетка. Нажми на свободную клетку, чтобы выбрать место.', 'Inside the parcel is a fine grid. Click a free cell to choose a spot.')],
-      [L('Размести и поддержи', 'Place & support'), L('Выбери дерево, куст, цветы или животное. Каждый объект — твой живой вклад в землю Агоры.', 'Choose a tree, shrub, flowers or an animal. Each one is your living contribution to AGORA\'s land.')]
-    ];
-    var html = '<h2>' + L('Как устроена карта', 'How the map works') + '</h2><div class="how-steps">';
-    steps.forEach(function (s, i) { html += '<div class="how-step"><div class="how-step-n">' + (i+1) + '</div><h4>' + s[0] + '</h4><p>' + s[1] + '</p></div>'; });
-    html += '</div><h3>' + L('Что можно разместить', 'What you can place') + '</h3><div class="cat-grid">';
-    ITEMS.forEach(function (it) {
-      html += '<div class="cat-card">' + ICON[it.id] + '<div><div class="nm">' + (RU ? it.ru : it.en) + '</div><div class="pr">' + (it.price ? '$' + it.price : '') + '</div></div></div>';
-    });
-    html += '</div>';
-    html += '<p class="cat-note">' + L(
-      'Большое дерево (яблоня, апельсин) занимает место: рядом нельзя посадить ещё одно дерево, но можно куст, цветы, курицу, зайца или улей. Сейчас это превью — выбор и цены предварительные, оплата появится позже.',
-      'A large tree (apple, orange) takes space: you can\'t plant another tree right next to it, but a shrub, flowers, hen, rabbit or beehive are fine. This is a preview — selection and prices are provisional; payment will come later.') + '</p>';
-    html += '<p class="cat-note soon">' + L(
-      '📹 Скоро: к клеткам привяжем живое видео с камер по периметру — будешь видеть свой уголок земли в реальном времени.',
-      '📹 Coming soon: cells will link to live video from perimeter cameras — watch your corner of the land in real time.') + '</p>';
-    document.getElementById('howInner').innerHTML = html;
-  }
-
-  function applyTexts() {
-    document.getElementById('estateSub').textContent = L(
-      '10 акров поделены на делянки по 0.25 акра. Выбери делянку, открой её клетки и размести дерево, куст, курицу или улей.',
-      '10 acres split into 0.25-acre parcels. Pick a parcel, open its cells, and place a tree, shrub, hen or beehive.');
-    document.getElementById('ovHint').textContent = L('Нажми на делянку, чтобы открыть её сетку →', 'Click a parcel to open its grid →');
-    renderHow();
-  }
-
-  // ── satellite background (Esri World Imagery) ──
-  function initSatellite() {
-    var el = document.getElementById('ovMap');
-    if (!el || el._leaflet_id) return;                 // missing or already initialized
-    if (typeof L === 'undefined') { setTimeout(initSatellite, 100); return; }  // wait for Leaflet
-    var map = L.map(el, {
-      zoomControl: false, attributionControl: true,
-      dragging: false, scrollWheelZoom: false, doubleClickZoom: false,
-      boxZoom: false, keyboard: false, touchZoom: false, tap: false
-    }).setView([29.98815, -97.61940], 17);
-    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-      maxZoom: 19, attribution: 'Imagery © Esri'
-    }).addTo(map);
-    setTimeout(function () { map.invalidateSize(); }, 200);
-    window.addEventListener('resize', function () { map.invalidateSize(); });
-  }
-
-  // ── admin detection + load placed objects from Supabase ──
-  function showAdminBadge() {
-    if (document.getElementById('adminBadge')) return;
-    var b = document.createElement('div');
-    b.id = 'adminBadge';
-    b.textContent = RU
-      ? '✏️ Режим администратора — открой делянку и кликай по клеткам, чтобы размещать объекты'
-      : '✏️ Admin mode — open a parcel and click cells to place objects';
-    b.style.cssText = 'position:fixed;top:72px;left:50%;transform:translateX(-50%);z-index:120;background:var(--earth);color:#1a1308;font-size:12px;font-weight:600;padding:7px 16px;border-radius:20px;box-shadow:0 8px 22px rgba(0,0,0,.35);max-width:92vw;text-align:center';
-    document.body.appendChild(b);
-  }
-  function initData() {
-    if (!sb) return;
-    sb.auth.getUser().then(function (u) {
-      var user = u && u.data ? u.data.user : null;
-      if (!user) return;
-      // Admin role lives in user_roles (db/001_accounts.sql); the database also enforces it on writes.
-      sb.rpc('agora_is_admin').then(function (pr) {
-        isAdmin = pr.data === true;
-        if (isAdmin) showAdminBadge();
-      });
-    });
-    sb.from('map_objects').select('parcel,cx,cy,kind').then(function (res) {
-      if (res.error || !res.data) return;
-      PLACE = {};
-      res.data.forEach(function (o) { pData(o.parcel)[o.cx + ',' + o.cy] = o.kind; });
-      buildOverview();
-      if (detail.classList.contains('open')) buildFine();
-    });
-  }
-
-  // ── init ──
-  applyTexts();
-  buildOverview();
-  initData();
-  // satellite is initialized by the standalone block below
-
-  // Re-render all JS-built text whenever the language changes (robust against
-  // setLang wrapper ordering between shared.js and this page).
-  var lastLang = lang();
-  function onLangMaybeChanged() {
-    var cur = lang();
-    if (cur === lastLang) return;
-    lastLang = cur; RU = (cur !== 'en');
-    applyTexts(); buildOverview();
-    if (detail.classList.contains('open')) openParcel(curParcel);
-  }
-  setInterval(onLangMaybeChanged, 250);
+  document.addEventListener('agora:lang', function () { renderStats(); panel(); redraw(); });
+  renderStats(); panel(); draw();
+  window.AgoraLandMap = { map: map, toLL: toLL, inside: inside, stats: stats }; // для отладки
 })();
 </script>
-
-<!-- Standalone map-background initializer (independent of the main script) -->
-<!-- Uses a static aerial photo (land-bg.png) if present; otherwise falls back to live Esri satellite tiles. -->
-<script>
-(function initEstateBg() {
-  var el = document.getElementById('ovMap');
-  if (!el) { return setTimeout(initEstateBg, 100); }
-  if (el.dataset.bgDone) return;
-
-  function useLeaflet() {
-    if (typeof L === 'undefined') { return setTimeout(useLeaflet, 100); }
-    if (el._leaflet_id) return;
-    var map = L.map(el, {
-      zoomControl: false, attributionControl: true,
-      dragging: false, scrollWheelZoom: false, doubleClickZoom: false,
-      boxZoom: false, keyboard: false, touchZoom: false, tap: false
-    }).setView([29.98815, -97.61940], 17);
-    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-      maxZoom: 19, attribution: 'Imagery © Esri'
-    }).addTo(map);
-    window.__agoraMap = map;
-    setTimeout(function () { map.invalidateSize(); }, 250);
-    window.addEventListener('resize', function () { map.invalidateSize(); });
-  }
-
-  // Prefer the project's own aerial photo if it exists.
-  var img = new Image();
-  img.onload = function () {
-    el.dataset.bgDone = '1';
-    el.style.backgroundImage = "url('land-bg.png')";
-    el.style.backgroundSize = '100% 100%';
-    el.style.backgroundPosition = 'center';
-    el.style.backgroundRepeat = 'no-repeat';
-  };
-  img.onerror = function () {
-    el.dataset.bgDone = '1';
-    useLeaflet();
-  };
-  img.src = 'land-bg.png';
-})();
-</script>
-
 </body>
 </html>
