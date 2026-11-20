@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ивент · AGORA</title>
+  <meta name="description" content="Ивент AGORA: приходи, знакомься, строим вместе.">
+  <meta property="og:site_name" content="AGORA">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Ивент AGORA">
+  <meta property="og:image" content="https://agorafundation.com/og-image.jpg">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <script src="/theme.js"></script>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/account.css">
+  <script src="/i18n.js"></script>
+  <script src="/account-i18n.js"></script>
+  <style>
+    .ev-page { padding: 64px 0 72px; }
+    .ev-wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+    .ev-hero {
+      position: relative; border-radius: 16px; overflow: hidden; margin-top: 24px;
+      background: radial-gradient(120% 140% at 85% 0%, rgba(196,137,74,.35), transparent 55%), linear-gradient(160deg, #1b1710, #0d0c09);
+      background-size: cover; background-position: center; border: 1px solid var(--border-earth);
+    }
+    .ev-hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(9,8,6,.15), rgba(9,8,6,.75)); }
+    .ev-hero-in { position: relative; z-index: 1; padding: 64px 40px 34px; }
+    .ev-hero h1 { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(38px, 6vw, 64px); line-height: 1.05; margin: 8px 0 22px; color: #f0ebe0; }
+    .ev-meta { display: flex; flex-wrap: wrap; gap: 14px 40px; }
+    .ev-meta span { display: block; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #c4894a; margin-bottom: 4px; }
+    .ev-meta b { font-weight: 500; color: #f0ebe0; font-size: 15px; }
+    .ev-meta a { color: #f0ebe0; text-decoration: underline; text-decoration-color: rgba(196,137,74,.6); }
+    .ev-body { display: grid; grid-template-columns: 1fr 380px; gap: 28px; margin-top: 28px; align-items: start; }
+    .ev-desc p { font-size: 17px; line-height: 1.8; color: var(--text-soft); font-weight: 300; margin: 0 0 18px; }
+    .ev-going { display: flex; align-items: center; gap: 10px; font-size: 14px !important; color: var(--text) !important; font-weight: 500 !important; }
+    .ev-going i { width: 8px; height: 8px; border-radius: 50%; background: var(--sage); box-shadow: 0 0 0 4px var(--sage-light); }
+    .ev-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 26px 24px; }
+    .ev-card h2 { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: 28px; margin: 0 0 10px; }
+    .ev-card .auth-form { gap: 14px; }
+    .ev-cancel { margin-top: 16px; font-size: 13px; color: var(--muted) !important; }
+    @media (max-width: 860px) {
+      .ev-body { grid-template-columns: 1fr; }
+      .ev-hero-in { padding: 48px 22px 26px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<main class="ev-page">
+  <div class="ev-wrap" id="event">
+    <p class="auth-lead" style="padding-top:60px" data-i18n="acc.loading">Загрузка…</p>
+  </div>
+</main>
+
+<div id="footer-placeholder"></div>
+<script src="/shared.js"></script>
+<script type="module" src="/event.js"></script>
+</body>
+</html>

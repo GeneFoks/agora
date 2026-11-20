@@ -13,6 +13,7 @@ let answers = {};      // block_id → { data, visibility }
 let progress = {};
 let tests = [];        // ipip results, newest first
 let growth = [];
+let myEvents = [];     // event registrations with event info
 let photoUrl = null;
 let msg = '';
 let delOpen = false;
@@ -154,6 +155,19 @@ function growthHTML() {
   '</section>';
 }
 
+function eventsHTML() {
+  const L2 = (e, f) => (lang() === 'en' && e[f + '_en']) ? e[f + '_en'] : (e[f + '_ru'] || '');
+  const list = myEvents.filter((r) => r.events);
+  return '<section class="cab-section" id="events"><h2>' + esc(t('cab.events')) + '</h2>' +
+    (list.length ? '<ul class="cab-growth">' + list.map((r) =>
+      '<li><span class="cab-gdate">' + esc(L2(r.events, 'date_text')) + '</span>' +
+        '<span class="cab-gtext"><a href="/e/' + esc(r.events.slug) + '" style="color:var(--earth)">' + esc(L2(r.events, 'title')) + '</a></span>' +
+        '<span class="cab-badge' + (r.status === 'registered' || r.status === 'attended' ? '' : ' ghost') + '">' + esc(t('cab.ev.' + r.status)) + '</span>' +
+      '</li>').join('') + '</ul>'
+      : '<p class="an-note">' + esc(t('cab.events_none')) + '</p>') +
+  '</section>';
+}
+
 function dataHTML() {
   const word = t('cab.del.word');
   return '<section class="cab-section"><h2>' + esc(t('cab.data')) + '</h2>' +
@@ -180,13 +194,17 @@ function render() {
     '<div class="section-label">' + esc(t('acc.cab.label')) + '</div>' +
     headerHTML() +
     '<div class="auth-msg' + (msg ? ' show error' : '') + '" role="alert" style="margin-top:14px">' + esc(msg) + '</div>' +
-    summaryHTML() + blocksHTML() + bigFiveHTML() + growthHTML() + dataHTML() +
+    summaryHTML() + eventsHTML() + blocksHTML() + bigFiveHTML() + growthHTML() + dataHTML() +
     '<div style="margin-top:32px;"><button type="button" class="btn btn-outline" data-act="logout">' + esc(t('acc.cab.logout')) + '</button></div>';
   window.scrollTo({ top: y, behavior: 'instant' });
 }
 
 // ─── Data ───────────────────────────────────────────────────────────────────
 async function loadAll() {
+  const evRes = await supabase.from('event_registrations')
+    .select('status,created_at,events(slug,title_ru,title_en,date_text_ru,date_text_en)')
+    .eq('user_id', me.id).order('created_at', { ascending: false });
+  myEvents = evRes.error ? [] : (evRes.data || []); // table may not exist before migration 008
   const [ans, prof, ip, gr] = await Promise.all([
     supabase.from('answers').select('block_id,data,visibility,version,updated_at').eq('user_id', me.id),
     supabase.from('profiles').select('anketa_progress,photo_url').eq('id', me.id).single(),

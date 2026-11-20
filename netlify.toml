@@ -117,3 +117,8 @@
   from = "/members.html"
   to = "/members"
   status = 301
+# Event invite links: /e/<slug> is served by event.html (URL stays /e/<slug>).
+[[redirects]]
+  from = "/e/*"
+  to = "/event.html"
+  status = 200
