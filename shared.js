@@ -6,6 +6,7 @@
     { href: '/',      slug: 'home',  key: 'nav.home' },
     { href: '/manifesto', slug: 'manifesto', key: 'nav.manifesto' },
     { href: '/agora-01', slug: 'agora-01', key: 'nav.agora01' },
+    { href: '/map', slug: 'map', key: 'nav.map' },
     { href: '/journal', slug: 'journal', key: 'nav.journal' },
     { href: '/people', slug: 'people', key: 'nav.people' },
     { href: '/about', slug: 'about', key: 'nav.about' },
