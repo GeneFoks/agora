@@ -101,6 +101,7 @@ nav {
   padding: 6px 14px;
   border-radius: 4px;
   transition: color .2s;
+  white-space: nowrap;
 }
 .nav-links a:hover, .nav-links a.active { color: var(--text); }
 .nav-cta {
@@ -864,7 +865,8 @@ footer {
   flex-shrink: 0;
 }
 .nav-burger svg { width: 20px; height: 20px; }
-@media (max-width: 900px) {
+/* The full menu needs ~1300px; below that it switches to the burger. */
+@media (max-width: 1320px) {
   .nav-burger { display: inline-flex; }
   .nav-links {
     position: fixed;
