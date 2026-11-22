@@ -46,6 +46,10 @@
     .lm-znum { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px; color: #1a1308; }
     .lm-zitem b { font-size: 14px; font-weight: 600; display: block; }
     .lm-zitem span { font-size: 12px; color: var(--muted); line-height: 1.5; }
+    .lm-modes { display: inline-flex; gap: 2px; padding: 3px; margin: 0 0 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); }
+    .lm-modes button { font: 500 13px 'Jost', sans-serif; color: var(--text-soft); background: none; border: 0; border-radius: 7px; padding: 7px 16px; cursor: pointer; }
+    .lm-modes button.on { background: var(--earth); color: #1a1308; }
+    .lm-grid[hidden], .lm-legend[hidden], #m3Root[hidden] { display: none !important; }
     .leaflet-container { font-family: 'Jost', sans-serif; }
     .leaflet-control-attribution { font-size: 10px; }
     @media (max-width: 900px) {
@@ -68,6 +72,8 @@
       <div class="lm-stats" id="lmStats"></div>
     </div>
 
+    <div class="lm-modes" role="tablist"><button type="button" data-mode="sat" class="on" data-i18n="lm.sat">Спутник</button><button type="button" data-mode="3d">3D</button></div>
+    <div id="m3Root" hidden></div>
     <div class="lm-grid">
       <div class="lm-mapbox">
         <div id="lmMap"></div>
@@ -489,6 +495,34 @@
   renderStats(); renderLegend(); panel(); draw();
   window.AgoraLandMap = { map: map, toLL: toLL, inside: inside, stats: stats, zoneArea: zoneArea, zoneAt: zoneAt }; // для отладки
 })();
+</script>
+<script type="module">
+// Режим «3D»: three.js и данные грузятся только при первом открытии.
+const q = new URLSearchParams(location.search);
+const grid = document.querySelector('.lm-grid'), legend = document.getElementById('lmLegend'), root = document.getElementById('m3Root');
+const btns = document.querySelectorAll('.lm-modes [data-mode]');
+let mounting = null;
+if (q.get('embed') === '1') document.body.classList.add('m3-embed');
+async function setMode(mode, push) {
+  btns.forEach((b) => b.classList.toggle('on', b.dataset.mode === mode));
+  const is3d = mode === '3d';
+  grid.hidden = is3d; legend.hidden = is3d; root.hidden = !is3d;
+  if (push) {
+    const u = new URL(location.href);
+    if (is3d) u.searchParams.set('view', '3d'); else { u.searchParams.delete('view'); u.searchParams.delete('object'); }
+    history.replaceState(null, '', u);
+  }
+  if (!is3d) { if (window.AgoraLandMap) window.AgoraLandMap.map.invalidateSize(); return; }
+  if (!mounting) {
+    if (!document.querySelector('link[href="/map3d/map3d.css"]')) {
+      const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = '/map3d/map3d.css'; document.head.appendChild(l);
+    }
+    mounting = import('/map3d/ui.js').then((m) => m.mount(root)).then((api) => { window.AgoraTwin = api; return api; });
+  }
+  return mounting;
+}
+btns.forEach((b) => b.addEventListener('click', () => setMode(b.dataset.mode, true)));
+if (q.get('view') === '3d' || q.has('object') || q.get('embed') === '1') setMode('3d');
 </script>
 </body>
 </html>
