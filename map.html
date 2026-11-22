@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Карта земли · AGORA</title>
-  <meta name="description" content="Карта первой земли AGORA: Lot 7, Arroyo Farms, Техас. Участок разделён на сотки 10×10 м и клетки 1×1 м.">
+  <meta name="description" content="Карта земли АГОРА ТЕХАС. Участок разделён на сотки 10×10 м и клетки 1×1 м.">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <script src="theme.js"></script>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
   <script src="i18n.js"></script>
-  <script src="land/lot7.js"></script>
-  <script src="land/lot7-zones.js"></script>
+  <script src="land/agora-texas.js"></script>
+  <script src="land/agora-texas-zones.js"></script>
   <style>
     .lm-page { padding: 96px 0 64px; }
     .lm-wrap { max-width: 1240px; margin: 0 auto; padding: 0 20px; }
@@ -62,7 +62,7 @@
 <main class="lm-page">
   <div class="lm-wrap">
     <div class="lm-head">
-      <div class="section-label" data-i18n="lm.label">Agora-01 · Техас</div>
+      <div class="section-label" data-i18n="lm.label">АГОРА ТЕХАС</div>
       <h1 data-i18n="lm.title">Карта земли</h1>
       <p class="lm-lead" data-i18n="lm.lead">Первая земля AGORA. Граница — по межевому плану, сетка — настоящие метры: сотка 10×10 м и внутри неё клетки 1×1 м. Нажми на сотку, чтобы её выбрать, и приблизь, чтобы увидеть клетки.</p>
       <div class="lm-stats" id="lmStats"></div>
@@ -94,7 +94,7 @@
   // ─── Тексты RU/EN ────────────────────────────────────────────────────────
   window.AgoraI18n && window.AgoraI18n.extend({
     ru: {
-      'lm.label': 'Agora-01 · Техас', 'lm.title': 'Карта земли',
+      'lm.label': 'АГОРА ТЕХАС', 'lm.title': 'Карта земли',
       'lm.lead': 'Первая земля AGORA. Граница — по межевому плану, сетка — настоящие метры: сотка 10×10 м и внутри неё клетки 1×1 м. Нажми на сотку, чтобы её выбрать, и приблизь, чтобы увидеть клетки.',
       'lm.sat': 'Спутник', 'lm.scheme': 'Схема', 'lm.fit': 'Весь участок',
       'lm.stat.area': '{a} акра', 'lm.stat.ha': '≈ {h} га', 'lm.stat.sotki': '{n} соток', 'lm.stat.cells': '≈ {n} клеток 1×1 м',
@@ -108,9 +108,9 @@
       'lm.p.zoom': 'Приблизить к сотке →', 'lm.p.back': '← К сотке',
       'lm.p.soon': 'Скоро здесь можно будет выбрать, что появится на этой клетке: дерево, лавочка с твоим именем, курица, улей.',
       'lm.p.from_w': '{m} м от западного края', 'lm.p.from_s': '{m} м от южного края',
-      'lm.note': 'Форма и размеры — из межевого плана (Cross Texas Land Services, 2026). Положение на карте — по кадастру соседнего участка, точность — несколько метров; спутниковый снимок может быть немного смещён.',
+      'lm.note': 'Форма и размеры — из межевого плана (2026). Положение на карте — по кадастру соседнего участка, точность — несколько метров; спутниковый снимок может быть немного смещён.',
       'map.title': 'Карта земли · AGORA',
-      'map.meta': 'Карта первой земли AGORA: Lot 7, Arroyo Farms, Техас. Участок разделён на сотки 10×10 м и клетки 1×1 м.',
+      'map.meta': 'Карта земли АГОРА ТЕХАС. Участок разделён на сотки 10×10 м и клетки 1×1 м.',
       'lm.outside': 'Это за границей участка',
       'lm.m2': 'м²',
       'lm.zones': 'Зоны',
@@ -124,7 +124,7 @@
       'lm.legend.road': 'ширина {w} м · до {to} м от дороги · разворот Ø {d} м'
     },
     en: {
-      'lm.label': 'Agora-01 · Texas', 'lm.title': 'Land map',
+      'lm.label': 'AGORA TEXAS', 'lm.title': 'Land map',
       'lm.lead': 'The first AGORA land. The boundary comes from the survey and the grid is in real metres: a 10×10 m block (a “sotka”) with 1×1 m cells inside. Tap a block to select it and zoom in to see the cells.',
       'lm.sat': 'Satellite', 'lm.scheme': 'Plan', 'lm.fit': 'Whole lot',
       'lm.stat.area': '{a} acres', 'lm.stat.ha': '≈ {h} ha', 'lm.stat.sotki': '{n} blocks of 10×10 m', 'lm.stat.cells': '≈ {n} cells of 1×1 m',
@@ -138,9 +138,9 @@
       'lm.p.zoom': 'Zoom to block →', 'lm.p.back': '← Back to block',
       'lm.p.soon': 'Soon you’ll be able to choose what appears on this cell: a tree, a bench with your name, a hen, a beehive.',
       'lm.p.from_w': '{m} m from the west edge', 'lm.p.from_s': '{m} m from the south edge',
-      'lm.note': 'Shape and size come from the survey (Cross Texas Land Services, 2026). Position on the map is fitted to the neighbouring parcel’s county record, accurate to a few metres; the satellite photo itself may be slightly offset.',
+      'lm.note': 'Shape and size come from the land survey (2026). Position on the map is fitted to the neighbouring parcel’s county record, accurate to a few metres; the satellite photo itself may be slightly offset.',
       'map.title': 'Land map · AGORA',
-      'map.meta': 'Map of the first AGORA land: Lot 7, Arroyo Farms, Texas, divided into 10×10 m blocks and 1×1 m cells.',
+      'map.meta': 'Map of the AGORA TEXAS land, divided into 10×10 m blocks and 1×1 m cells.',
       'lm.outside': 'This is outside the lot',
       'lm.m2': 'm²',
       'lm.zones': 'Zones',
@@ -163,7 +163,7 @@
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
 
   // ─── Геометрия: метры межевания ↔ широта/долгота ──────────────────────────
-  var LOT = window.AGORA_LOT7, POLY = LOT.local, BLOCK = LOT.block;
+  var LOT = window.AGORA_LAND, POLY = LOT.local, BLOCK = LOT.block;
   // Аффинное преобразование по 8 парам точек (метод наименьших квадратов).
   function fit(k) {
     var S = [[0, 0, 0], [0, 0, 0], [0, 0, 0]], R = [0, 0, 0];
@@ -203,7 +203,7 @@
     return areaCache[key];
   }
   // ─── Зоны генплана ────────────────────────────────────────────────────────
-  var PLAN = window.AGORA_LOT7_PLAN || null, FX = PLAN ? PLAN.front_x : 0;
+  var PLAN = window.AGORA_LAND_PLAN || null, FX = PLAN ? PLAN.front_x : 0;
   function zoneAt(x) {
     if (!PLAN) return null;
     var d = FX - x;
@@ -395,7 +395,7 @@
   function panel(msg) {
     var el = document.getElementById('lmPanel');
     if (!sel) {
-      el.innerHTML = '<h2>' + esc(t('lm.p.land')) + '</h2><div class="big">Lot 7 · Arroyo Farms</div>' +
+      el.innerHTML = '<h2>' + esc(t('lm.p.land')) + '</h2><div class="big">' + esc(lang() === 'en' ? LOT.name_en : LOT.name) + '</div>' +
         '<p class="lm-soon">' + esc(msg || t('lm.p.idle')) + '</p>' +
         '<p class="lm-note">' + esc(t('lm.note')) + '</p>';
       return;
