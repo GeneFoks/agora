@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
   <script src="i18n.js"></script>
   <script src="land/lot7.js"></script>
+  <script src="land/lot7-zones.js"></script>
   <style>
     .lm-page { padding: 96px 0 64px; }
     .lm-wrap { max-width: 1240px; margin: 0 auto; padding: 0 20px; }
@@ -34,6 +35,17 @@
     .lm-soon { margin-top: 14px; font-size: 13px; line-height: 1.6; color: var(--muted); }
     .lm-panel .btn { margin-top: 14px; padding: 9px 14px; font-size: 12px; }
     .lm-note { font-size: 12px; color: var(--muted); line-height: 1.6; margin-top: 14px; }
+    .lm-zone { margin-top: 12px; padding: 10px 12px; border-radius: 8px; background: var(--bg); border-left: 4px solid; font-size: 13px; line-height: 1.5; color: var(--text-soft); }
+    .lm-zone b { display: block; color: var(--text); font-weight: 600; margin-bottom: 2px; }
+    .lm-legend { margin-top: 22px; }
+    .lm-legend h2 { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: 28px; margin: 0 0 6px; }
+    .lm-legend > p { font-size: 13px; color: var(--muted); margin: 0 0 14px; line-height: 1.6; }
+    .lm-zgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 8px; }
+    .lm-zitem { display: grid; grid-template-columns: 30px 1fr; gap: 10px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); cursor: pointer; text-align: left; font-family: 'Jost', sans-serif; color: var(--text); }
+    .lm-zitem:hover { border-color: var(--border-earth); }
+    .lm-znum { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px; color: #1a1308; }
+    .lm-zitem b { font-size: 14px; font-weight: 600; display: block; }
+    .lm-zitem span { font-size: 12px; color: var(--muted); line-height: 1.5; }
     .leaflet-container { font-family: 'Jost', sans-serif; }
     .leaflet-control-attribution { font-size: 10px; }
     @media (max-width: 900px) {
@@ -63,12 +75,14 @@
         <div class="lm-tools">
           <button type="button" id="lmSat" class="on" data-i18n="lm.sat">Спутник</button>
           <button type="button" id="lmScheme" data-i18n="lm.scheme">Схема</button>
+          <button type="button" id="lmZones" class="on" data-i18n="lm.zones">Зоны</button>
           <button type="button" id="lmFit" data-i18n="lm.fit">Весь участок</button>
         </div>
         <div class="lm-hint" id="lmHint"></div>
       </div>
       <aside class="lm-panel" id="lmPanel"></aside>
     </div>
+    <section class="lm-legend" id="lmLegend"></section>
   </div>
 </main>
 
@@ -98,7 +112,16 @@
       'map.title': 'Карта земли · AGORA',
       'map.meta': 'Карта первой земли AGORA: Lot 7, Arroyo Farms, Техас. Участок разделён на сотки 10×10 м и клетки 1×1 м.',
       'lm.outside': 'Это за границей участка',
-      'lm.m2': 'м²'
+      'lm.m2': 'м²',
+      'lm.zones': 'Зоны',
+      'lm.p.zone': 'Зона',
+      'lm.p.stage': 'Очередь',
+      'lm.legend.title': 'Генплан v1 · зоны',
+      'lm.legend.note': 'Концепт зонирования, не проектная документация. Расстояния — от передней границы у County Road 132. Нажми на зону, чтобы показать её на карте.',
+      'lm.legend.range': '{a}–{b} м от дороги',
+      'lm.road': 'Дорога 6 м вдоль южной границы и разворот',
+      'lm.reserve': 'резерв',
+      'lm.legend.road': 'ширина {w} м · до {to} м от дороги · разворот Ø {d} м'
     },
     en: {
       'lm.label': 'Agora-01 · Texas', 'lm.title': 'Land map',
@@ -119,7 +142,16 @@
       'map.title': 'Land map · AGORA',
       'map.meta': 'Map of the first AGORA land: Lot 7, Arroyo Farms, Texas, divided into 10×10 m blocks and 1×1 m cells.',
       'lm.outside': 'This is outside the lot',
-      'lm.m2': 'm²'
+      'lm.m2': 'm²',
+      'lm.zones': 'Zones',
+      'lm.p.zone': 'Zone',
+      'lm.p.stage': 'Phase',
+      'lm.legend.title': 'Master plan v1 · zones',
+      'lm.legend.note': 'A zoning concept, not construction documents. Distances are from the front line at County Road 132. Tap a zone to show it on the map.',
+      'lm.legend.range': '{a}–{b} m from the road',
+      'lm.road': '6 m road along the south line and turnaround',
+      'lm.reserve': 'reserve',
+      'lm.legend.road': '{w} m wide · up to {to} m from the road · turnaround Ø {d} m'
     }
   });
   var t = function (k, v) {
@@ -170,6 +202,43 @@
     }
     return areaCache[key];
   }
+  // ─── Зоны генплана ────────────────────────────────────────────────────────
+  var PLAN = window.AGORA_LOT7_PLAN || null, FX = PLAN ? PLAN.front_x : 0;
+  function zoneAt(x) {
+    if (!PLAN) return null;
+    var d = FX - x;
+    for (var i = 0; i < PLAN.zones.length; i++) { var z = PLAN.zones[i]; if (d >= z.from && d < z.to) return z; }
+    return null;
+  }
+  // Южная граница (P3 → P4 → P5 → P6): y по x — нужна для дороги вдоль неё.
+  var SOUTH = [POLY[3], POLY[4], POLY[5], POLY[6]];
+  function southY(x) {
+    if (x >= SOUTH[0][0]) return SOUTH[0][1];
+    for (var i = 0; i < SOUTH.length - 1; i++) {
+      var a = SOUTH[i], b = SOUTH[i + 1];
+      if (x <= a[0] && x >= b[0]) return a[1] + (b[1] - a[1]) * (a[0] - x) / (a[0] - b[0]);
+    }
+    return SOUTH[SOUTH.length - 1][1];
+  }
+  // Сечение участка по x: нижняя и верхняя граница (для подписей зон).
+  function span(x) {
+    var ys = [];
+    for (var i = 0, j = POLY.length - 1; i < POLY.length; j = i++) {
+      var a = POLY[j], b = POLY[i];
+      if ((a[0] - x) * (b[0] - x) <= 0 && a[0] !== b[0]) ys.push(a[1] + (b[1] - a[1]) * (x - a[0]) / (b[0] - a[0]));
+    }
+    ys.sort(function (p, q) { return p - q; });
+    return ys.length >= 2 ? [ys[0], ys[ys.length - 1]] : null;
+  }
+  var zoneArea = {};
+  if (PLAN) {
+    PLAN.zones.forEach(function (z) { zoneArea[z.n] = 0; });
+    for (var cx0 = 0; cx0 < Math.ceil(LOT.bbox[0]); cx0++) for (var cy0 = 0; cy0 < Math.ceil(LOT.bbox[1]); cy0++) {
+      if (inside(cx0 + 0.5, cy0 + 0.5)) { var zz = zoneAt(cx0 + 0.5); if (zz) zoneArea[zz.n]++; }
+    }
+  }
+  var showZones = true, focusZone = null;
+
   var NBX = Math.ceil(LOT.bbox[0] / BLOCK), NBY = Math.ceil(LOT.bbox[1] / BLOCK);
   var stats = { blocks: 0, cells: 0 };
   for (var bx = 0; bx < NBX; bx++) for (var by = 0; by < NBY; by++) { var a = blockArea(bx, by); if (a > 0) { stats.blocks++; stats.cells += a; } }
@@ -228,6 +297,33 @@
 
     ctx.save(); polyPath(); ctx.clip();
 
+    // зоны генплана (полосы поперёк участка) + дорога вдоль южной границы
+    if (PLAN && showZones) {
+      PLAN.zones.forEach(function (z) {
+        var xa = FX - z.to, xb = FX - z.from;
+        var q = [P(xa, -5), P(xb, -5), P(xb, LOT.bbox[1] + 5), P(xa, LOT.bbox[1] + 5)];
+        ctx.beginPath(); q.forEach(function (p, i) { i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }); ctx.closePath();
+        ctx.globalAlpha = focusZone && focusZone !== z.n ? 0.12 : (scheme ? 0.75 : 0.42);
+        ctx.fillStyle = z.color; ctx.fill();
+        ctx.globalAlpha = 1;
+        if (z.from > 0) { var a = P(xb, -5), b = P(xb, LOT.bbox[1] + 5); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.strokeStyle = 'rgba(255,255,255,0.7)'; ctx.lineWidth = 1; ctx.setLineDash([5, 4]); ctx.stroke(); ctx.setLineDash([]); }
+      });
+      var R = PLAN.road;
+      ctx.beginPath();
+      for (var d = -10; d <= R.to; d += 2) { var p1 = P(FX - d, southY(FX - d) - 1); d === -10 ? ctx.moveTo(p1[0], p1[1]) : ctx.lineTo(p1[0], p1[1]); }
+      for (var d2 = R.to; d2 >= -10; d2 -= 2) { var p2 = P(FX - d2, southY(FX - d2) + R.width); ctx.lineTo(p2[0], p2[1]); }
+      ctx.closePath(); ctx.fillStyle = 'rgba(176,160,132,0.95)'; ctx.fill();
+      // на общем виде 6 м — это 3–4 пикселя: дорисовываем осевую линию, чтобы дорогу было видно
+      if (R.width * ppm < 8) {
+        ctx.beginPath();
+        for (var d3 = -10; d3 <= R.to; d3 += 4) { var p3 = P(FX - d3, southY(FX - d3) + R.width / 2); d3 === -10 ? ctx.moveTo(p3[0], p3[1]) : ctx.lineTo(p3[0], p3[1]); }
+        ctx.strokeStyle = 'rgba(214,198,166,0.95)'; ctx.lineWidth = 3; ctx.stroke();
+      }
+      var tc = P(FX - R.turnaround_d, southY(FX - R.turnaround_d) + R.turnaround_diameter / 2);
+      ctx.beginPath(); ctx.arc(tc[0], tc[1], (R.turnaround_diameter / 2) * pxPerMetre(), 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(176,160,132,0.95)'; ctx.fill();
+    }
+
     function lines(step, color, width) {
       ctx.beginPath();
       for (var x = Math.floor(x0 / step) * step; x <= x1 + step; x += step) { var a = P(x, Math.max(0, y0 - step)), b = P(x, Math.min(LOT.bbox[1], y1 + step)); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); }
@@ -255,6 +351,19 @@
 
     // граница участка
     polyPath(); ctx.strokeStyle = '#ff4f8b'; ctx.lineWidth = 2.5; ctx.stroke();
+
+    // номера зон (если полоса достаточно широкая на экране)
+    if (PLAN && showZones) {
+      PLAN.zones.forEach(function (z) {
+        var xm = FX - (Math.max(z.from, 0) + Math.min(z.to, FX)) / 2, sp = span(xm);
+        if (!sp || (Math.min(z.to, FX) - Math.max(z.from, 0)) * ppm < 22) return;
+        var c = P(xm, (sp[0] + sp[1]) / 2 + 6);
+        ctx.beginPath(); ctx.arc(c[0], c[1], 12, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(20,18,14,0.88)'; ctx.fill(); ctx.strokeStyle = z.color; ctx.lineWidth = 2; ctx.stroke();
+        ctx.fillStyle = '#fff'; ctx.font = '600 12px Jost, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(String(z.n), c[0], c[1] + 0.5);
+      });
+    }
 
     hint(ppm);
   }
@@ -299,6 +408,7 @@
       rows += row(t('lm.p.where'), t('lm.p.from_w', { m: nf(bx) }) + ', ' + t('lm.p.from_s', { m: nf(by) }));
       rows += row(t('lm.p.coords'), fmtLL(toLL(bx + 5, by + 5)));
       el.innerHTML = '<h2>' + esc(t('lm.p.block')) + '</h2><div class="big">' + esc(blockName(sel)) + '</div>' + rows +
+        zoneBox(bx + 5) +
         '<button type="button" class="btn btn-earth" id="lmZoom">' + esc(t('lm.p.zoom')) + '</button>' +
         '<p class="lm-note">' + esc(t('lm.note')) + '</p>';
     } else {
@@ -307,6 +417,7 @@
       rows += row(t('lm.p.where'), t('lm.p.from_w', { m: nf(cx) }) + ', ' + t('lm.p.from_s', { m: nf(cy) }));
       rows += row(t('lm.p.coords'), fmtLL(toLL(cx + 0.5, cy + 0.5)));
       el.innerHTML = '<h2>' + esc(t('lm.p.cell')) + '</h2><div class="big">' + esc(blockName(sel) + ' / ' + cellName(sel)) + '</div>' + rows +
+        zoneBox(cx + 0.5) +
         '<p class="lm-soon">' + esc(t('lm.p.soon')) + '</p>' +
         '<button type="button" class="btn btn-outline" id="lmBack">' + esc(t('lm.p.back')) + '</button>';
     }
@@ -316,6 +427,46 @@
     if (b) b.onclick = function () { sel = { bx: sel.bx, by: sel.by }; panel(); redraw(); };
   }
   function row(k, v) { return '<div class="lm-row"><span>' + esc(k) + '</span><span>' + esc(v) + '</span></div>'; }
+
+  var en = function () { return lang() === 'en'; };
+  function stageText(s) {
+    if (s === 'резерв') return t('lm.reserve');
+    return PLAN.stages[s] ? PLAN.stages[s][en() ? 'en' : 'ru'] : s;
+  }
+  function zoneBox(x) {
+    var z = zoneAt(x);
+    if (!z) return '';
+    return '<div class="lm-zone" style="border-left-color:' + z.color + '"><b>' + esc(t('lm.p.zone') + ' ' + z.n + ' · ' + (en() ? z.en : z.ru)) + '</b>' +
+      esc(en() ? z.d_en : z.d_ru) + '<br><span style="color:var(--muted)">' + esc(t('lm.p.stage') + ': ' + stageText(z.stage)) + '</span></div>';
+  }
+
+  function renderLegend() {
+    var el = document.getElementById('lmLegend');
+    if (!PLAN) { el.innerHTML = ''; return; }
+    el.innerHTML = '<h2>' + esc(t('lm.legend.title')) + '</h2><p>' + esc(t('lm.legend.note')) + '</p><div class="lm-zgrid">' +
+      PLAN.zones.map(function (z) {
+        var a = Math.max(0, z.from), b = Math.min(z.to, 695);
+        return '<button type="button" class="lm-zitem" data-zone="' + z.n + '"' + (focusZone === z.n ? ' style="border-color:var(--earth)"' : '') + '>' +
+          '<span class="lm-znum" style="background:' + z.color + '">' + z.n + '</span>' +
+          '<div><b>' + esc(en() ? z.en : z.ru) + '</b><span>' + esc(t('lm.legend.range', { a: nf(a), b: nf(b) })) + ' · ' + esc(nf(zoneArea[z.n] || 0)) + ' ' + esc(t('lm.m2')) +
+          ' · ' + esc(stageText(z.stage)) + '</span></div></button>';
+      }).join('') +
+      '<div class="lm-zitem" style="cursor:default"><span class="lm-znum" style="background:#b0a084"></span><div><b>' + esc(t('lm.road')) + '</b><span>' + esc(t('lm.legend.road', { w: PLAN.road.width, to: nf(PLAN.road.to), d: PLAN.road.turnaround_diameter })) + '</span></div></div>' +
+      '</div>';
+    el.querySelectorAll('[data-zone]').forEach(function (btn) {
+      btn.onclick = function () {
+        var n = Number(btn.dataset.zone), z = PLAN.zones.filter(function (q) { return q.n === n; })[0];
+        focusZone = focusZone === n ? null : n;
+        if (!showZones) { showZones = true; document.getElementById('lmZones').classList.add('on'); }
+        if (focusZone) {
+          var xa = Math.max(0, FX - z.to), xb = Math.min(LOT.bbox[0], FX - z.from);
+          map.fitBounds(L.latLngBounds([toLL(xa, 0), toLL(xb, LOT.bbox[1])]), { padding: [30, 30], maxZoom: 19 });
+          document.querySelector('.lm-mapbox').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        renderLegend(); redraw();
+      };
+    });
+  }
 
   function renderStats() {
     document.getElementById('lmStats').innerHTML =
@@ -329,11 +480,14 @@
   var bSat = document.getElementById('lmSat'), bSch = document.getElementById('lmScheme');
   bSat.onclick = function () { scheme = false; if (!map.hasLayer(sat)) sat.addTo(map); bSat.classList.add('on'); bSch.classList.remove('on'); redraw(); };
   bSch.onclick = function () { scheme = true; map.removeLayer(sat); bSch.classList.add('on'); bSat.classList.remove('on'); redraw(); };
-  document.getElementById('lmFit').onclick = function () { map.fitBounds(lotBounds, { padding: [24, 24] }); };
+  document.getElementById('lmFit').onclick = function () { focusZone = null; renderLegend(); map.fitBounds(lotBounds, { padding: [24, 24] }); redraw(); };
+  var bZones = document.getElementById('lmZones');
+  if (!PLAN) bZones.style.display = 'none';
+  bZones.onclick = function () { showZones = !showZones; if (!showZones) focusZone = null; bZones.classList.toggle('on', showZones); renderLegend(); redraw(); };
 
-  document.addEventListener('agora:lang', function () { renderStats(); panel(); redraw(); });
-  renderStats(); panel(); draw();
-  window.AgoraLandMap = { map: map, toLL: toLL, inside: inside, stats: stats }; // для отладки
+  document.addEventListener('agora:lang', function () { renderStats(); renderLegend(); panel(); redraw(); });
+  renderStats(); renderLegend(); panel(); draw();
+  window.AgoraLandMap = { map: map, toLL: toLL, inside: inside, stats: stats, zoneArea: zoneArea, zoneAt: zoneAt }; // для отладки
 })();
 </script>
 </body>
