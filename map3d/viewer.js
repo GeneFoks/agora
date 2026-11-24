@@ -251,7 +251,7 @@ export function createScene(container, data, opts = {}) {
   Object.values(layers).forEach((g) => scene.add(g));
 
   // Земля — сменный модуль (сейчас плоская; потом карта высот)
-  const ground = makeGround(THREE, { lot: LOT2D, shapeGeo });
+  const ground = makeGround(THREE, { lot: LOT2D, shapeGeo, fx: FX, renderer });
   layers.context.add(ground.object);
 
   // Зоны — полосы по d, обрезанные контуром
@@ -676,7 +676,10 @@ export function createScene(container, data, opts = {}) {
   cv.addEventListener('pointermove', (e) => {
     if (!walk.on || !look || e.pointerId !== look.id) return;
     const dx = e.clientX - look.x, dy = e.clientY - look.y; look.x = e.clientX; look.y = e.clientY;
-    walk.yaw += dx * 0.0045; walk.pitch = Math.max(-1.2, Math.min(1.2, walk.pitch + dy * 0.0045));
+    // Мышь — как в шутерах: ведёшь вправо — смотришь вправо, вверх — смотришь вверх.
+    // Палец — «тянешь картинку» (так привычнее на телефоне).
+    const k = e.pointerType === 'mouse' ? -0.004 : 0.0045;
+    walk.yaw += dx * k; walk.pitch = Math.max(-1.2, Math.min(1.2, walk.pitch + dy * k));
     walk.dirty = true; request();
   });
   const endLook = (e) => { if (look && e.pointerId === look.id) look = null; };
