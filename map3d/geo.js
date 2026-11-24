@@ -50,6 +50,25 @@ export function clipX(poly, x0, x1) {
   }
   return cut(cut(poly, (x) => x >= x0, x0), (x) => x <= x1, x1);
 }
+// Будущий забор (пока «призрак»): по границе участка западнее линии ворот
+// (d = gateD), плюс кусок на линии ворот от северного крыла забора-скалы
+// до северной границы. Парковка у дороги остаётся снаружи.
+// Возвращает массив ломаных в координатах сцены [[X, Z], ...].
+export function defaultFence(gateD = 29, wingNorthY = 32) {
+  const XF = -gateD, poly = clipX(LOT2D, -1e5, XF), n = poly.length, on = (p) => Math.abs(p[0] - XF) < 1e-6;
+  let i0 = -1;
+  for (let i = 0; i < n; i++) if (on(poly[i]) && on(poly[(i + 1) % n])) { i0 = i; break; }
+  if (i0 < 0) return [];
+  const main = [];
+  for (let k = 1; k <= n; k++) main.push(poly[(i0 + k) % n]);   // от poly[i0+1] по кругу до poly[i0]
+  const out = [main];
+  const sp = span(FX + XF);
+  if (sp) {
+    const zWing = toScene(gateD, wingNorthY)[1], zNorth = -sp[1];
+    if (zNorth < zWing - 0.5) out.push([[XF, zWing], [XF, zNorth]]);
+  }
+  return out;
+}
 // Центр полосы зоны (для подписи)
 export function zoneMid(dFrom, dTo) {
   const xm = -(Number(dFrom) + Number(dTo)) / 2, sp = span(FX + xm);

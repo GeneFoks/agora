@@ -53,6 +53,17 @@
 .m3-hint.show { display: block; }
 .m3-loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #2a2a22; font-size: 14px; }
 
+/* Прогулка от первого лица */
+.m3 [data-cam="walk"] { border-color: #c4894a; color: #e2a868; }
+.m3.walking [data-cam="road"], .m3.walking [data-cam="top"], .m3.walking [data-cam="reset"] { display: none; }
+.m3.walking .m3-view canvas { cursor: grab; }
+.m3-joy { position: absolute; left: 16px; bottom: 64px; width: 112px; height: 112px; border-radius: 50%; display: none; touch-action: none;
+          background: rgba(10, 9, 6, .35); border: 1px solid rgba(240, 235, 224, .35); }
+.m3-joy .knob { position: absolute; left: 50%; top: 50%; width: 46px; height: 46px; margin: -23px 0 0 -23px; border-radius: 50%;
+                background: rgba(240, 235, 224, .8); box-shadow: 0 2px 6px rgba(0,0,0,.3); pointer-events: none; }
+@media (pointer: coarse) { .m3.walking .m3-joy { display: block; bottom: 24px; } .m3.walking .m3-bottom { display: none; } }
+.m3.walking .m3-hint { white-space: normal; text-align: center; max-width: calc(100% - 40px); bottom: auto; top: 104px; }
+
 /* Карточка объекта: справа на компьютере, шторка снизу на телефоне */
 .m3-card { position: absolute; top: 52px; right: 10px; bottom: 76px; width: 330px; overflow: auto; background: var(--surface, #1a1712);
            color: var(--text, #f0ebe0); border: 1px solid var(--border, #333); border-radius: 12px; padding: 16px 16px 18px; display: none;
@@ -103,4 +114,5 @@ body.m3-embed .m3 { height: 100vh; border: 0; border-radius: 0; }
   .m3-card { top: auto; left: 0; right: 0; bottom: 0; width: auto; max-height: 62%; border-radius: 16px 16px 0 0; padding-top: 22px; }
   .m3-card::before { content: ''; position: absolute; top: 8px; left: 50%; width: 40px; height: 4px; margin-left: -20px; border-radius: 2px; background: var(--border, #555); }
   body.m3-embed .m3 { height: 100vh; }
+  .m3.walking .m3-score { display: none; }
 }

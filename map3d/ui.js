@@ -1,7 +1,7 @@
 // АГОРА ТЕХАС — 3D-карта: интерфейс (табло, поиск, слои, фазы, камеры,
 // компас, ночь, карточка объекта с летописью). Без WebGL — SVG-схема сверху.
 import { supabase } from '/supabaseClient.js';
-import { LOT2D, toScene, clipX, zoneMid } from '/map3d/geo.js';
+import { LOT2D, toScene, clipX, zoneMid, defaultFence } from '/map3d/geo.js';
 
 const I18N = {
   ru: {
@@ -23,6 +23,9 @@ const I18N = {
     'm3.h.final': '{h} м, потом {f} м', 'm3.m': '{v} м', 'm3.size': '{w} × {l} м', 'm3.diam': 'Ø {d} м',
     'm3.history': 'Летопись', 'm3.noevents': 'Пока событий нет — здесь появится история стройки.',
     'm3.share': 'Скопировать ссылку', 'm3.copied': 'Ссылка скопирована',
+    'm3.cam.walk': 'Прогуляться', 'm3.walk.exit': '← Выйти из прогулки', 'm3.walk.here': 'Подойти сюда',
+    'm3.walk.hint': 'WASD или стрелки — идти · Shift — бегом · тяни мышью — оглядеться · нажми на землю — пойти туда',
+    'm3.walk.hint.touch': 'Джойстик — идти · веди пальцем — оглядеться · нажми на землю — пойти туда',
     'm3.svg.note': 'Упрощённая схема: этот браузер не показывает 3D',
     'm3.c.building': 'Постройка', 'm3.c.residence': 'Жильё основателей', 'm3.c.lodging': 'Домик для гостей', 'm3.c.wellness': 'Баня и здоровье',
     'm3.c.farm': 'Ферма', 'm3.c.utility': 'Инженерия', 'm3.c.infrastructure': 'Инфраструктура', 'm3.c.parking': 'Парковка',
@@ -47,6 +50,9 @@ const I18N = {
     'm3.h.final': '{h} m, later {f} m', 'm3.m': '{v} m', 'm3.size': '{w} × {l} m', 'm3.diam': 'Ø {d} m',
     'm3.history': 'History', 'm3.noevents': 'No events yet — the building story will appear here.',
     'm3.share': 'Copy link', 'm3.copied': 'Link copied',
+    'm3.cam.walk': 'Take a walk', 'm3.walk.exit': '← Leave the walk', 'm3.walk.here': 'Walk up to it',
+    'm3.walk.hint': 'WASD or arrows to walk · Shift to run · drag to look around · tap the ground to go there',
+    'm3.walk.hint.touch': 'Joystick to walk · drag to look around · tap the ground to go there',
     'm3.svg.note': 'Simplified plan: this browser cannot show 3D',
     'm3.c.building': 'Building', 'm3.c.residence': 'Founders’ home', 'm3.c.lodging': 'Guest cabin', 'm3.c.wellness': 'Bath and wellness',
     'm3.c.farm': 'Farm', 'm3.c.utility': 'Utilities', 'm3.c.infrastructure': 'Infrastructure', 'm3.c.parking': 'Parking',
@@ -94,7 +100,7 @@ export async function mount(root, opts = {}) {
     '<div class="m3-view"></div>' +
     '<div class="m3-score m3-pill" aria-live="polite"></div>' +
     '<div class="m3-cams">' +
-      '<button type="button" data-cam="road"></button><button type="button" data-cam="top"></button><button type="button" data-cam="reset"></button>' +
+      '<button type="button" data-cam="road"></button><button type="button" data-cam="top"></button><button type="button" data-cam="reset"></button><button type="button" data-cam="walk"></button>' +
     '</div>' +
     '<div class="m3-search"><input type="search" autocomplete="off"><div class="m3-results m3-pill" role="listbox"></div></div>' +
     '<div class="m3-right"><button type="button" class="m3-night-btn"></button><button type="button" class="m3-layers-btn" aria-expanded="false"></button></div>' +
@@ -105,18 +111,21 @@ export async function mount(root, opts = {}) {
       '<g class="needle"><path d="M0,-16 L5,0 L-5,0Z" fill="#e2564a"/><path d="M0,16 L5,0 L-5,0Z" fill="#f0ebe0"/>' +
       '<text y="-7" x="0" font-size="0" fill="#fff">N</text></g></svg></button>' +
     '<div class="m3-hint m3-pill"></div>' +
+    '<div class="m3-joy" aria-hidden="true"><div class="knob"></div></div>' +
     '<aside class="m3-card" aria-live="polite"></aside>';
   const $ = (s) => root.querySelector(s);
   const view = $('.m3-view'), card = $('.m3-card');
 
   const LAYERS = ['zones', 'objects', 'paths', 'run', 'trees', 'nets', 'labels'];
+  const TOUCH = !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+  let walking = false;
   let scene3 = null;
 
   // ─── 3D или SVG ───────────────────────────────────────────────────────────
   if (hasWebGL() && !opts.forceSvg) {
     try {
       const { createScene } = await import('/map3d/viewer.js');
-      scene3 = createScene(view, data);
+      scene3 = createScene(view, data, { onWalk: (on) => onWalk(on) });
     } catch (e) { console.error('3D failed, falling back to SVG', e); scene3 = null; }
   }
   const svg = scene3 ? null : drawSvg(view, data, (id) => openCard(id));
@@ -133,7 +142,7 @@ export async function mount(root, opts = {}) {
 
   // ─── Тексты интерфейса (и при смене языка) ────────────────────────────────
   function renderTexts() {
-    root.querySelectorAll('[data-cam]').forEach((b) => { b.textContent = t('m3.cam.' + b.dataset.cam); });
+    root.querySelectorAll('[data-cam]').forEach((b) => { b.textContent = t(b.dataset.cam === 'walk' && walking ? 'm3.walk.exit' : 'm3.cam.' + b.dataset.cam); });
     $('.m3-search input').placeholder = t('m3.search');
     $('.m3-night-btn').textContent = t('m3.night');
     $('.m3-layers-btn').textContent = t('m3.layers');
@@ -141,7 +150,7 @@ export async function mount(root, opts = {}) {
     $('.m3-phases').innerHTML = [0, 1, 2, 3].map((p) => '<button type="button" data-ph="' + p + '" class="' + (state.phase === p ? 'on' : '') + '">' + esc(t(PHASE_YEAR[p])) + '</button>').join('');
     $('.m3-done span').textContent = t('m3.doneonly');
     $('.m3-compass').title = t('m3.compass'); $('.m3-compass').setAttribute('aria-label', t('m3.compass'));
-    $('.m3-hint').textContent = t('m3.hint');
+    $('.m3-hint').textContent = t(walking ? (TOUCH ? 'm3.walk.hint.touch' : 'm3.walk.hint') : 'm3.hint');
     if (scene3) scene3.setLabelTexts(lang());
     if (svg) svg.setLang(lang());
     renderScore();
@@ -153,7 +162,8 @@ export async function mount(root, opts = {}) {
   // ─── Управление ───────────────────────────────────────────────────────────
   root.querySelectorAll('[data-cam]').forEach((b) => b.addEventListener('click', () => {
     const c = b.dataset.cam;
-    if (c === 'reset') { closeCard(); scene3.setView('road'); } else scene3.setView(c);
+    if (c === 'walk') { if (walking) scene3.exitWalk(); else { closeCard(); scene3.enterWalk(); } }
+    else if (c === 'reset') { closeCard(); scene3.setView('road'); } else scene3.setView(c);
   }));
   $('.m3-night-btn').addEventListener('click', (e) => {
     const on = !scene3.state.night; scene3.setNight(on); e.currentTarget.classList.toggle('on', on); root.classList.toggle('night', on);
@@ -173,6 +183,7 @@ export async function mount(root, opts = {}) {
   $('.m3-done input').addEventListener('change', (e) => { state.doneOnly = e.target.checked; applyFilters(); });
   $('.m3-compass').addEventListener('click', () => {
     if (!scene3) return;
+    if (scene3.walking) { scene3.faceNorth(); return; }
     const c = scene3.controls, cam = scene3.camera, tg = c.target;
     const dist = cam.position.distanceTo(tg), pol = Math.acos(Math.min(1, (cam.position.y - tg.y) / dist));
     const P = new scene3.THREE.Vector3(tg.x, tg.y + dist * Math.cos(pol), tg.z + dist * Math.sin(pol));
@@ -210,7 +221,42 @@ export async function mount(root, opts = {}) {
     state.layers.objects = true; applyFilters(); renderTexts();
     openCard(id); focus(id);
   }
-  function focus(id) { if (scene3) { scene3.focusObject(id); scene3.select(id); } if (svg) svg.select(id); }
+  function focus(id) {
+    if (scene3) { if (scene3.walking) scene3.walkTo(id); else scene3.focusObject(id); scene3.select(id); }
+    if (svg) svg.select(id);
+  }
+
+  // ─── Прогулка ─────────────────────────────────────────────────────────────
+  function onWalk(on) {
+    walking = on;
+    root.classList.toggle('walking', on);
+    renderTexts();
+    const h = $('.m3-hint');
+    if (on) { h.classList.add('show'); clearTimeout(onWalk.tm); onWalk.tm = setTimeout(() => h.classList.remove('show'), 8000); }
+    else h.classList.remove('show');
+    const u = new URL(location.href);
+    if (on) u.searchParams.set('walk', '1'); else u.searchParams.delete('walk');
+    history.replaceState(null, '', u);
+  }
+  // Джойстик для телефона
+  {
+    const joy = $('.m3-joy'), knob = joy.querySelector('.knob'), RAD = 40;
+    let jid = null, cx = 0, cy = 0;
+    const move = (e) => {
+      let dx = e.clientX - cx, dy = e.clientY - cy; const d = Math.hypot(dx, dy);
+      if (d > RAD) { dx *= RAD / d; dy *= RAD / d; }
+      knob.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
+      if (scene3) scene3.setJoy(dx / RAD, dy / RAD);
+    };
+    joy.addEventListener('pointerdown', (e) => {
+      e.preventDefault(); e.stopPropagation(); jid = e.pointerId; joy.setPointerCapture(jid);
+      const r = joy.getBoundingClientRect(); cx = r.left + r.width / 2; cy = r.top + r.height / 2; move(e);
+      $('.m3-hint').classList.remove('show');
+    });
+    joy.addEventListener('pointermove', (e) => { if (e.pointerId === jid) move(e); });
+    const end = (e) => { if (e.pointerId !== jid) return; jid = null; knob.style.transform = ''; if (scene3) scene3.setJoy(0, 0); };
+    joy.addEventListener('pointerup', end); joy.addEventListener('pointercancel', end);
+  }
 
   // Клик по сцене
   if (scene3) {
@@ -221,14 +267,14 @@ export async function mount(root, opts = {}) {
       if (!down || Math.hypot(e.clientX - down.x, e.clientY - down.y) > 6) return;
       const hit = scene3.pick(e.clientX, e.clientY);
       if (hit && hit.id) { openCard(hit.id); scene3.select(hit.id); }
-      else { closeCard(); }
+      else { closeCard(); if (hit && hit.ground && scene3.walking) scene3.walkToPoint(hit.ground.X, hit.ground.Z); }
       if (opts.onGroundClick && hit && hit.ground) opts.onGroundClick(hit.ground);
     });
     // компас
     const needle = $('.m3-compass .needle');
     scene3.onFrame((cam, ctr) => {
-      const dx = cam.position.x - ctr.target.x, dz = cam.position.z - ctr.target.z;
-      const az = Math.atan2(dx, dz);   // 0 — смотрим на север
+      const dir = cam.getWorldDirection(new scene3.THREE.Vector3());
+      const az = Math.atan2(-dir.x, -dir.z);   // 0 — смотрим на север
       needle.setAttribute('transform', 'rotate(' + (az * 180 / Math.PI).toFixed(1) + ')');
     });
     $('.m3-hint').classList.add('show');
@@ -261,11 +307,16 @@ export async function mount(root, opts = {}) {
       (desc ? '<p class="m3-desc">' + esc(desc) + '</p>' : '') +
       ((o.photos || []).length ? '<div class="m3-photos">' + o.photos.map((u) => /^https:\/\//.test(u) ? '<a href="' + esc(u) + '" target="_blank" rel="noopener"><img src="' + esc(u) + '" alt="" loading="lazy"></a>' : '').join('') + '</div>' : '') +
       '<h4>' + esc(t('m3.history')) + '</h4><div class="m3-events"><div class="m3-empty">…</div></div>' +
-      '<div class="m3-share"><button type="button">' + esc(t('m3.share')) + '</button></div>';
+      '<div class="m3-share">' + (scene3 ? '<button type="button" class="m3-go">' + esc(t('m3.walk.here')) + '</button> ' : '') +
+      '<button type="button" class="m3-copy">' + esc(t('m3.share')) + '</button></div>';
     card.classList.add('open');
     if (!keepScroll) card.scrollTop = 0;
     card.querySelector('.x').addEventListener('click', closeCard);
-    card.querySelector('.m3-share button').addEventListener('click', (e) => {
+    if (scene3) card.querySelector('.m3-go').addEventListener('click', () => {
+      scene3.walkTo(id); scene3.select(id);
+      if (TOUCH) card.classList.remove('open');
+    });
+    card.querySelector('.m3-copy').addEventListener('click', (e) => {
       const u = new URL(location.href); u.searchParams.set('object', id); u.searchParams.delete('embed');
       (navigator.clipboard ? navigator.clipboard.writeText(u.toString()) : Promise.reject()).then(() => { e.target.textContent = t('m3.copied'); }).catch(() => { prompt('', u.toString()); });
     });
@@ -285,7 +336,10 @@ export async function mount(root, opts = {}) {
     if (scene3) scene3.select(null); if (svg) svg.select(null);
     const u = new URL(location.href); if (u.searchParams.has('object')) { u.searchParams.delete('object'); history.replaceState(null, '', u); }
   }
-  root.addEventListener('keydown', (e) => { if (e.key === 'Escape' && current) closeCard(); });
+  root.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    if (current) closeCard(); else if (scene3 && scene3.walking) scene3.exitWalk();
+  });
 
   document.addEventListener('agora:lang', renderTexts);
   renderTexts();
@@ -293,7 +347,9 @@ export async function mount(root, opts = {}) {
 
   // Глубокая ссылка ?object=id
   const want = new URL(location.href).searchParams.get('object');
-  if (want && data.objects.some((o) => o.id === want)) setTimeout(() => { openCard(want); focus(want); }, 60);
+  const wantWalk = scene3 && new URL(location.href).searchParams.get('walk') === '1';
+  if (want && data.objects.some((o) => o.id === want)) setTimeout(() => { openCard(want); if (wantWalk) { scene3.walkTo(want); scene3.select(want); } else focus(want); }, 60);
+  else if (wantWalk) setTimeout(() => scene3.enterWalk(), 60);
 
   return { data, scene: scene3, openCard, closeCard, focus,
            dispose() { document.removeEventListener('agora:lang', renderTexts); if (scene3) scene3.dispose(); } };
@@ -326,6 +382,10 @@ function drawSvg(view, data, onPick) {
     const e = el('polyline', { points: pts(line), fill: 'none', stroke: color, 'stroke-width': Math.max(1, Number(p.width) || 1), 'stroke-linecap': 'round',
       'stroke-dasharray': p.type === 'trail' ? '6 4' : (p.type === 'utility' ? '3 3' : '') }, gPaths);
     e.dataset.phase = p.phase; e.dataset.status = p.status; e.dataset.layer = p.type === 'trail' ? 'run' : (p.type === 'utility' ? 'nets' : (p.type === 'hedge' ? 'trees' : 'paths'));
+  }
+  for (const line of defaultFence()) {   // будущий забор — светлый пунктир
+    const e = el('polyline', { points: pts(line), fill: 'none', stroke: '#fbf8ef', 'stroke-width': 0.8, 'stroke-dasharray': '2 1.5' }, gPaths);
+    e.dataset.phase = 1; e.dataset.status = 'planned'; e.dataset.layer = 'objects';
   }
   const objEls = new Map();
   const CAT = { building: '#d8b48a', residence: '#c79f7a', lodging: '#e3c49c', wellness: '#d4876a', farm: '#9fbf72', utility: '#8aa3b5',

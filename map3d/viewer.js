@@ -10,7 +10,7 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/+esm';
 import { MapControls } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/MapControls.js/+esm';
 import { makeGround } from '/map3d/ground.js';
 
-import { FX, POLY_LOCAL as POLY, span, toScene, fromScene, LOT2D, insideLot, clipX } from '/map3d/geo.js';
+import { FX, POLY_LOCAL as POLY, span, toScene, fromScene, LOT2D, insideLot, clipX, defaultFence } from '/map3d/geo.js';
 export { toScene, fromScene };
 
 function shapeGeo(pts2d, y) {
@@ -225,6 +225,7 @@ function materialsFor(o) {
 // ─── Сцена ──────────────────────────────────────────────────────────────────
 export function createScene(container, data, opts = {}) {
   let needs = true, raf = 0, frameHook = null;   // рендер по требованию
+  const walk = { on: false, yaw: 0, pitch: 0, keys: new Set(), joy: { x: 0, y: 0 }, goal: null, last: 0, dirty: false };
   const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -281,7 +282,7 @@ export function createScene(container, data, opts = {}) {
     layers.context.add(new THREE.Mesh(ribbon(roadPts, 7.5, 0.03), new THREE.MeshStandardMaterial({ color: '#8f8676', roughness: 1 })));
     const poleMat = new THREE.MeshStandardMaterial({ color: '#6e5a44' });
     const wire = [];
-    for (let t = -360; t <= 360; t += 60) {
+    for (let t = -330; t <= 330; t += 60) {   // опоры не встают напротив ворот
       const [x, z] = P(t, 3);
       const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.18, 9, 6), poleMat);
       pole.position.set(x, 4.5, z); layers.context.add(pole);
@@ -340,6 +341,38 @@ export function createScene(container, data, opts = {}) {
     layers.objects.add(g);
     objectItems.set(o.id, g);
     if (LABELED.has(o.category)) labels.push({ text: o.name_ru, text_en: o.name_en, pos: new THREE.Vector3(X, (Number(o.h) || 1) + 2.5, Z), id: o.id });
+  }
+
+  // Забор-призрак: форма видна, цвета нет — его ещё не построили
+  const fenceSegs = [];                       // [ax, az, bx, bz] — для столкновений в прогулке
+  const fenceGroup = new THREE.Group();
+  fenceGroup.userData = { phase: 1, status: 'planned', kind: 'fence' };
+  {
+    const wing = data.objects.find((o) => o.id === 'rock_fence_n'), gate = data.objects.find((o) => o.id === 'gate');
+    const lines = defaultFence(gate ? Number(gate.d) : 29, wing ? Number(wing.y) + (Number(wing.l) || 0) / 2 : 32);
+    const H = 1.6, panel = [], rails = [], posts = [];
+    for (const pts of lines) {
+      for (let i = 0; i < pts.length - 1; i++) {
+        const [ax, az] = pts[i], [bx, bz] = pts[i + 1], len = Math.hypot(bx - ax, bz - az);
+        if (len < 0.05) continue;
+        fenceSegs.push([ax, az, bx, bz]);
+        panel.push(ax, 0.05, az, bx, 0.05, bz, bx, H, bz, ax, 0.05, az, bx, H, bz, ax, H, az);
+        for (const y of [H, H * 0.5]) rails.push(ax, y, az, bx, y, bz);
+        const n = Math.max(1, Math.round(len / 2.5));
+        for (let k = 0; k < n; k++) posts.push([ax + (bx - ax) * k / n, az + (bz - az) * k / n]);
+      }
+      const last = pts[pts.length - 1]; posts.push(last);
+    }
+    const pg = new THREE.BufferGeometry(); pg.setAttribute('position', new THREE.Float32BufferAttribute(panel, 3));
+    fenceGroup.add(new THREE.Mesh(pg, new THREE.MeshBasicMaterial({ color: '#f4f1e8', transparent: true, opacity: 0.14, side: THREE.DoubleSide, depthWrite: false })));
+    const rg = new THREE.BufferGeometry(); rg.setAttribute('position', new THREE.Float32BufferAttribute(rails, 3));
+    fenceGroup.add(new THREE.LineSegments(rg, new THREE.LineBasicMaterial({ color: '#f2eee2', transparent: true, opacity: 0.75 })));
+    const postGeo = new THREE.BoxGeometry(0.1, H + 0.1, 0.1); postGeo.translate(0, (H + 0.1) / 2, 0);
+    const inst = new THREE.InstancedMesh(postGeo, new THREE.MeshBasicMaterial({ color: '#ebe5d5', transparent: true, opacity: 0.5, depthWrite: false }), posts.length);
+    const m = new THREE.Matrix4();
+    posts.forEach(([x, z], i) => { m.makeTranslation(x, 0, z); inst.setMatrixAt(i, m); });
+    fenceGroup.add(inst);
+    layers.objects.add(fenceGroup);
   }
 
   // Деревья — инстансами
@@ -406,8 +439,10 @@ export function createScene(container, data, opts = {}) {
   camera.position.copy(views.road.pos); controls.target.copy(views.road.target); controls.update();
 
   let anim = null;
-  function flyTo(pos, target, ms = 700) {
-    anim = { t0: performance.now(), ms, p0: camera.position.clone(), t0v: controls.target.clone(), p1: pos.clone(), t1: target.clone() };
+  // free: камера сама смотрит на цель (без ограничений MapControls) — для входа в прогулку и выхода
+  function flyTo(pos, target, ms = 700, extra = {}) {
+    anim = { t0: performance.now(), ms, p0: camera.position.clone(), t0v: controls.target.clone(), p1: pos.clone(), t1: target.clone(),
+             free: !!extra.free, onDone: extra.onDone || null };
     request();
   }
   function setView(name) {
@@ -433,6 +468,7 @@ export function createScene(container, data, opts = {}) {
     objectItems.forEach((g) => { g.visible = ok(g.userData); });
     pathItems.forEach((g) => { g.visible = ok(g.userData); });
     treeItems.forEach((g) => { g.visible = ok(g.userData); });
+    fenceGroup.visible = ok(fenceGroup.userData);
     request();
   }
   function setNight(on) {
@@ -465,7 +501,7 @@ export function createScene(container, data, opts = {}) {
     const hits = raycaster.intersectObjects(layers.objects.children, true).filter((h) => h.object.userData.pick && h.object.parent.visible);
     if (hits.length) return { id: hits[0].object.userData.pick };
     const gh = raycaster.intersectObject(ground.object, true)[0];
-    if (gh) { const [d, y] = fromScene(gh.point.x, gh.point.z); return { ground: { d, y, inside: insideLot(gh.point.x, gh.point.z) } }; }
+    if (gh) { const [d, y] = fromScene(gh.point.x, gh.point.z); return { ground: { d, y, X: gh.point.x, Z: gh.point.z, inside: insideLot(gh.point.x, gh.point.z) } }; }
     return null;
   }
 
@@ -480,10 +516,11 @@ export function createScene(container, data, opts = {}) {
     const show = state.layers.labels;
     const W = renderer.domElement.clientWidth, H = renderer.domElement.clientHeight;
     const camDist = camera.position.distanceTo(controls.target);
+    const eye = !controls.enabled;   // прогулка: подписи только у ближних построек
     labels.forEach((L) => {
       let vis = show;
-      if (vis && L.id) { const g = objectItems.get(L.id); vis = g && g.visible && state.layers.objects && camDist < 330; }
-      if (vis && L.zone) vis = state.layers.zones && camDist > 120;
+      if (vis && L.id) { const g = objectItems.get(L.id); vis = g && g.visible && state.layers.objects && (eye ? camera.position.distanceTo(L.pos) < 70 : camDist < 330); }
+      if (vis && L.zone) vis = !eye && state.layers.zones && camDist > 120;
       if (vis) { v3.copy(L.pos).project(camera); vis = v3.z < 1 && Math.abs(v3.x) < 1.1 && Math.abs(v3.y) < 1.1; }
       if (!vis) { L.el.style.display = 'none'; return; }
       L.el.style.display = 'block';
@@ -491,25 +528,187 @@ export function createScene(container, data, opts = {}) {
     });
   }
 
+  // ─── Прогулка от первого лица ─────────────────────────────────────────────
+  const EYE = 1.7, R = 0.35;
+  // Полоса дороги CR 132 перед участком: можно ходить вдоль неё
+  const RA = LOT2D[3], RB = LOT2D[1];
+  const roadU = (() => { const ax = RB[0] - RA[0], az = RB[1] - RA[1], len = Math.hypot(ax, az); return { ux: ax / len, uz: az / len, len }; })();
+  const roadN = (() => { let nx = -roadU.uz, nz = roadU.ux; if (nx < 0) { nx = -nx; nz = -nz; } return { nx, nz }; })();
+  function roadStrip(X, Z) {
+    const px = X - RA[0], pz = Z - RA[1];
+    const along = px * roadU.ux + pz * roadU.uz, east = px * roadN.nx + pz * roadN.nz;
+    return east > -1 && east < 15.5 && along > -300 && along < roadU.len + 300;
+  }
+  // Препятствия: постройки (прямоугольники в своих осях) и круглые баки
+  const obstacles = [];
+  for (const o of data.objects) {
+    const g = objectItems.get(o.id), h = Number(o.h) || 0, w = Number(o.w) || 0, l = Number(o.l) || 0, r = Number(o.r) || 0;
+    if (o.shape === 'gate') {
+      const opening = l * 0.6, q = (l - opening) / 4;
+      for (const s of [-1, 1]) obstacles.push({ g, hw: Math.max(w, 1.2) / 2, hl: q, ox: 0, oz: s * (opening / 2 + q) });
+      continue;
+    }
+    if (['flat', 'flat_dashed', 'ring_path', 'ring_sectors', 'ring', 'pavilion'].includes(o.shape)) continue;
+    if (o.shape !== 'pond' && h < 0.8) continue;
+    if (o.shape === 'cylinder') obstacles.push({ g, r });
+    else if (o.shape === 'pole') obstacles.push({ g, r: 0.3 });
+    else obstacles.push({ g, hw: w / 2, hl: l / 2, ox: 0, oz: 0 });
+  }
+  function segDist(px, pz, ax, az, bx, bz) {
+    const vx = bx - ax, vz = bz - az, t = Math.max(0, Math.min(1, ((px - ax) * vx + (pz - az) * vz) / (vx * vx + vz * vz || 1)));
+    return Math.hypot(px - (ax + vx * t), pz - (az + vz * t));
+  }
+  function blocked(X, Z) {
+    if (!(insideLot(X, Z) || roadStrip(X, Z))) return true;
+    if (!state.layers.objects) return false;
+    for (const ob of obstacles) {
+      if (!ob.g.visible) continue;
+      const lx = X - ob.g.position.x, lz = Z - ob.g.position.z;
+      if (ob.r != null) { if (Math.hypot(lx, lz) < ob.r + R) return true; continue; }
+      const a = ob.g.rotation.y, c = Math.cos(a), s = Math.sin(a);
+      const x2 = c * lx - s * lz, z2 = s * lx + c * lz;
+      if (Math.abs(x2 - ob.ox) < ob.hw + R && Math.abs(z2 - ob.oz) < ob.hl + R) return true;
+    }
+    if (fenceGroup.visible) for (const s of fenceSegs) if (segDist(X, Z, s[0], s[1], s[2], s[3]) < R) return true;
+    return false;
+  }
+  function tryMove(dx, dz) {
+    const n = Math.max(1, Math.ceil(Math.hypot(dx, dz) / 0.25)), sx = dx / n, sz = dz / n, p = camera.position;
+    let any = false;
+    for (let i = 0; i < n; i++) {
+      if (!blocked(p.x + sx, p.z + sz)) { p.x += sx; p.z += sz; }
+      else if (!blocked(p.x + sx, p.z)) p.x += sx;        // скользим вдоль стены
+      else if (!blocked(p.x, p.z + sz)) p.z += sz;
+      else return any;
+      any = true;
+    }
+    return any;
+  }
+  function stepWalk(dt) {
+    const k = walk.keys, p = camera.position;
+    let f = 0, s = 0, turn = 0, changed = walk.dirty;
+    walk.dirty = false;
+    if (k.has('KeyW') || k.has('ArrowUp')) f += 1;
+    if (k.has('KeyS') || k.has('ArrowDown')) f -= 1;
+    if (k.has('KeyD')) s += 1;
+    if (k.has('KeyA')) s -= 1;
+    if (k.has('ArrowLeft') || k.has('KeyQ')) turn += 1;
+    if (k.has('ArrowRight') || k.has('KeyE')) turn -= 1;
+    f -= walk.joy.y; s += walk.joy.x;
+    if (turn) { walk.yaw += turn * 1.8 * dt; changed = true; }
+    let speed = (k.has('ShiftLeft') || k.has('ShiftRight')) ? 11 : 4.5;
+    if (f || s) walk.goal = null;
+    else if (walk.goal) {
+      const dx = walk.goal.x - p.x, dz = walk.goal.z - p.z, dist = Math.hypot(dx, dz);
+      if (dist < 0.8) walk.goal = null;
+      else {
+        const want = Math.atan2(-dx, -dz), dy = ((want - walk.yaw) % (2 * Math.PI) + 3 * Math.PI) % (2 * Math.PI) - Math.PI;
+        walk.yaw += dy * Math.min(1, dt * 6); f = 1; speed = Math.min(6, dist * 2 + 1); changed = true;
+      }
+    }
+    if (f || s) {
+      const len = Math.hypot(f, s); if (len > 1) { f /= len; s /= len; }
+      const sy = Math.sin(walk.yaw), cy = Math.cos(walk.yaw);
+      if (tryMove((-sy * f + cy * s) * speed * dt, (-cy * f - sy * s) * speed * dt)) changed = true;
+      else if (walk.goal) walk.goal = null;
+    }
+    p.y = EYE;
+    camera.rotation.set(walk.pitch, walk.yaw, 0, 'YXZ');
+    return changed;
+  }
+  function setEyeCamera(on) {
+    camera.near = on ? 0.1 : 0.5; camera.fov = on ? 62 : 45; camera.updateProjectionMatrix();
+  }
+  // Перелёт на уровень глаз в точку (x, z), взгляд на (lx, ly, lz) — дальше ходим сами
+  function goEye(x, z, lx, lz, ly = EYE, ms = 1100) {
+    walk.on = false; walk.goal = null; controls.enabled = false; setEyeCamera(true);
+    flyTo(new THREE.Vector3(x, EYE, z), new THREE.Vector3(lx, ly, lz), ms, { free: true, onDone() {
+      const e = new THREE.Euler().setFromQuaternion(camera.quaternion, 'YXZ');
+      walk.yaw = e.y; walk.pitch = e.x; walk.on = true; walk.last = 0;
+      if (opts.onWalk) opts.onWalk(true);
+      request();
+    } });
+  }
+  function enterWalk() {
+    const gate = data.objects.find((o) => o.id === 'gate');
+    const gd = gate ? Number(gate.d) : 29, gy = gate ? Number(gate.y) : 14.5;
+    const [ex, ez] = toScene(-10, gy), [gx, gz] = toScene(gd, gy);   // стоим на дороге, смотрим на ворота
+    goEye(ex, ez, gx, gz, 2.2, 1500);
+  }
+  function exitWalk() {
+    walk.on = false; walk.keys.clear(); walk.joy = { x: 0, y: 0 }; walk.goal = null;
+    const fwd = new THREE.Vector3(); camera.getWorldDirection(fwd);
+    controls.target.set(camera.position.x + fwd.x * 30, 0, camera.position.z + fwd.z * 30);
+    setEyeCamera(false);
+    const v = views.road, k = Math.max(1, 1.25 / Math.max(0.3, camera.aspect));
+    flyTo(v.target.clone().add(v.pos.clone().sub(v.target).multiplyScalar(k)), v.target, 1100, { free: true, onDone() {
+      controls.enabled = true; controls.update(); if (opts.onWalk) opts.onWalk(false); request();
+    } });
+  }
+  // Подойти к объекту: встать в нескольких метрах и посмотреть на него
+  function walkTo(id) {
+    const g = objectItems.get(id); if (!g) return false;
+    const o = g.userData.obj, size = Math.max(Number(o.w) || 0, Number(o.l) || 0, (Number(o.r) || 0) * 2, 2);
+    const c = g.position, dist = size / 2 + 5;
+    let dx = camera.position.x - c.x, dz = camera.position.z - c.z;
+    const d0 = Math.hypot(dx, dz) || 1; dx /= d0; dz /= d0;
+    for (let i = 0; i < 24; i++) {
+      const a = (i % 2 ? 1 : -1) * Math.ceil(i / 2) * 0.27, ca = Math.cos(a), sa = Math.sin(a);
+      const rx = dx * ca - dz * sa, rz = dx * sa + dz * ca, x = c.x + rx * dist, z = c.z + rz * dist;
+      if (!blocked(x, z)) { goEye(x, z, c.x, c.z, Math.max(1, (Number(o.h) || 1) * 0.5), 1000); return true; }
+    }
+    return false;
+  }
+  function walkToPoint(X, Z) { if (walk.on) { walk.goal = { x: X, z: Z }; request(); } }
+  function setJoy(x, y) { walk.joy = { x, y }; request(); }
+  function faceNorth() { if (walk.on) { walk.yaw = 0; walk.dirty = true; request(); } }
+
+  // Клавиши и взгляд мышью/пальцем
+  const MOVE_KEYS = new Set(['KeyW', 'KeyA', 'KeyS', 'KeyD', 'KeyQ', 'KeyE', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ShiftLeft', 'ShiftRight']);
+  const typing = (e) => e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable);
+  const onKeyDown = (e) => { if (!walk.on || typing(e) || !MOVE_KEYS.has(e.code)) return; e.preventDefault(); walk.keys.add(e.code); request(); };
+  const onKeyUp = (e) => { walk.keys.delete(e.code); };
+  const onBlur = () => walk.keys.clear();
+  window.addEventListener('keydown', onKeyDown); window.addEventListener('keyup', onKeyUp); window.addEventListener('blur', onBlur);
+  let look = null;
+  const cv = renderer.domElement;
+  cv.addEventListener('pointerdown', (e) => { if (walk.on) look = { id: e.pointerId, x: e.clientX, y: e.clientY }; });
+  cv.addEventListener('pointermove', (e) => {
+    if (!walk.on || !look || e.pointerId !== look.id) return;
+    const dx = e.clientX - look.x, dy = e.clientY - look.y; look.x = e.clientX; look.y = e.clientY;
+    walk.yaw += dx * 0.0045; walk.pitch = Math.max(-1.2, Math.min(1.2, walk.pitch + dy * 0.0045));
+    walk.dirty = true; request();
+  });
+  const endLook = (e) => { if (look && e.pointerId === look.id) look = null; };
+  cv.addEventListener('pointerup', endLook); cv.addEventListener('pointercancel', endLook);
+
   // ─── Рендер по требованию ─────────────────────────────────────────────────
 
   function request() { needs = true; if (!raf) raf = requestAnimationFrame(loop); }
   function loop(now) {
     raf = 0;
+    let free = false;
     if (anim) {
-      const k = Math.min(1, (now - anim.t0) / anim.ms), e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
-      camera.position.lerpVectors(anim.p0, anim.p1, e); controls.target.lerpVectors(anim.t0v, anim.t1, e);
-      if (k >= 1) anim = null;
+      const a = anim, k = Math.min(1, (now - a.t0) / a.ms), e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+      camera.position.lerpVectors(a.p0, a.p1, e); controls.target.lerpVectors(a.t0v, a.t1, e);
+      free = a.free;
+      if (free) camera.lookAt(controls.target);
+      if (k >= 1) { anim = null; if (a.onDone) a.onDone(); }
       needs = true;
     }
-    const moved = controls.update();
+    let moved = false;
+    if (walk.on) {
+      const dt = walk.last ? Math.min(0.12, (now - walk.last) / 1000) : 0;
+      walk.last = now;
+      if (stepWalk(dt)) needs = true;
+    } else if (!free && controls.enabled) moved = controls.update();
     if (needs || moved || anim) {
       needs = false;
       renderer.render(scene, camera);
       placeLabels();
       if (frameHook) frameHook(camera, controls);
     }
-    if (anim || moved) raf = requestAnimationFrame(loop);
+    if (anim || moved || walk.on) raf = requestAnimationFrame(loop);
   }
   controls.addEventListener('change', request);
 
@@ -524,7 +723,8 @@ export function createScene(container, data, opts = {}) {
   return {
     THREE, renderer, scene, camera, controls, state, objectItems,
     setView, flyTo, focusObject, select, pick, applyFilters, setNight, request, setLabelTexts,
+    enterWalk, exitWalk, walkTo, walkToPoint, setJoy, faceNorth, canStand: (X, Z) => !blocked(X, Z), get walking() { return walk.on || !controls.enabled; },
     onFrame(fn) { frameHook = fn; },
-    dispose() { ro.disconnect(); cancelAnimationFrame(raf); controls.dispose(); renderer.dispose(); container.innerHTML = ''; },
+    dispose() { window.removeEventListener('keydown', onKeyDown); window.removeEventListener('keyup', onKeyUp); window.removeEventListener('blur', onBlur); ro.disconnect(); cancelAnimationFrame(raf); controls.dispose(); renderer.dispose(); container.innerHTML = ''; },
   };
 }
